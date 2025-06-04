@@ -1,0 +1,59 @@
+﻿@model InvoiceViewModel
+
+<style>
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .invoice-box {
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0,0,0,.15);
+    }
+</style>
+
+<div class="row text-center">
+    <table class="table table-sm table-bordered" id="invoiceTable">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Item Description</th>
+                <th width="8%">Quantity</th>
+                <th width="15%">Rate</th>
+                <th>Amount</th>
+                <th width="6%"></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @for (int i = 0; i < Model.Items.Count; i++)
+            {
+                <tr>
+                    <td><span name="Items[i].LineNumber">@Model.Items[i].LineNumber</span></td>
+                    <td>
+                        <input type="text" class="form-control form-control-sm item-desc" asp-for="@Model.Items[i].Description" />
+                    </td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm item-qty" asp-for="@Model.Items[i].Quantity" />
+                    </td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm item-price" asp-for="@Model.Items[i].Rate" />
+                    </td>
+                    <td class="item-total">@Model.Items[i].Amount</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm remove-row">×</button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="col-3">
+        <button class="btn btn-secondary mb-3" id="addRow">+ Add Item</button>
+    </div>
+    <div class="col-9"></div>
+</div>

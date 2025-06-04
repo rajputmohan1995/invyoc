@@ -1,0 +1,71 @@
+﻿@model InvoiceViewModel
+
+<style>
+    span.invoice-total-details {
+        min-width: 100px;
+        display: inline-block;
+    }
+
+    div#invoiceNotes, div#invoiceTerms {
+        position: absolute;
+        bottom: 0;
+    }
+
+    div#divInvoiceTotals input {
+        max-width: 100px;
+    }
+
+    div#divInvoiceTotals p {
+        margin-bottom: 0;
+    }
+</style>
+
+<div class="row mb-4">
+
+    <div class="col-md-12 justify-content-end text-end" id="divInvoiceTotals">
+
+        <div class="d-flex flex-column gap-2">
+
+            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                <label class="form-label mb-0">Discount (%)</label>
+                <input type="number" id="discountRate" class="form-control form-control-sm" asp-for="DiscountPercentage" />
+            </div>
+
+
+            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                <label class="form-label mb-0">Tax (%)</label>
+                <input type="number" id="taxRate" class="form-control form-control-sm" asp-for="TaxPercentage" />
+            </div>
+
+            <p>
+                <strong>Subtotal:</strong>
+                <span id="subtotal" class="invoice-total-details">$100.00</span>
+            </p>
+
+            <p>
+                <strong>Discount:</strong>
+                <span id="discountAmount" class="invoice-total-details">$0.00</span>
+            </p>
+            <p>
+                <strong>Tax:</strong>
+                <span id="taxAmount" class="invoice-total-details"> $0.00</span>
+            </p>
+
+            <hr class="m-0" />
+            <p class="fs-5">
+                <strong>Total:</strong>
+                <span id="grandTotal" class="invoice-total-details">$100.00</span>
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col">
+        <hr />
+        <p contenteditable="true">
+            <i name="PaymentNotes">@Html.Raw(Model.PaymentNotes)</i>
+        </p>
+    </div>
+
+</div>

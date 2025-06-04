@@ -1,0 +1,45 @@
+﻿@using invyoc.Extensions
+@using invyoc.Models.Enums
+@model InvoiceViewModel
+
+@{
+    var currencyValues = PrimitiveTypeExtensions.ToSelectList<CurrencyType>();
+}
+<style>
+    .sticky-top {
+        top: 20px;
+    }
+</style>
+
+<div class="sticky-top p-3 bg-light rounded shadow-sm">
+
+    <div class="row">
+
+        <div class="d-flex flex-column gap-2 mb-3">
+
+            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                <label for="currency" class="mb-0 form-label fw-bold">Currency : </label>
+                <select id="currency"
+                        asp-for="Currency"
+                        asp-items="Model.Currencies"
+                        class="form-control"
+                        style="max-width:120px;">
+                </select>
+            </div>
+
+        </div>
+
+        <hr />
+    </div>
+
+    @await Html.PartialAsync("Partials/_InvoiceFooter", Model)
+
+    <div class="row">
+        <div class="d-grid">
+            <button class="btn btn-primary" id="download" type="submit">
+                <i class="fa-solid fa-download"></i> Download Invoice
+            </button>
+        </div>
+    </div>
+
+</div>

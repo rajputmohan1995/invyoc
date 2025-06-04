@@ -1,0 +1,46 @@
+﻿@model InvoiceViewModel
+
+<style>
+    .invoice-main-details input {
+        max-width: 150px;
+    }
+</style>
+
+<div class="row mb-4">
+    <div class="col-sm-4">
+        <h5>Bill To</h5>
+        <input type="text"
+               class="form-control fw-bold mb-1"
+               asp-for="BillTo.Name" />
+        <textarea class="form-control" rows="3" asp-for="BillTo.Address"></textarea>
+    </div>
+    <div class="col-sm-4">
+        <h5>Ship To <small>(optional)</small></h5>
+        <input type="text"
+               class="form-control fw-bold mb-1"
+               asp-for="ShipTo.Name" />
+        <textarea class="form-control" rows="3" asp-for="ShipTo.Address"></textarea>
+    </div>
+
+    <div class="col-sm-4">
+        <div class="d-flex flex-column gap-2 invoice-main-details">
+
+            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                <label class="form-label mb-0">Date</label>
+                <input type="date" class="form-control form-control-sm" asp-for="InvoiceDate" />
+            </div>
+            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                <label class="form-label mb-0">Payment Terms</label>
+                <input type="text" class="form-control form-control-sm" asp-for="PaymentTerms" />
+            </div>
+            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                <label class="form-label mb-0">Due Date</label>
+                <input type="date" class="form-control form-control-sm" asp-for="DueDate" />
+            </div>
+            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                <label class="form-label mb-0">PO Number</label>
+                <input type="text" class="form-control form-control-sm" asp-for="PONumber" />
+            </div>
+        </div>
+    </div>
+</div>
