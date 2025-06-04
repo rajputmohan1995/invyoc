@@ -55,6 +55,13 @@ public static class PrimitiveTypeExtensions
         if (string.IsNullOrWhiteSpace(result))
             return "invoice_";
 
+        result = result.Replace(" ", "_");
+
         return result;
+    }
+
+    public static string ToDateStr(DateTime dateTime)
+    {
+        return dateTime.ToString("dd-MMM-yyyy");
     }
 }

@@ -1,0 +1,258 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        html, html body {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        .invoice-main-details input {
+            max-width: 150px;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .invoice-box {
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0,0,0,.15);
+        }
+
+
+        .sticky-top {
+            top: 20px;
+        }
+
+        span.invoice-total-details {
+            min-width: 100px;
+            display: inline-block;
+        }
+
+        div#invoiceNotes, div#invoiceTerms {
+            position: absolute;
+            bottom: 0;
+        }
+
+        div#divInvoiceTotals input {
+            max-width: 100px;
+        }
+
+        div#divInvoiceTotals p {
+            margin-bottom: 0;
+        }
+    </style>
+
+</head>
+
+<body class="pt-4 pb-4">
+
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12 invoice-box">
+
+                <!--Header-->
+                <div class="row">
+                    <div class="col-9">
+                        <h2>
+                            <input type="text" class="form-control border-0 fs-2 p-0 "
+                                   placeholder="Company Name" name="Company.Name" value="Swift Solutions Pvt. Ltd.">
+                        </h2>
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" class="form-control form-control-sm border-0 p-0 mb-1 "
+                                       name="Company.Address" value="22/B Industrial Estate, Whitefield, Bengaluru - 560066">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <input type="tel" class="form-control form-control-sm border-0 p-0 "
+                                       name="Company.Phone" value="+91 98765 43210">
+                            </div>
+                            <div class="col-4">
+                                <input type="email" class="form-control form-control-sm border-0 p-0 "
+                                       name="Company.Email" value="contact@swiftsolutions.in">
+                            </div>
+                            <div class="offset-col-6"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-3">
+                        <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                            <h4>
+                                Invoice#
+                                <span contenteditable="true" name="InvoiceNumber"></span>
+                            </h4>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr>
+                <!--Header-->
+
+
+
+                <div class="row mb-4">
+                    <div class="col-sm-4">
+                        <h5>Bill To</h5>
+                        <input type="text" class="form-control fw-bold mb-1" name="BillTo.Name" value="Arjun Verma" />
+                        <textarea class="form-control" rows="3" name="BillTo.Address">502, Green Heights Apartments, Mumbai - 400076</textarea>
+                    </div>
+                    <div class="col-sm-4">
+                        <h5>Ship To <small>(optional)</small></h5>
+                        <input type="text" class="form-control fw-bold mb-1" name="ShipTo.Name" value="Arjun Verma" />
+                        <textarea class="form-control" rows="3" name="ShipTo.Address">502, Green Heights Apartments, Mumbai - 400076</textarea>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="d-flex flex-column gap-2 invoice-main-details">
+
+                            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                                <label class="form-label mb-0">Date</label>
+                                <input type="text" class="form-control form-control-sm" name="InvoiceDate" value="04-Jun-2025">
+                            </div>
+                            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                                <label class="form-label mb-0">Payment Terms</label>
+                                <input type="text" class="form-control form-control-sm" name="PaymentTerms" value="Net 30">
+                            </div>
+                            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                                <label class="form-label mb-0">Due Date</label>
+                                <input type="text" class="form-control form-control-sm" name="DueDate" value="04-Jul-2025">
+                            </div>
+                            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                                <label class="form-label mb-0">PO Number</label>
+                                <input type="text" class="form-control form-control-sm" name="PONumber" value="PO-243">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <table class="table table-sm table-bordered text-center" id="invoiceTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="5%">#</th>
+                                <th width="60%" class="text-start">Item Description</th>
+                                <th width="8%">Quantity</th>
+                                <th width="15%">Rate</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+<td><span name="Items[i].LineNumber">1</span></td>
+<td>
+<input type="text" class="form-control form-control-sm item-desc" name="Items[i].Description" value="Website Design">
+</td>
+<td>
+<input type="text" class="form-control form-control-sm item-qty" name="Items[i].Quantity" value="1">
+</td>
+<td>
+<input type="text" class="form-control form-control-sm item-price" name="Items[i].Rate" value="₹25000">
+</td>
+<td class="item-total">₹25000</td>
+</tr><tr>
+<td><span name="Items[i].LineNumber">2</span></td>
+<td>
+<input type="text" class="form-control form-control-sm item-desc" name="Items[i].Description" value="Monthly Hosting">
+</td>
+<td>
+<input type="text" class="form-control form-control-sm item-qty" name="Items[i].Quantity" value="12">
+</td>
+<td>
+<input type="text" class="form-control form-control-sm item-price" name="Items[i].Rate" value="₹500">
+</td>
+<td class="item-total">₹6000</td>
+</tr><tr>
+<td><span name="Items[i].LineNumber">3</span></td>
+<td>
+<input type="text" class="form-control form-control-sm item-desc" name="Items[i].Description" value="Domain Renewal">
+</td>
+<td>
+<input type="text" class="form-control form-control-sm item-qty" name="Items[i].Quantity" value="3">
+</td>
+<td>
+<input type="text" class="form-control form-control-sm item-price" name="Items[i].Rate" value="₹1500">
+</td>
+<td class="item-total">₹4500</td>
+</tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+
+                <div class="row mb-4">
+
+                    <div class="col-md-12 justify-content-end text-end" id="divInvoiceTotals">
+
+                        <div class="d-flex flex-column gap-2">
+
+                            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                                <label class="form-label mb-0">Discount:</label>
+                                <input type="text" id="discountRate" class="form-control form-control-sm border-0 text-end"
+                                       name="DiscountPercentage" value="5%" />
+                            </div>
+
+
+                            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                                <label class="form-label mb-0">Tax:</label>
+                                <input type="text" id="taxRate" class="form-control form-control-sm border-0 text-end"
+                                       name="TaxPercentage" value="18%">
+                            </div>
+
+                            <p>
+                                <strong>Subtotal:</strong>
+                                <span id="subtotal" class="invoice-total-details">₹35500</span>
+                            </p>
+
+                            <p>
+                                <strong>Discount:</strong>
+                                <span id="discountAmount" class="invoice-total-details">₹1775</span>
+                            </p>
+                            <p>
+                                <strong>Tax:</strong>
+                                <span id="taxAmount" class="invoice-total-details">₹6070.5</span>
+                            </p>
+
+
+                            <p class="fs-5">
+                                <strong>Total:</strong>
+                                <span id="grandTotal" class="invoice-total-details">₹39795.5</span>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col">
+                        <hr>
+                        <p contenteditable="true">
+                            <i name="PaymentNotes"></i>
+                        </p>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+</body>

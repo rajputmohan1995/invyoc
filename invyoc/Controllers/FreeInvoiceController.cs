@@ -19,13 +19,9 @@ public class FreeInvoiceController : Controller
     [HttpPost]
     public IActionResult Download(InvoiceViewModel invoiceVM)
     {
-        string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "free-invoice.html");
-        string newInvoicePath = Path.Combine(_env.WebRootPath, "exports");
-        var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
+        var result = ExportExtensions.ConvertToPDF(invoiceVM, _env.WebRootPath);
 
-        ExportExtensions.ConvertToPDF(invoiceVM, invoiceTemplatePath, newInvoicePath, newInvoiceFileName);
-
-        var fileBytes = System.IO.File.ReadAllBytes(Path.Combine(newInvoicePath, newInvoiceFileName));
-        return File(fileBytes, "application/pdf", newInvoiceFileName);
+        var fileBytes = System.IO.File.ReadAllBytes(result.Item1);
+        return File(fileBytes, "application/pdf", result.Item2);
     }
 }
