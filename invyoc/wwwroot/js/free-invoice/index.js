@@ -32,12 +32,13 @@ $(document).on('input', '.item-qty, .item-price, #taxRate, #discountRate, #curre
 $('#addRow').click(function () {
     var currentRowValue = $('#invoiceTable tbody tr').length;
     var newRowValue = currentRowValue + 1;
+    var newRowIndex = newRowValue - 1;
 
     const row = `<tr>
-        <td><span name="Items[${newRowValue - 1}].LineNumber">${newRowValue}</span></td>
-        <td><input type="text" class="form-control form-control-sm item-desc" value="New Item"></td>
-        <td><input type="number" class="form-control form-control-sm item-qty" value="1"></td>
-        <td><input type="number" class="form-control form-control-sm item-price" value="100"></td>
+        <td><span name="Items[${newRowIndex}].LineNumber">${newRowValue}</span></td>
+        <td><input type="text" required class="form-control form-control-sm item-desc" value="New Item" name="Items[${newRowIndex}].Description" id="Items_${newRowIndex}__Description" /></td>
+        <td><input type="number" required class="form-control form-control-sm item-qty" value="1" name="Items[${newRowIndex}].Quantity" id="Items_${newRowIndex}__Quantity" /></td>
+        <td><input type="number" required class="form-control form-control-sm item-price" value="100" name="Items[${newRowIndex}].Rate" id="Items_${newRowIndex}__Rate" /></td>
         <td class="item-total">$100.00</td>
         <td><button class="btn btn-danger btn-sm remove-row">×</button></td>
       </tr>`;
@@ -47,16 +48,17 @@ $('#addRow').click(function () {
 
 $(document).on('click', '.remove-row', function () {
     $(this).closest('tr').remove();
+    reindexInvoiceRows();
     updateSerialNumber();
     updateTotals();
 });
 
 
 
-$('#download').click(function () {
-    const element = document.getElementById('invoice');
-    html2pdf().from(element).save('invoice.pdf');
-});
+//$('#download').click(function () {
+//    const element = document.getElementById('invoice');
+//    html2pdf().from(element).save('invoice.pdf');
+//});
 
 $('#logoUpload').change(function (e) {
     const reader = new FileReader();
@@ -66,4 +68,51 @@ $('#logoUpload').change(function (e) {
     reader.readAsDataURL(e.target.files[0]);
 });
 
-$(document).ready(updateTotals);
+$(document).ready(function () {
+    updateTotals();
+    textarea_auto_grow(document.getElementById('txtPaymentNotes'));
+});
+
+
+function textarea_auto_grow(element) {
+    element.style.height = "5px";
+    element.style.height = (element.scrollHeight) + "px";
+}
+
+
+function reindexInvoiceRows() {
+    const rows = document.querySelectorAll("table#invoiceTable tbody tr");
+
+    rows.forEach((row, index) => {
+        row.querySelector("td:first-child span").textContent = index + 1;
+
+        const descInput = row.querySelector(".item-desc");
+        const qtyInput = row.querySelector(".item-qty");
+        const priceInput = row.querySelector(".item-price");
+        const qtyInvariant = qtyInput?.nextElementSibling;
+        const priceInvariant = priceInput?.nextElementSibling;
+
+        if (descInput) {
+            descInput.name = `Items[${index}].Description`;
+            descInput.id = `Items_${index}__Description`;
+        }
+
+        if (qtyInput) {
+            qtyInput.name = `Items[${index}].Quantity`;
+            qtyInput.id = `Items_${index}__Quantity`;
+        }
+
+        if (qtyInvariant && qtyInvariant.name === "__Invariant") {
+            qtyInvariant.value = `Items[${index}].Quantity`;
+        }
+
+        if (priceInput) {
+            priceInput.name = `Items[${index}].Rate`;
+            priceInput.id = `Items_${index}__Rate`;
+        }
+
+        if (priceInvariant && priceInvariant.name === "__Invariant") {
+            priceInvariant.value = `Items[${index}].Rate`;
+        }
+    });
+}

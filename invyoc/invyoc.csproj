@@ -9,9 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="itext7" Version="9.2.0" />
-    <PackageReference Include="itext7.bouncy-castle-adapter" Version="9.2.0" />
-    <PackageReference Include="itext7.pdfhtml" Version="6.2.0" />
+    <PackageReference Include="DinkToPdf" Version="1.0.8" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.2" />
   </ItemGroup>
 
@@ -20,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\exports\htmls\" />
+    <None Update="External References\libwkhtmltox.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

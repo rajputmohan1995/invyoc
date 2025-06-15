@@ -1,9 +1,17 @@
+using DinkToPdf;
+using DinkToPdf.Contracts;
+using invyoc.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
+builder.Services.AddScoped<PdfService>();
 
 var app = builder.Build();
 

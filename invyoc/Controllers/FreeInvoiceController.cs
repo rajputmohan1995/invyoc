@@ -8,8 +8,13 @@ namespace invyoc.Controllers;
 public class FreeInvoiceController : Controller
 {
     private readonly IWebHostEnvironment _env;
+    private readonly PdfService _pdfService;
 
-    public FreeInvoiceController(IWebHostEnvironment env) => _env = env;
+    public FreeInvoiceController(IWebHostEnvironment env, PdfService pdfService)
+    {
+        _env = env;
+        _pdfService = pdfService;
+    }
 
     public IActionResult Index()
     {
@@ -19,9 +24,11 @@ public class FreeInvoiceController : Controller
     [HttpPost]
     public IActionResult Download(InvoiceViewModel invoiceVM)
     {
-        var result = ExportExtensions.ConvertToPDF(invoiceVM, _env.WebRootPath);
+        var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
+        string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "invoice-template.html");
 
-        var fileBytes = System.IO.File.ReadAllBytes(result.Item1);
-        return File(fileBytes, "application/pdf", result.Item2);
+        var pdfBytes = _pdfService.GeneratePdf(ExportExtensions.GetHtmlContent(invoiceVM, invoiceTemplatePath));
+
+        return File(pdfBytes, "application/pdf", newInvoiceFileName);
     }
 }
