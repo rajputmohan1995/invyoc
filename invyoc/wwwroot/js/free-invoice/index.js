@@ -19,14 +19,6 @@
     $('#grandTotal').text(currency + grandTotal.toFixed(2));
 }
 
-function updateSerialNumber() {
-    var index = 1;
-    $('#invoiceTable tbody tr').each(function () {
-        $(this).find("td:first").text(index);
-        index++;
-    });
-}
-
 $(document).on('input', '.item-qty, .item-price, #taxRate, #discountRate, #currency', updateTotals);
 
 $('#addRow').click(function () {
@@ -49,16 +41,8 @@ $('#addRow').click(function () {
 $(document).on('click', '.remove-row', function () {
     $(this).closest('tr').remove();
     reindexInvoiceRows();
-    updateSerialNumber();
     updateTotals();
 });
-
-
-
-//$('#download').click(function () {
-//    const element = document.getElementById('invoice');
-//    html2pdf().from(element).save('invoice.pdf');
-//});
 
 $('#logoUpload').change(function (e) {
     const reader = new FileReader();
@@ -73,12 +57,10 @@ $(document).ready(function () {
     textarea_auto_grow(document.getElementById('txtPaymentNotes'));
 });
 
-
 function textarea_auto_grow(element) {
     element.style.height = "5px";
     element.style.height = (element.scrollHeight) + "px";
 }
-
 
 function reindexInvoiceRows() {
     const rows = document.querySelectorAll("table#invoiceTable tbody tr");

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace invyoc.Controllers;
 
-[Route("free-invoice")]
+//[Route("free-invoice")]
 public class FreeInvoiceController : Controller
 {
     private readonly IWebHostEnvironment _env;

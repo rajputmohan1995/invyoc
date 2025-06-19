@@ -11,11 +11,6 @@ public static class PrimitiveTypeExtensions
         return Math.Round(value, 2, MidpointRounding.AwayFromZero);
     }
 
-    public static double ToFormat(this double value)
-    {
-        return Math.Round(value, 2, MidpointRounding.AwayFromZero);
-    }
-
     public static List<SelectListItem> ToSelectList<TEnum>() where TEnum : Enum
     {
         return [.. Enum.GetValues(typeof(TEnum))

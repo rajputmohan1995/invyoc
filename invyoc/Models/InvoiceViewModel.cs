@@ -72,8 +72,8 @@ namespace invyoc.Models
                     new() { LineNumber = 3, Description = "Domain Renewal", Quantity = 3, Rate = 1500 },
                 ],
 
-                DiscountPercentage = 5,
-                TaxPercentage = 18,
+                DiscountPercentage = 0,
+                TaxPercentage = 0,
 
                 PaymentNotes = "Thank you for doing business with us.\r\n \r\nPayment terms: to be received within 30 days."
             };
