@@ -24,11 +24,20 @@ public class FreeInvoiceController : Controller
     [HttpPost]
     public IActionResult Download(InvoiceViewModel invoiceVM)
     {
-        var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
-        string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "invoice-template.html");
+        try
+        {
+            var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
+            string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "invoice-template.html");
 
-        var pdfBytes = _pdfService.GeneratePdf(ExportExtensions.GetHtmlContent(invoiceVM, invoiceTemplatePath));
+            var pdfBytes = _pdfService.GeneratePdf(ExportExtensions.GetHtmlContent(invoiceVM, invoiceTemplatePath));
 
-        return File(pdfBytes, "application/pdf", newInvoiceFileName);
+            ViewBag.IsDownloadSuccess = true;
+
+            return File(pdfBytes, "application/pdf", newInvoiceFileName);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }

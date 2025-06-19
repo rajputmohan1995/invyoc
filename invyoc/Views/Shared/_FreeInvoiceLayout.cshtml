@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @* <meta name="viewport" content="width=device-width, initial-scale=1.0"> *@
+    <meta name="viewport" content="width=1024" />
+
     <title>Invyoc - @ViewBag.Title</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
@@ -12,7 +14,16 @@
     <style>
         html, html body {
             font-family: Verdana, Geneva, Tahoma, sans-serif;
+            height: auto;
+            min-height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
+
+        html {
+            height: -webkit-fill-available;
+        }
+
     </style>
 
 </head>
@@ -23,6 +34,17 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    @RenderSection("Scripts", false)
+    @RenderSection("Scripts", false);
+
+    <script>
+        function adjustHeight() {
+          document.body.style.height = 'auto';
+          let contentHeight = document.documentElement.scrollHeight;
+          document.body.style.height = contentHeight + 'px';
+        }
+
+        window.addEventListener('load', adjustHeight);
+        window.addEventListener('resize', adjustHeight);
+    </script>
 </body>
 </html>
