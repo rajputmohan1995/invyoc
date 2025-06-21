@@ -12,6 +12,8 @@ public static class ExportExtensions
         htmlContent = htmlContent.Replace("[{CompanyAddress}]", invoiceVM.Company.Address);
         htmlContent = htmlContent.Replace("[{CompanyEmail}]", invoiceVM.Company.Email);
         htmlContent = htmlContent.Replace("[{CompanyPhone}]", invoiceVM.Company.Phone);
+        htmlContent = htmlContent.Replace("[{GSTNo}]", invoiceVM.Company.GSTNo);
+
 
         htmlContent = htmlContent.Replace("[{BillToName}]", invoiceVM.BillTo.Name);
         htmlContent = htmlContent.Replace("[{BillToAddress}]", invoiceVM.BillTo.Address);

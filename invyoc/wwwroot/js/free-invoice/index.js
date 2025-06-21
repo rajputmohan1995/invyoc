@@ -28,9 +28,9 @@ $('#addRow').click(function () {
 
     const row = `<tr>
         <td><span name="Items[${newRowIndex}].LineNumber">${newRowValue}</span></td>
-        <td><input type="text" required class="form-control form-control-sm item-desc" value="New Item" name="Items[${newRowIndex}].Description" id="Items_${newRowIndex}__Description" /></td>
-        <td><input type="number" required class="form-control form-control-sm item-qty" value="1" name="Items[${newRowIndex}].Quantity" id="Items_${newRowIndex}__Quantity" /></td>
-        <td><input type="number" required class="form-control form-control-sm item-price" value="100" name="Items[${newRowIndex}].Rate" id="Items_${newRowIndex}__Rate" /></td>
+        <td><input type="text" required class="form-control form-control-sm rounded-0 item-desc" value="New Item" name="Items[${newRowIndex}].Description" id="Items_${newRowIndex}__Description" /></td>
+        <td><input type="number" required class="form-control form-control-sm rounded-0 item-qty" value="1" name="Items[${newRowIndex}].Quantity" id="Items_${newRowIndex}__Quantity" /></td>
+        <td><input type="number" required class="form-control form-control-sm rounded-0 item-price" value="100" name="Items[${newRowIndex}].Rate" id="Items_${newRowIndex}__Rate" /></td>
         <td class="item-total">$100.00</td>
         <td><button class="btn btn-danger btn-sm remove-row">×</button></td>
       </tr>`;
@@ -55,6 +55,7 @@ $('#logoUpload').change(function (e) {
 $(document).ready(function () {
     updateTotals();
     textarea_auto_grow(document.getElementById('txtPaymentNotes'));
+    setInvoiceWidthAsPerContent();
 });
 
 function textarea_auto_grow(element) {
@@ -112,3 +113,13 @@ $('#download').click(function () {
         $("div.alert.alert-success").remove()
     }, 6000)
 });
+
+
+function setInvoiceWidthAsPerContent() {
+    var incoiceNumElem = document.getElementById("InvoiceNumber");
+
+    const allowedCharacters = "0123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBNzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ "; // You can add any other character in the same way
+    incoiceNumElem.value = incoiceNumElem.value.split('').filter(char => allowedCharacters.includes(char)).join('');
+
+    incoiceNumElem.style.width = ((incoiceNumElem.value.length + 1) * 12) + 'px';
+}

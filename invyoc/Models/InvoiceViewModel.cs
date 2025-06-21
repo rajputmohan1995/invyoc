@@ -42,6 +42,7 @@ namespace invyoc.Models
                     Address = "22/B Industrial Estate, Whitefield, Bengaluru - 560066",
                     Phone = "+91 98765 43210",
                     Email = "contact@swiftsolutions.in",
+                    GSTNo = "24AAACH7409R2Z6"
                 },
 
                 BillTo = new ClientInfo()
@@ -75,7 +76,7 @@ namespace invyoc.Models
                 DiscountPercentage = 0,
                 TaxPercentage = 0,
 
-                PaymentNotes = "Thank you for doing business with us.\r\n \r\nPayment terms: to be received within 30 days."
+                PaymentNotes = "Thank you for doing business with us.\r\nPayment terms: to be received within 30 days."
             };
 
             return tempObj;

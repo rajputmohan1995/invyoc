@@ -5,33 +5,34 @@
     @* <meta name="viewport" content="width=device-width, initial-scale=1.0"> *@
     <meta name="viewport" content="width=1024" />
 
-     <!-- Primary Meta Tags -->
-    <title>Free Invoice Generator - Create and Download Invoices Instantly</title>
-    <meta name="title" content="Free Invoice Generator - Create and Download Invoices Instantly">
-    <meta name="description" content="Create professional invoices for free with our easy-to-use online invoice generator. Download PDF invoices in seconds with no signup required.">
+    <!-- Primary Meta Tags -->
+    <title>@ViewData["Title"] - Free Invoices</title>
+    <meta name="title" content="Free Invoices - Create and Download Invoices Instantly" />
+    <meta name="description" content="Create professional invoices for free with our easy-to-use online invoice generator. Download PDF invoices in seconds with no signup required." />
 
     <!-- Keywords -->
-    <meta name="keywords" content="free invoice generator, create invoice online, invoice maker, free invoice template, invoice PDF download, no sign up invoice, free downloadable invoice PDF, free invoice maker for freelancers, create invoice without login">
+    <meta name="keywords" content="Free Invoices, free invoice generator, create invoice online, invoice maker, free invoice template, invoice PDF download, no sign up invoice, free downloadable invoice PDF, free invoice maker for freelancers, create invoice without login" />
+    <meta name="robots" content="index, follow" />
 
     <!-- Author -->
-    <meta name="author" content="Mohankumar Rajput">
+    <meta name="author" content="Mohankumar Rajput" />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://freeinvoice.runasp.net/">
-    <meta property="og:title" content="Free Invoice Generator - Create and Download Invoices Instantly">
-    <meta property="og:description" content="Generate unlimited invoices for free. Simple, secure, and no account required. Export to PDF or print instantly.">
-    <meta property="og:image" content="https://freeinvoice.runasp.net/og-image.jpg">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://freeinvoice.runasp.net/" />
+    <meta property="og:title" content="Free Invoices - Create and Download Invoices Instantly" />
+    <meta property="og:description" content="Generate unlimited invoices for free. Simple, secure, and no account required. Export to PDF or print instantly." />
+    <meta property="og:image" content="https://freeinvoice.runasp.net/default-icon.png" />
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://freeinvoice.runasp.net/">
-    <meta name="twitter:title" content="Free Invoice Generator - Create and Download Invoices Instantly">
-    <meta name="twitter:description" content="Create free invoices with no account. Customize, preview, and export to PDF. Ideal for freelancers, small businesses, and startups.">
-    <meta name="twitter:image" content="https://freeinvoice.runasp.net/twitter-card.jpg">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://freeinvoice.runasp.net/" />
+    <meta name="twitter:title" content="Free Invoices - Create and Download Invoices Instantly" />
+    <meta name="twitter:description" content="Create free invoices with no account. Customize, preview, and export to PDF. Ideal for freelancers, small businesses, and startups." />
+    <meta name="twitter:image" content="https://freeinvoice.runasp.net/default-icon.png" />
 
     <!-- Favicon -->
-    <link rel="icon" href="https://rajputmohan1995.github.io/MU-Core-Billing/images/MU%20Logo%20-%20Billing%20App.png" type="image/x-icon" />
+    <link rel="icon" href="/default-icon.png" type="image/x-icon" />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://freeinvoice.runasp.net/" />
@@ -49,23 +50,68 @@
             min-height: 100%;
             overflow-x: hidden;
             overflow-y: auto;
+            /* background: linear-gradient(to left, #ccffcc 0%, #ccffff 100%); */
+            /* background: linear-gradient(to left, #99ccff 0%, #ffcccc 100%); */
         }
 
         html {
             height: -webkit-fill-available;
         }
 
+        .img-icon {
+            height: 40px;
+            width: auto;
+            border-radius: 50%;
+        }
     </style>
 
 </head>
-<body class="pt-4 pb-4">
+<body>
 
-    @RenderBody()
+    <div class="container-fluid">
+
+        <nav class="navbar navbar-expand-lg navbar-light row pt-0">
+            <div class="container pt-0 pb-0 border-bottom">
+
+                <a class="navbar-brand ms-4 me-2" asp-controller="Home" asp-action="Index">
+                    <img class="img-icon" src="~/default-icon.png" alt="site-icon" />
+                </a>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav float-end navbar-link">
+
+                        <li class="nav-item">
+                            <h1 class="fs-5 m-0">
+                                <a class="nav-link active" asp-controller="Home" asp-action="Index">
+                                    Free Invoices - Create and Download Invoices Instantly
+                                </a>
+                            </h1>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        @RenderBody()
+
+        <footer class="text-center my-3">
+            <div class="footer-container">
+                <p class="m-1">&copy; <span id="spanCurrentYear"></span> Free Invoices. All rights reserved.</p>
+                <nav>
+                    <a asp-controller="Home" asp-action="About">About</a> |
+                    <a asp-controller="Home" asp-action="PrivacyPolicy">Privacy Policy</a> |
+                    <a asp-controller="Home" asp-action="Terms">Terms</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    @RenderSection("Scripts", false);
+    @RenderSection("Scripts", false)
 
     <script>
         function adjustHeight() {
@@ -76,21 +122,28 @@
 
         window.addEventListener('load', adjustHeight);
         window.addEventListener('resize', adjustHeight);
+
+        $("#spanCurrentYear").text(new Date().getFullYear());
     </script>
 
     <script type="application/ld+json">
         {
-          "@@context": "https://schema.org",
-          "@@type": "WebApplication",
-          "name": "Free Invoice Generator",
-          "url": "https://freeinvoice.runasp.net/",
-          "applicationCategory": "BusinessApplication",
-          "operatingSystem": "All",
-          "offers": {
-            "@@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
+            "@@context": "https://schema.org",
+            "@@type": "WebSite",
+            "name": "Free Invoices",
+            "url": "https://freeinvoice.runasp.net/",
+            "description": "Generate invoices quickly and for free. Customize, download, and send invoices instantly.",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "All",
+            "offers": {
+                "@@type": "Offer",
+                "price": "0",
+                "priceCurrency": "INR"
+            },
+            "publisher": {
+              "@@type": "Organization",
+              "name": "FreeInvoice"
+            }
         }
     </script>
 

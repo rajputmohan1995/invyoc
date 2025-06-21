@@ -2,7 +2,7 @@
 
 <style>
     span.invoice-total-details {
-        min-width: 100px;
+        min-width: 110px;
         display: inline-block;
     }
 
@@ -12,18 +12,25 @@
     }
 
     div#divInvoiceTotals input {
-        max-width: 100px;
+        max-width: 110px;
     }
 
     div#divInvoiceTotals p {
         margin-bottom: 0;
     }
 
-    textarea.txtPaymentNotes {
+    textarea#txtPaymentNotes {
         resize: none;
         overflow: hidden;
         min-height: 50px;
-        max-height: 100px;
+        max-height: 80px;
+        font-style: italic;
+        font-size: small;
+    }
+
+    .txtPaymentNotes {
+        font-size: small;
+        text-decoration: underline;
     }
 </style>
 
@@ -78,8 +85,8 @@
 
     <div class="col">
         <hr />
-
-        <textarea id="txtPaymentNotes" class="form-control border-0 bg-light" asp-for="PaymentNotes" oninput="textarea_auto_grow(this)"></textarea>
+        <label for="txtPaymentNotes" class="txtPaymentNotes mx-1">Remarks:</label>
+        <textarea id="txtPaymentNotes" class="form-control bg-light" asp-for="PaymentNotes" oninput="textarea_auto_grow(this)"></textarea>
     </div>
 
 </div>

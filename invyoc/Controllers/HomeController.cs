@@ -4,13 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace invyoc.Controllers;
 
-//[Route("free-invoice")]
-public class FreeInvoiceController : Controller
+public class HomeController : Controller
 {
     private readonly IWebHostEnvironment _env;
     private readonly PdfService _pdfService;
 
-    public FreeInvoiceController(IWebHostEnvironment env, PdfService pdfService)
+    public HomeController(IWebHostEnvironment env, PdfService pdfService)
     {
         _env = env;
         _pdfService = pdfService;
@@ -40,4 +39,22 @@ public class FreeInvoiceController : Controller
             throw;
         }
     }
+
+
+    #region Static Pages
+    public IActionResult About()
+    {
+        return View();
+    }
+
+    public IActionResult PrivacyPolicy()
+    {
+        return View();
+    }
+
+    public IActionResult Terms()
+    {
+        return View();
+    }
+    #endregion
 }

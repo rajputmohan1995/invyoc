@@ -5,20 +5,21 @@
 @{
     var currencyValues = PrimitiveTypeExtensions.ToSelectList<CurrencyType>();
 }
+
 <style>
-    .sticky-top {
-        top: 20px;
+    div.sticky-top {
+        box-shadow: 0 0 10px rgba(0, 0, 0, .15);
     }
 </style>
 
-<div class="sticky-top p-3 bg-light rounded shadow-sm">
+<div class="sticky-top py-3 px-1 bg-light rounded">
 
-    <div class="row">
+    <div class="row" style="display:none;">
 
-        <div class="d-flex flex-column gap-2 mb-3">
+        <div class="d-flex flex-column gap-2">
 
             <div class="d-flex align-items-center gap-2 justify-content-end text-end">
-                <label for="currency" class="mb-0 form-label fw-bold">Currency : </label>
+                <label for="currency" class="mb-0 form-label fw-bold">Currency:</label>
                 <select id="currency"
                         asp-for="Currency"
                         asp-items="Model.Currencies"
@@ -32,10 +33,11 @@
         <hr />
     </div>
 
+
     @await Html.PartialAsync("Partials/_InvoiceFooter", Model)
 
     <div class="row">
-        <div class="d-grid">
+        <div class="text-center mx-2">
             <button class="btn btn-primary" id="download" type="submit">
                 <i class="fa-solid fa-download"></i> Download Invoice
             </button>

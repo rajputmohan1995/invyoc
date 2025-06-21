@@ -13,6 +13,9 @@ builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new 
 
 builder.Services.AddScoped<PdfService>();
 
+builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
@@ -34,6 +37,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=FreeInvoice}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
