@@ -15,6 +15,7 @@ public class HomeController : Controller
         _pdfService = pdfService;
     }
 
+    [Route("")]
     public IActionResult Index()
     {
         return View(InvoiceViewModel.GetTempData());
@@ -42,16 +43,20 @@ public class HomeController : Controller
 
 
     #region Static Pages
+
+    [Route("about")]
     public IActionResult About()
     {
         return View();
     }
 
+    [Route("privacy-policy")]
     public IActionResult PrivacyPolicy()
     {
         return View();
     }
 
+    [Route("terms")]
     public IActionResult Terms()
     {
         return View();

@@ -104,7 +104,6 @@ function reindexInvoiceRows() {
 $('#download').click(function () {
     setTimeout(function () {
         $("form").prepend('<div class="alert alert-success text-center p-1" role="alert">' +
-            '<i class="fa-solid fa-circle-check m-2"></i>' +
             'Invoice Downloaded Successfully.' +
             '</div>');
     }, 1000);

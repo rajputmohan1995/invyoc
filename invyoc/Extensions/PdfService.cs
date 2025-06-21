@@ -18,12 +18,19 @@ public class PdfService
         {
             PaperSize = PaperKind.A4,
             Orientation = Orientation.Portrait,
+            Margins = new MarginSettings
+            {
+                Top = 15,
+                Bottom = 15,
+                Left = 5,
+                Right = 5
+            }
         };
 
         var objectSettings = new ObjectSettings
         {
             PagesCount = true,
-            HtmlContent = htmlContent,
+            HtmlContent = htmlContent
         };
 
         var pdf = new HtmlToPdfDocument()
