@@ -47,7 +47,7 @@ $(document).on('click', '.remove-row', function () {
 $('#logoUpload').change(function (e) {
     const reader = new FileReader();
     reader.onload = function (event) {
-        $('#logoContainer').html(`<img src="${event.target.result}" class="logo-preview" />`);
+        $('#logoContainer').html(`<img loading="lazy" src="${event.target.result}" class="logo-preview" />`);
     };
     reader.readAsDataURL(e.target.files[0]);
 });

@@ -1,6 +1,7 @@
 using DinkToPdf;
 using DinkToPdf.Contracts;
 using invyoc.Extensions;
+using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,34 @@ builder.Services.AddScoped<PdfService>();
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true; // compress even on HTTPS
+    options.Providers.Add<BrotliCompressionProvider>();
+    options.Providers.Add<GzipCompressionProvider>();
+
+    // Optional: only compress certain MIME types
+    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+    [
+        "application/json",
+        "text/plain",
+        "text/css",
+        "application/javascript",
+        "text/html",
+        "image/svg+xml"
+    ]);
+});
+
+// Optional: Customize compression level
+builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+{
+    options.Level = System.IO.Compression.CompressionLevel.Fastest;
+});
+
+builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+{
+    options.Level = System.IO.Compression.CompressionLevel.Fastest;
+});
 
 var app = builder.Build();
 
@@ -29,7 +58,19 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+
+app.UseResponseCompression();
+
+
+//app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        const int durationInSeconds = 60 * 60 * 24 * 30;
+        ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={durationInSeconds}");
+    }
+});
 
 app.UseRouting();
 
