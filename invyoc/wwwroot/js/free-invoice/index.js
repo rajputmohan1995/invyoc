@@ -5,7 +5,7 @@
         const qty = parseFloat($(this).find('.item-qty').val()) || 0;
         const price = parseFloat($(this).find('.item-price').val()) || 0;
         const total = qty * price;
-        $(this).find('.item-total').text(currency + total.toFixed(2));
+        $(this).find('.item-total').text(currency + toINRCurrency(total));
         subtotal += total;
     });
     const discountRate = parseFloat($('#discountRate').val()) || 0;
@@ -13,10 +13,10 @@
     const discount = subtotal * (discountRate / 100);
     const tax = (subtotal - discount) * (taxRate / 100);
     const grandTotal = subtotal - discount + tax;
-    $('#subtotal').text(currency + subtotal.toFixed(2));
-    $('#discountAmount').text(currency + discount.toFixed(2));
-    $('#taxAmount').text(currency + tax.toFixed(2));
-    $('#grandTotal').text(currency + grandTotal.toFixed(2));
+    $('#subtotal').text(currency + toINRCurrency(subtotal));
+    $('#discountAmount').text(currency + toINRCurrency(discount));
+    $('#taxAmount').text(currency + toINRCurrency(tax));
+    $('#grandTotal').text(currency + toINRCurrency(grandTotal));
 }
 
 $(document).on('input', '.item-qty, .item-price, #taxRate, #discountRate, #currency', updateTotals);
@@ -121,4 +121,12 @@ function setInvoiceWidthAsPerContent() {
     incoiceNumElem.value = incoiceNumElem.value.split('').filter(char => allowedCharacters.includes(char)).join('');
 
     incoiceNumElem.style.width = ((incoiceNumElem.value.length + 1) * 12) + 'px';
+}
+
+
+function toINRCurrency(val) {
+    return Number(val).toLocaleString('en-IN', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
 }

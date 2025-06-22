@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace invyoc.Extensions;
@@ -58,5 +59,10 @@ public static class PrimitiveTypeExtensions
     public static string ToDateStr(DateTime dateTime)
     {
         return dateTime.ToString("dd-MMM-yyyy");
+    }
+
+    public static string ToINRCurrency(this decimal value)
+    {
+        return string.Format(new CultureInfo("en-IN", false), "{0:N2}", Convert.ToDouble(value));
     }
 }

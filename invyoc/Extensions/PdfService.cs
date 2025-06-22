@@ -20,10 +20,10 @@ public class PdfService
             Orientation = Orientation.Portrait,
             Margins = new MarginSettings
             {
-                Top = 15,
-                Bottom = 15,
-                Left = 5,
-                Right = 5
+                Top = 10,
+                Bottom = 10,
+                Left = 0,
+                Right = 0
             }
         };
 

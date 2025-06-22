@@ -8,6 +8,7 @@
             font-family: Verdana, Geneva, Tahoma, sans-serif, Arial, sans-serif;
             margin: 40px;
             color: #333;
+            line-height: 1.5rem;
         }
 
         header {
@@ -21,6 +22,7 @@
 
         h1 {
             margin: 0;
+            margin-bottom: 10px;
         }
 
         .company-info {
@@ -102,7 +104,7 @@
                 }
 
         .footer {
-            margin-top: 130px;
+            margin-top: 150px;
             font-size: 13px;
             font-style: italic;
             clear: both;
@@ -124,6 +126,14 @@
 
         .text-left {
             text-align: left;
+        }
+
+        .pr-20 {
+            padding-right: 20px;
+        }
+
+        table tbody tr td, table tbody tr th {
+            line-height: 1.25rem;
         }
     </style>
 </head>
@@ -151,7 +161,7 @@
 
     <table width="100%" style="margin-bottom: 20px; font-size: 14px">
         <tr valign="top">
-            <td width="33%">
+            <td width="33%" class="pr-20">
                 <strong>Bill To</strong>
                 <div style="margin-top:2px;">
                     [{BillToName}]<br />
@@ -159,7 +169,7 @@
                 </div>
             </td>
 
-            <td width="33%">
+            <td width="33%" class="pr-20">
                 <strong>Ship To</strong>
                 <div style="margin-top:2px;">
                     [{ShipToName}]<br />
@@ -200,8 +210,8 @@
                 <th width="7%">#</th>
                 <th class="text-left">Item Description</th>
                 <th width="10%">Quantity</th>
-                <th width="12%">Rate</th>
-                <th width="12%">Amount</th>
+                <th width="15%">Rate</th>
+                <th width="18%">Amount</th>
             </tr>
         </thead>
         <tbody>
