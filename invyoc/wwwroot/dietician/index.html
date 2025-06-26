@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Diet & Workout Plan</title>
+    <link href="index.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>My Diet & Workout Plan</h1>
+
+      <hr />
+
+      <div class="section">
+        <div class="row">
+          <div class="col-6">
+            <label for="day">Select Day:</label>
+            <select id="day" onchange="updatePlan()"></select>
+          </div>
+
+          <div class="col-6 mt-05">
+            <label for="time">Select Time of Day:</label>
+            <select
+              id="time"
+              onchange="updatePlan()"
+              style="margin-left: 5px"
+            ></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-container">
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab(0)">🍳Meals</div>
+          <div class="tab" onclick="switchTab(1)">💪Workouts</div>
+          <div class="tab" onclick="switchTab(2)">🙎🏻‍♂️Profile</div>
+          <div class="tab" onclick="switchTab(3)">📸Photos</div>
+        </div>
+      </div>
+
+      <div class="tab-content active">
+        <div id="meal" class="content-box"></div>
+      </div>
+
+      <div class="tab-content">
+        <div id="workoutVideos" class="content-box workout-video"></div>
+
+        <button onclick="clearTodaySavedWorkoutVideo()">
+          Clear Today's Workout Recommendation
+        </button>
+      </div>
+
+      <div class="tab-content">
+        <div class="row">
+          <div class="col-7">
+            <table
+              border="1"
+              cellpadding="8"
+              cellspacing="0"
+              style="border-collapse: collapse; width: 100%"
+            >
+              <tbody>
+                <tr>
+                  <td><strong>Age</strong></td>
+                  <td>31</td>
+                </tr>
+                <tr>
+                  <td><strong>Gender</strong></td>
+                  <td>Male</td>
+                </tr>
+                <tr>
+                  <td><strong>Height</strong></td>
+                  <td>5'9"</td>
+                </tr>
+                <tr>
+                  <td><strong>Weight</strong></td>
+                  <td>95 kg</td>
+                </tr>
+                <tr>
+                  <td><strong>Lifestyle</strong></td>
+                  <td>Sedentary</td>
+                </tr>
+                <tr>
+                  <td><strong>Goal</strong></td>
+                  <td>Fat loss &amp; muscle gain</td>
+                </tr>
+                <tr>
+                  <td><strong>Meals per day</strong></td>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <td><strong>Workout</strong></td>
+                  <td>Home-based, 5 days/week, 20–30 mins/day</td>
+                </tr>
+                <tr>
+                  <td><strong>Fitness Level</strong></td>
+                  <td>Beginner</td>
+                </tr>
+                <tr>
+                  <td><strong>Back Issue</strong></td>
+                  <td>Minor</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-5">
+            <h3 class="mt-1">Tips:</h3>
+            <hr />
+            <ul>
+              <li>Stay hydrated – aim for 3L water/day</li>
+              <li>Prioritize form over reps</li>
+              <li>Stretch before and after every workout</li>
+              <li>Follow a high-protein, moderate-carb diet</li>
+              <li>Weekly progress photos help more than just weighing</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content">
+        <h2>Photo of the Day</h2>
+        <input
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onchange="savePhoto(this)"
+        />
+        <p id="photoStatus"></p>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
