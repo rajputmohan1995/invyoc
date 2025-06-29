@@ -76,35 +76,15 @@
             table.invoice-items th,
             table.invoice-items td {
                 border: 1px solid #ccc;
-                padding: 3px 8px;
+                padding: 5px 8px;
             }
 
             table.invoice-items th {
                 background-color: #f0f0f0;
             }
 
-        .summary {
-            margin-top: 10px;
-            width: auto;
-            float: right;
-            font-size: 14px;
-            border-collapse: collapse;
-        }
-
-            .summary td,
-            .summary th {
-                border: 1px solid #ccc;
-                padding: 3px 8px;
-                text-align: center;
-                min-width: 125px;
-            }
-
-                .summary td:first-child {
-                    text-align: right;
-                }
 
         .footer {
-            margin-top: 100px;
             font-size: 13px;
             font-style: italic;
             clear: both;
@@ -124,16 +104,32 @@
                 float: right;
             }
 
-        .text-left {
-            text-align: left;
-        }
-
         .pr-20 {
             padding-right: 20px;
         }
 
         table tbody tr td, table tbody tr th {
             line-height: 1.25rem;
+        }
+
+        .border-0 {
+            border: 0 !important;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .m-0 {
+            margin: 0;
+        }
+
+        .p-0 {
+            padding: 0;
         }
     </style>
 </head>
@@ -150,7 +146,7 @@
                 <div style="margin-top: 5px; font-size: 13px">
                     <strong style="text-transform: uppercase">[{GSTNo}]</strong><br />
                     [{CompanyAddress}]<br />
-                    [{CompanyPhone}] | <span style="text-transform: lowercase">[{CompanyEmail}]</span> 
+                    [{CompanyPhone}] | <span style="text-transform: lowercase">[{CompanyEmail}]</span>
                 </div>
             </td>
             <td width="30%" style="font-size: 16px; text-align: right">
@@ -161,7 +157,7 @@
 
     <table width="100%" style="margin-bottom: 20px; font-size: 14px">
         <tr valign="top">
-            <td width="33%" class="pr-20">
+            <td width="35%" class="pr-20">
                 <strong>Bill To</strong>
                 <div style="margin-top:2px;">
                     [{BillToName}]<br />
@@ -169,7 +165,7 @@
                 </div>
             </td>
 
-            <td width="33%" class="pr-20">
+            <td width="35%" class="pr-20">
                 <strong>Ship To</strong>
                 <div style="margin-top:2px;">
                     [{ShipToName}]<br />
@@ -177,7 +173,7 @@
                 </div>
             </td>
 
-            <td width="33%" style="min-width: 200px; text-align: right">
+            <td width="30%" style="min-width: 200px; text-align: right">
                 <table class="invoiceInfo">
                     <tr>
                         <td><strong>Date</strong></td>
@@ -220,7 +216,7 @@
     </table>
 
 
-    <table class="summary">
+    <!--<table class="summary">
         <tr>
             <td>Subtotal</td>
             <td>[{SubTotal}]</td>
@@ -237,7 +233,7 @@
             <td><strong>Total</strong></td>
             <td><strong>[{FinalAmount}]</strong></td>
         </tr>
-    </table>
+    </table>-->
 
     <br />
     <div class="footer">[{PaymentNotes}]</div>

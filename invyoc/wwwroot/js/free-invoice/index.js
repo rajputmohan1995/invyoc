@@ -5,7 +5,7 @@
         const qty = parseFloat($(this).find('.item-qty').val()) || 0;
         const price = parseFloat($(this).find('.item-price').val()) || 0;
         const total = qty * price;
-        $(this).find('.item-total').text(currency + toINRCurrency(total));
+        $(this).find('.item-total').text(toINRCurrency(total));
         subtotal += total;
     });
     const discountRate = parseFloat($('#discountRate').val()) || 0;
@@ -28,9 +28,9 @@ $('#addRow').click(function () {
 
     const row = `<tr>
         <td><span name="Items[${newRowIndex}].LineNumber">${newRowValue}</span></td>
-        <td><input type="text" required class="form-control form-control-sm rounded-0 item-desc" value="New Item" name="Items[${newRowIndex}].Description" id="Items_${newRowIndex}__Description" /></td>
-        <td><input type="number" required class="form-control form-control-sm rounded-0 item-qty" value="1" name="Items[${newRowIndex}].Quantity" id="Items_${newRowIndex}__Quantity" /></td>
-        <td><input type="number" required class="form-control form-control-sm rounded-0 item-price" value="100" name="Items[${newRowIndex}].Rate" id="Items_${newRowIndex}__Rate" /></td>
+        <td><input type="text" class="form-control form-control-sm rounded-0 item-desc" value="New Item" name="Items[${newRowIndex}].Description" id="Items_${newRowIndex}__Description" /></td>
+        <td><input type="number" class="form-control form-control-sm rounded-0 item-qty" value="1" name="Items[${newRowIndex}].Quantity" id="Items_${newRowIndex}__Quantity" /></td>
+        <td><input type="text" class="form-control form-control-sm rounded-0 item-price" value="100" name="Items[${newRowIndex}].Rate" id="Items_${newRowIndex}__Rate" onkeypress="return isNumberKey(event,this.id)" /></td>
         <td class="item-total">$100.00</td>
         <td><button class="btn btn-danger btn-sm remove-row">×</button></td>
       </tr>`;
@@ -121,12 +121,4 @@ function setInvoiceWidthAsPerContent() {
     incoiceNumElem.value = incoiceNumElem.value.split('').filter(char => allowedCharacters.includes(char)).join('');
 
     incoiceNumElem.style.width = ((incoiceNumElem.value.length + 1) * 12) + 'px';
-}
-
-
-function toINRCurrency(val) {
-    return Number(val).toLocaleString('en-IN', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
 }

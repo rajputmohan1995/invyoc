@@ -31,13 +31,13 @@
                 <tr>
                     <td><span>@Model.Items[i].LineNumber</span></td>
                     <td>
-                        <input type="text" required class="form-control form-control-sm rounded-0 item-desc" asp-for="@Model.Items[i].Description" />
+                        <input type="text" class="form-control form-control-sm rounded-0 item-desc" asp-for="@Model.Items[i].Description" />
                     </td>
                     <td>
-                        <input type="number" required class="form-control form-control-sm rounded-0 item-qty" asp-for="@Model.Items[i].Quantity" />
+                        <input type="number" class="form-control form-control-sm rounded-0 item-qty" asp-for="@Model.Items[i].Quantity" />
                     </td>
                     <td>
-                        <input type="number" required class="form-control form-control-sm rounded-0 item-price" asp-for="@Model.Items[i].Rate" />
+                        <input type="text" class="form-control form-control-sm rounded-0 item-price" asp-for="@Model.Items[i].Rate" onkeypress="return isNumberKey(event,this.id)" />
                     </td>
                     <td class="item-total">@Model.Items[i].Amount</td>
                     <td>
