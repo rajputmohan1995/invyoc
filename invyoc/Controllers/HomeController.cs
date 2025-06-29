@@ -40,6 +40,8 @@ public class HomeController : Controller
             var pdfBytes = _pdfService.GeneratePdf(ExportExtensions.GetHtmlContent(invoiceVM, invoiceTemplatePath));
 
             ViewBag.IsDownloadSuccess = true;
+            var invoiceLineNum = 0;
+            invoiceVM.Items.ForEach(i => i.LineNumber = ++invoiceLineNum);
             Response.Cookies.Append(_lastSavedInvoiceCookieName, JsonSerializer.Serialize(invoiceVM), new() { Expires = DateTime.Now.AddDays(60) });
 
             return File(pdfBytes, "application/pdf", newInvoiceFileName);
