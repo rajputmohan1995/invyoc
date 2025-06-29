@@ -67,7 +67,7 @@ app.UseStaticFiles(new StaticFileOptions
 {
     OnPrepareResponse = ctx =>
     {
-        const int durationInSeconds = 60 * 60 * 24 * 30;
+        const int durationInSeconds = 60 * 60 * 24 * 2;
         ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={durationInSeconds}");
     }
 });

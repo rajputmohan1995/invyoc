@@ -1,6 +1,7 @@
 ﻿using invyoc.Extensions;
 using invyoc.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace invyoc.Controllers;
 
@@ -8,6 +9,7 @@ public class HomeController : Controller
 {
     private readonly IWebHostEnvironment _env;
     private readonly PdfService _pdfService;
+    private const string _lastSavedInvoiceCookieName = "FreeInvoiceLastSavedInvoice";
 
     public HomeController(IWebHostEnvironment env, PdfService pdfService)
     {
@@ -18,7 +20,13 @@ public class HomeController : Controller
     [Route("")]
     public IActionResult Index()
     {
-        return View(InvoiceViewModel.GetTempData());
+        var invoiceVM = InvoiceViewModel.GetTempData();
+        var lastSavedInvoice = Request.Cookies[_lastSavedInvoiceCookieName];
+
+        if (!string.IsNullOrWhiteSpace(lastSavedInvoice))
+            invoiceVM = JsonSerializer.Deserialize<InvoiceViewModel>(lastSavedInvoice);
+
+        return View(invoiceVM);
     }
 
     [HttpPost]
@@ -32,6 +40,7 @@ public class HomeController : Controller
             var pdfBytes = _pdfService.GeneratePdf(ExportExtensions.GetHtmlContent(invoiceVM, invoiceTemplatePath));
 
             ViewBag.IsDownloadSuccess = true;
+            Response.Cookies.Append(_lastSavedInvoiceCookieName, JsonSerializer.Serialize(invoiceVM), new() { Expires = DateTime.Now.AddDays(60) });
 
             return File(pdfBytes, "application/pdf", newInvoiceFileName);
         }

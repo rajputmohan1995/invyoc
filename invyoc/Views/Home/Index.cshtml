@@ -4,7 +4,7 @@
     Layout = "_FreeInvoiceLayout";
 }
 
-@using (Html.BeginForm("Download", "Home", FormMethod.Post))
+@using (Html.BeginForm("Download", "Home", FormMethod.Post, new { @id = "frmInvoice" }))
 {
     <div class="row mx-1 my-2">
 

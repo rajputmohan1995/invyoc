@@ -42,7 +42,7 @@ namespace invyoc.Models
                     Address = "22/B Industrial Estate, Whitefield, Bengaluru - 560066",
                     Phone = "+91 98765 43210",
                     Email = "contact@swiftsolutions.in",
-                    GSTNo = "24AAACH7409R2Z6"
+                    GSTNo = DateTime.UtcNow.ToString("yy") + "ABCDE1234F5G6"
                 },
 
                 BillTo = new ClientInfo()
