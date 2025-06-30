@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Invoice [{InvoiceNumber}]</title>
+    <style>
+        body {
+            font-family: Verdana, Geneva, Tahoma, sans-serif, Arial, sans-serif;
+            margin: 40px;
+            color: #333;
+            line-height: 1.5rem;
+        }
+
+        header {
+            border-bottom: 1px solid #000;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        h1 {
+            margin: 0;
+            margin-bottom: 10px;
+        }
+
+        .company-info {
+            font-size: 14px;
+        }
+
+        .contact {
+            margin-top: 5px;
+            font-size: 13px;
+        }
+
+        .invoice-title {
+            font-size: 20px;
+            text-align: right;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .three-columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .info-block {
+            width: 33%;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .invoice-info {
+            text-align: right;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        table.invoice-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 14px;
+            clear: both;
+            text-align: center;
+        }
+
+            table.invoice-items th,
+            table.invoice-items td {
+                border: 1px solid #ccc;
+                padding: 5px 8px;
+            }
+
+            table.invoice-items th {
+                background-color: #f0f0f0;
+            }
+
+
+        .footer {
+            font-size: 13px;
+            font-style: italic;
+            clear: both;
+            text-align: center;
+        }
+
+        .invoice-info {
+            text-align: right;
+            min-width: 200px;
+        }
+
+        table.invoiceInfo {
+            float: right;
+        }
+
+            table.invoiceInfo tr td strong {
+                float: right;
+            }
+
+        .pr-20 {
+            padding-right: 20px;
+        }
+
+        table tbody tr td, table tbody tr th {
+            line-height: 1.25rem;
+        }
+
+        .border-0 {
+            border: 0 !important;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .m-0 {
+            margin: 0;
+        }
+
+        .p-0 {
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <table width="100%"
+           style="border-bottom: 2px solid #000;
+                  margin-bottom: 10px;
+                  padding-bottom: 10px;
+                  font-size: 14px;">
+        <tr valign="top">
+            <td width="70%">
+                <h1>[{CompanyName}]</h1>
+
+                <div style="margin-top: 5px; font-size: 13px">
+                    <strong style="text-transform: uppercase">[{GSTNo}]</strong><br />
+                    [{CompanyAddress}]<br />
+                    [{CompanyPhone}] | <span style="text-transform: lowercase">[{CompanyEmail}]</span>
+                </div>
+            </td>
+            <td width="30%" style="font-size: 16px; text-align: right">
+                Invoice# [{InvoiceNumber}]
+            </td>
+        </tr>
+    </table>
+
+    <table width="100%" style="margin-bottom: 20px; font-size: 14px">
+        <tr valign="top">
+            <td width="35%" class="pr-20">
+                <strong>Bill To</strong>
+                <div style="margin-top:2px;">
+                    [{BillToName}]<br />
+                    <span style="word-wrap: break-word">[{BillToAddress}]</span>
+                </div>
+            </td>
+
+            <td width="35%" class="pr-20">
+                <strong>Ship To</strong>
+                <div style="margin-top:2px;">
+                    [{ShipToName}]<br />
+                    <span style="word-wrap: break-word">[{ShipToAddress}]</span>
+                </div>
+            </td>
+
+            <td width="30%" style="min-width: 200px; text-align: right">
+                <table class="invoiceInfo">
+                    <tr>
+                        <td><strong>Date</strong></td>
+                        <td>:</td>
+                        <td><span>[{InvoiceDate}]</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Due Date</strong></td>
+                        <td>:</td>
+                        <td><span>[{DueDate}]</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Payment Terms</strong></td>
+                        <td>:</td>
+                        <td><span>[{PaymentTerms}]</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>PO Number</strong></td>
+                        <td>:</td>
+                        <td><span>[{PONumber}]</span></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <table class="invoice-items">
+        <thead>
+            <tr>
+                <th width="7%">#</th>
+                <th class="text-left">Item Description</th>
+                <th width="10%">Quantity</th>
+                <th width="15%">Rate</th>
+                <th width="18%">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            [{InvoiceItems}]
+        </tbody>
+    </table>
+
+
+    <!--<table class="summary">
+        <tr>
+            <td>Subtotal</td>
+            <td>[{SubTotal}]</td>
+        </tr>
+        <tr>
+            <td>Discount ([{DiscountPercentage}])</td>
+            <td>[{DiscountAmount}]</td>
+        </tr>
+        <tr>
+            <td>Tax ([{TaxPercentage}])</td>
+            <td>[{TaxAmount}]</td>
+        </tr>
+        <tr>
+            <td><strong>Total</strong></td>
+            <td><strong>[{FinalAmount}]</strong></td>
+        </tr>
+    </table>-->
+
+    <br />
+    <div class="footer">[{PaymentNotes}]</div>
+</body>
+</html>
