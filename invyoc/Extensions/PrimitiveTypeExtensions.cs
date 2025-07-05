@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using invyoc.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
 using System.Globalization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace invyoc.Extensions;
@@ -64,5 +67,47 @@ public static class PrimitiveTypeExtensions
     public static string ToINRCurrency(this decimal value)
     {
         return string.Format(new CultureInfo("en-IN", false), "{0:N2}", Convert.ToDouble(value));
+    }
+
+    public static void AppendJsonObjectToFile(string filePath, SavedInvoiceData newObject)
+    {
+        List<SavedInvoiceData> dataList;
+
+        if (File.Exists(filePath))
+        {
+            string jsonContent = File.ReadAllText(filePath);
+
+            if (!string.IsNullOrWhiteSpace(jsonContent))
+            {
+                try
+                {
+                    dataList = JsonSerializer.Deserialize<List<SavedInvoiceData>>(jsonContent);
+                }
+                catch
+                {
+                    // fallback in case of invalid format
+                    dataList = [];
+                }
+            }
+            else dataList = [];
+        }
+        else dataList = [];
+
+
+        newObject.Id = dataList.Count + 1;
+        newObject.Timestamp = DateTime.UtcNow.ToString("dd-MMM-yyyy hh:mm:ss tt");
+
+
+        // Add new data at the top
+        dataList.Insert(0, newObject);
+
+        JsonSerializerOptions options = new()
+        {
+            WriteIndented = true,
+            Converters = { new JsonStringEnumConverter() }
+        };
+
+        string updatedJson = JsonSerializer.Serialize(dataList, options);
+        File.WriteAllText(filePath, updatedJson);
     }
 }

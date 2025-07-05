@@ -34,6 +34,9 @@ public class HomeController : Controller
     {
         try
         {
+            string savedInvoicePath = Path.Combine(_env.WebRootPath, $"invoiceJson\\invoices_{DateTime.UtcNow:MMM-yyyy}.json");
+            PrimitiveTypeExtensions.AppendJsonObjectToFile(savedInvoicePath, new SavedInvoiceData() { InvoiceVM = invoiceVM });
+
             var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
             string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "invoice-template.html");
 

@@ -1,7 +1,7 @@
 ﻿@model InvoiceViewModel
 
 <div class="row">
-    <div class="col-9 px-0">
+    <div class="col-9 px-0" id="divInvoiceFrom">
         <h2>
             <input asp-for="Company.Name"
                    type="text"
@@ -44,7 +44,7 @@
     </div>
 
     <div class="col-3 px-0">
-        <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+        <div class="d-flex align-items-center gap-2 justify-content-end text-end" id="divInvoiceNum">
             <h5>
                 Invoice#
             </h5>
