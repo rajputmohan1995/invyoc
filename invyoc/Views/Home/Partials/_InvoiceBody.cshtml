@@ -12,14 +12,23 @@
         <input type="text"
                class="form-control fw-bold mb-1"
                asp-for="BillTo.Name" />
-        <textarea class="form-control" rows="3" asp-for="BillTo.Address"></textarea>
+        <textarea class="form-control mb-1" rows="3" asp-for="BillTo.Address"></textarea>
+        <input asp-for="BillTo.ContactNum"
+               type="tel"
+               class="form-control form-control-sm mb-1"
+               placeholder="Bill To Contact" />
+
     </div>
     <div class="col-sm-4 ps-0">
         <h5>Ship To <small>(optional)</small></h5>
         <input type="text"
                class="form-control fw-bold mb-1"
                asp-for="ShipTo.Name" />
-        <textarea class="form-control" rows="3" asp-for="ShipTo.Address"></textarea>
+        <textarea class="form-control mb-1" rows="3" asp-for="ShipTo.Address"></textarea>
+        <input asp-for="ShipTo.ContactNum"
+               type="tel"
+               class="form-control form-control-sm mb-1"
+               placeholder="Ship To Contact" />
     </div>
 
     <div class="col-sm-4 px-0">

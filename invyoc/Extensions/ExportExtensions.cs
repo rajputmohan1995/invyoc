@@ -17,9 +17,34 @@ public static class ExportExtensions
 
         htmlContent = htmlContent.Replace("[{BillToName}]", invoiceVM.BillTo.Name);
         htmlContent = htmlContent.Replace("[{BillToAddress}]", invoiceVM.BillTo.Address);
+        htmlContent = htmlContent.Replace("[{BillToContact}]", invoiceVM.BillTo.ContactNum);
 
-        htmlContent = htmlContent.Replace("[{ShipToName}]", invoiceVM.ShipTo.Name);
-        htmlContent = htmlContent.Replace("[{ShipToAddress}]", invoiceVM.ShipTo.Address);
+
+        var shipToContent = "";
+        var billToContentWidth = "70";
+
+        if (!string.IsNullOrWhiteSpace(invoiceVM.ShipTo.Name) ||
+            !string.IsNullOrWhiteSpace(invoiceVM.ShipTo.Address) ||
+            !string.IsNullOrWhiteSpace(invoiceVM.ShipTo.ContactNum))
+        {
+            shipToContent = @$"<td width='35%' class='pr-20' >
+                <strong>Ship To</strong>
+                <div style='margin-top:2px;'>
+                    {invoiceVM.ShipTo.Name}<br />
+                    <span style='word-wrap: break-word'>{invoiceVM.ShipTo.Address}</span>
+                    <br />
+                    <span style='word-wrap: break-word'>{invoiceVM.ShipTo.ContactNum}</span>
+                </div>
+            </td>";
+            billToContentWidth = "35";
+        }
+
+        htmlContent = htmlContent.Replace("[{ShipToContent}]", shipToContent);
+        htmlContent = htmlContent.Replace("[{BillToContentWidth}]", billToContentWidth);
+
+        //htmlContent = htmlContent.Replace("[{ShipToName}]", invoiceVM.ShipTo.Name);
+        //htmlContent = htmlContent.Replace("[{ShipToAddress}]", invoiceVM.ShipTo.Address);
+        //htmlContent = htmlContent.Replace("[{ShipToContact}]", invoiceVM.ShipTo.ContactNum);
 
         htmlContent = htmlContent.Replace("[{InvoiceNumber}]", invoiceVM.InvoiceNumber);
         htmlContent = htmlContent.Replace("[{InvoiceDate}]", PrimitiveTypeExtensions.ToDateStr(invoiceVM.InvoiceDate));

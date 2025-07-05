@@ -19,7 +19,7 @@ public static class PrimitiveTypeExtensions
             .Select(e => new SelectListItem
             {
                 Value = GetEnumDescription(e),
-                Text = GetEnumDescription(e) + " " + e.ToString()
+                Text = e.ToString() + $" ({GetEnumDescription(e)})"
             })];
     }
 

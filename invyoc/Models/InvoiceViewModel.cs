@@ -38,28 +38,30 @@ namespace invyoc.Models
             {
                 Company = new CompanyInfo()
                 {
-                    Name = "Swift Solutions Pvt. Ltd.",
-                    Address = "22/B Industrial Estate, Whitefield, Bengaluru - 560066",
+                    Name = "Invoice From",
+                    Address = "Invoice from company full address",
                     Phone = "+91 98765 43210",
-                    Email = "contact@swiftsolutions.in",
-                    GSTNo = DateTime.UtcNow.ToString("yy") + "ABCDE1234F5G6"
+                    Email = "contact@billfrom.com",
+                    GSTNo = "Tax Identification Number (TIN)"
                 },
 
                 BillTo = new ClientInfo()
                 {
-                    Name = "Arjun Verma",
-                    Address = "502, Green Heights Apartments, Mumbai - 400076",
+                    Name = "Bill To Company Name",
+                    Address = "Bill To full address + other info",
+                    ContactNum = "+91 2222 1111"
                 },
 
                 ShipTo = new ClientInfo()
                 {
-                    Name = "Arjun Verma",
-                    Address = "502, Green Heights Apartments, Mumbai - 400076",
+                    Name = "Ship To Company Name",
+                    Address = "Ship To full address + other info",
+                    ContactNum = "+91 2222 1111"
                 },
 
                 InvoiceNumber = "0001",
                 InvoiceDate = DateTime.Now,
-                PaymentTerms = "Net 30",
+                PaymentTerms = "Net 30 Days",
                 DueDate = DateTime.Now.AddDays(30),
                 PONumber = $"PO-{(new Random()).Next(111, 999)}",
 
@@ -68,9 +70,7 @@ namespace invyoc.Models
 
                 Items =
                 [
-                    new() { LineNumber = 1, Description = "Website Design", Quantity = 1, Rate = 25000 },
-                    new() { LineNumber = 2, Description = "Monthly Hosting", Quantity = 12, Rate = 500 },
-                    new() { LineNumber = 3, Description = "Domain Renewal", Quantity = 3, Rate = 1500 },
+                    new() { LineNumber = 1, Description = "Item 1", Quantity = 1, Rate = 100 },
                 ],
 
                 DiscountPercentage = 0,

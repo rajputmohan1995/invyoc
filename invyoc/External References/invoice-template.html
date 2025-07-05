@@ -157,21 +157,28 @@
 
     <table width="100%" style="margin-bottom: 20px; font-size: 14px">
         <tr valign="top">
-            <td width="35%" class="pr-20">
+            <td width="[{BillToContentWidth}]%" class="pr-20">
                 <strong>Bill To</strong>
                 <div style="margin-top:2px;">
                     [{BillToName}]<br />
                     <span style="word-wrap: break-word">[{BillToAddress}]</span>
+                    <br />
+                    <span style="word-wrap: break-word">[{BillToContact}]</span>
                 </div>
             </td>
 
-            <td width="35%" class="pr-20">
+
+            [{ShipToContent}]
+
+            <!--<td width="35%" class="pr-20">
                 <strong>Ship To</strong>
                 <div style="margin-top:2px;">
                     [{ShipToName}]<br />
                     <span style="word-wrap: break-word">[{ShipToAddress}]</span>
+                    <br />
+                    <span style="word-wrap: break-word">[{ShipToContact}]</span>
                 </div>
-            </td>
+            </td>-->
 
             <td width="30%" style="min-width: 200px; text-align: right">
                 <table class="invoiceInfo">

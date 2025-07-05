@@ -3,6 +3,7 @@
     public class ClientInfo
     {
         public string Name { get; set; }
+        public string ContactNum { get; set; }
         public string Address { get; set; }
     }
 }
