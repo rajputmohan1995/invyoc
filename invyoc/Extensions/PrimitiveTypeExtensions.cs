@@ -64,7 +64,7 @@ public static class PrimitiveTypeExtensions
         return dateTime.ToString("dd-MMM-yyyy");
     }
 
-    public static string ToINRCurrency(this decimal value)
+    public static string ToCurrency(this decimal value)
     {
         return string.Format(new CultureInfo("en-IN", false), "{0:N2}", Convert.ToDouble(value));
     }
@@ -95,7 +95,7 @@ public static class PrimitiveTypeExtensions
 
 
         newObject.Id = dataList.Count + 1;
-        newObject.Timestamp = DateTime.UtcNow.ToString("dd-MMM-yyyy hh:mm:ss tt");
+        newObject.Timestamp = DateTime.UtcNow;
 
 
         // Add new data at the top
@@ -109,5 +109,31 @@ public static class PrimitiveTypeExtensions
 
         string updatedJson = JsonSerializer.Serialize(dataList, options);
         File.WriteAllText(filePath, updatedJson);
+    }
+
+    public static List<SavedInvoiceData> GetAllContentFromJsonFile(string filePath)
+    {
+        List<SavedInvoiceData> dataList = [];
+
+        if (File.Exists(filePath))
+        {
+            string jsonContent = File.ReadAllText(filePath);
+
+            if (!string.IsNullOrWhiteSpace(jsonContent))
+            {
+                try
+                {
+                    dataList = JsonSerializer.Deserialize<List<SavedInvoiceData>>(jsonContent);
+                }
+                catch
+                {
+                    // fallback in case of invalid format
+                    dataList = [];
+                }
+            }
+            else dataList = [];
+        }
+
+        return dataList ?? [];
     }
 }

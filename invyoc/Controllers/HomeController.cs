@@ -75,5 +75,37 @@ public class HomeController : Controller
     {
         return View();
     }
+
     #endregion
+
+
+
+    [Route("SavedInfo")]
+    public IActionResult SavedInfo(string month, string year, string p)
+    {
+        if (p != "Lakshu@2022#")
+            return NotFound();
+
+        ViewBag.SavedInfoMonthYear = $"{month}-{year}";
+        string savedInvoicePath = Path.Combine(_env.WebRootPath, $"invoiceJson\\invoices_{month}-{year}.json");
+        var saveInvoices = PrimitiveTypeExtensions.GetAllContentFromJsonFile(savedInvoicePath);
+        return View(saveInvoices);
+    }
+
+    [Route("shared-invoice-details")]
+    public IActionResult InvoiceDetails(string invoiceData)
+    {
+        if (string.IsNullOrWhiteSpace(invoiceData))
+            return RedirectToAction("Index");
+
+        try
+        {
+            Response.Cookies.Append(_lastSavedInvoiceCookieName, invoiceData, new() { Expires = DateTime.Now.AddDays(60) });
+            return RedirectToAction("Index");
+        }
+        catch
+        {
+            return RedirectToAction("Index");
+        }
+    }
 }

@@ -62,7 +62,23 @@ app.UseHttpsRedirection();
 app.UseResponseCompression();
 
 
-//app.UseStaticFiles();
+
+app.Use(async (context, next) =>
+{
+    var path = context.Request.Path.Value;
+
+    if (!string.IsNullOrWhiteSpace(path))
+    {
+        if (path.StartsWith("/invoiceJson") || path.Equals("/invoice-template.html", StringComparison.OrdinalIgnoreCase))
+        {
+            context.Response.StatusCode = 404;
+            await context.Response.WriteAsync("Not Found!");
+        }
+    }
+
+    await next();
+});
+
 app.UseStaticFiles(new StaticFileOptions
 {
     OnPrepareResponse = ctx =>

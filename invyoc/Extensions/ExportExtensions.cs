@@ -71,8 +71,8 @@ public static class ExportExtensions
             invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].LineNumber}]", invoiceItemIndex.ToString());
             invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Description}]", item.Description);
             invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Quantity}]", item.Quantity.ToString());
-            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Rate}]", item.Rate.ToINRCurrency());
-            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Total}]", itemTotal.ToINRCurrency());
+            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Rate}]", item.Rate.ToCurrency());
+            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Total}]", itemTotal.ToCurrency());
 
             invoiceItemIndex++;
             invoiceItemTotal += itemTotal;
@@ -90,25 +90,25 @@ public static class ExportExtensions
         invoiceItems += @$"<tr>
             <td class='border-0' colspan='3'></td>
             <td class='text-right'>Subtotal</td>
-            <td>{invoiceVM.Currency + invoiceItemTotal.ToINRCurrency()}</td>
+            <td>{invoiceVM.Currency + invoiceItemTotal.ToCurrency()}</td>
         </tr>";
 
         invoiceItems += @$"<tr>
             <td class='border-0' colspan='3'></td>
             <td class='text-right'>Discount ({invoiceVM.DiscountPercentage}%)</td>
-            <td>{invoiceVM.Currency + discountAmount.ToINRCurrency()}</td>
+            <td>{invoiceVM.Currency + discountAmount.ToCurrency()}</td>
         </tr>";
 
         invoiceItems += @$"<tr>
             <td class='border-0' colspan='3'></td>
             <td class='text-right'>Tax ({invoiceVM.TaxPercentage}%)</td>
-            <td>{invoiceVM.Currency + taxAmount.ToINRCurrency()}</td>
+            <td>{invoiceVM.Currency + taxAmount.ToCurrency()}</td>
         </tr>";
 
         invoiceItems += @$"<tr>
             <td class='border-0' colspan='3'></td>
             <td class='text-right'><strong>Total</strong></td>
-            <td><strong>{invoiceVM.Currency + finalAmount.ToINRCurrency()}</strong></td>
+            <td><strong>{invoiceVM.Currency + finalAmount.ToCurrency()}</strong></td>
         </tr>";
 
         htmlContent = htmlContent.Replace("[{InvoiceItems}]", invoiceItems);

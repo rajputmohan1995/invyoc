@@ -1,0 +1,79 @@
+﻿@using System.Text.Json
+@using invyoc.Extensions
+@model List<SavedInvoiceData>
+@{
+    ViewData["Title"] = "Saved Invoices";
+    Layout = "_FreeInvoiceLayout";
+}
+
+
+<main class="my-2">
+
+    <h2 class="text-center text-decoration-underline">
+        Invoices for @Convert.ToString(ViewBag.SavedInfoMonthYear)
+    </h2>
+
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-sm table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Invoice From</th>
+                    <th>Bill To & Ship To</th>
+                    <th width="20%">Item Count & Totals</th>
+                    <th width="10%">Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var invoiceVM = item.InvoiceVM;
+                    var itemCount = item.InvoiceVM?.Items?.Count ?? 0;
+
+                    var subTotal = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Subtotal ?? 0);
+                    var discountAmount = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Discount ?? 0);
+                    var taxAmount = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Tax ?? 0);
+                    var total = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Subtotal ?? 0 + item.InvoiceVM?.Tax ?? 0 + item.InvoiceVM?.Discount ?? 0);
+
+                    <tr style="cursor:pointer;" onclick="location.href='@Url.Action("InvoiceDetails", "Home", new { invoiceData = JsonSerializer.Serialize(invoiceVM) })'">
+                        <td>@item.Id</td>
+                        <td>
+                            @(invoiceVM?.Company?.Name ?? "[Invoice From Name]")
+                            <br />
+                            @(invoiceVM?.Company?.Address ?? "[Invoice From Address]")
+                        </td>
+                        <td>
+                            @(invoiceVM?.BillTo?.Name ?? "[Bill To Name]")
+                            <br />
+                            @(invoiceVM?.BillTo?.Address ?? "[Bill To Address]")
+                            <br />
+
+                            <strong>[Ship To]</strong>
+                            @(invoiceVM?.BillTo?.Name ?? "[Ship To Name]")
+                            <br />
+                            @(invoiceVM?.BillTo?.Address ?? "[Ship To Address]")
+                        </td>
+
+                        <td>
+                            Items Count : @itemCount <br />
+                            SubTotal : @subTotal<br />
+                            Discount (@invoiceVM?.DiscountPercentage%) : @discountAmount<br />
+                            Tax (@invoiceVM?.TaxPercentage%) : @taxAmount<br />
+                            Total : @total
+                        </td>
+
+                        <td>@item.Timestamp.ToLocalTime().ToString("dd-MMM-yyyy hh:mm:ss tt")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">No data available.</div>
+    }
+
+
+</main>
