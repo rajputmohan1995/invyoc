@@ -4,8 +4,11 @@
     Layout = "_FreeInvoiceLayout";
 }
 
-@using (Html.BeginForm("Download", "Home", FormMethod.Post, new { @id = "frmInvoice" }))
+
+@using (Html.BeginForm("Download", "Home", FormMethod.Post, new { @id = "frmInvoice", @enctype = "multipart/form-data" }))
 {
+    @Html.AntiForgeryToken()
+
     <div class="row mx-1 my-2">
 
         <!-- Left Section (Invoice Editor) -->
@@ -17,8 +20,6 @@
 
             @await Html.PartialAsync("Partials/_InvoiceItems", Model)
 
-            @* @await Html.PartialAsync("Partials/_InvoiceFooter", Model) *@
-
         </div>
 
         <!-- Right Side Static Panel -->
@@ -29,6 +30,38 @@
     </div>
 }
 
+
+<!-- Preview Invoice Modal -->
+<div class="modal fade" id="pdfPreviewModal" tabindex="-1" aria-labelledby="pdfPreviewLabel">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pdfPreviewLabel">Invoice Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="pdfFrame"></div>
+            </div>
+
+            <div class="modal-footer">
+                <div id="divInvoiceDownload" style="display:none;">
+                    <label class="text-success">
+                        <i class="fa-solid fa-circle-check"></i> Invoice downloaded successfully!
+                    </label>
+                </div>
+
+                <button class="btn btn-primary  text-center" id="btnDownloadInvoice">
+                    <i class="fa fa-download"></i>
+                    Download Invoice
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
     <script src="~/js/free-invoice/index.js"></script>
+    <script src="~/js/dropImage.js"></script>
 }

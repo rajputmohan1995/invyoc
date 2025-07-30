@@ -2,7 +2,7 @@
 
 <style>
     .invoice-main-details input {
-        max-width: 125px;
+        max-width: 140px;
     }
 </style>
 
@@ -11,12 +11,13 @@
         <h5>Bill To</h5>
         <input type="text"
                class="form-control fw-bold mb-1"
-               asp-for="BillTo.Name" />
-        <textarea class="form-control mb-1" rows="3" asp-for="BillTo.Address"></textarea>
+               asp-for="BillTo.Name"
+               placeholder="Enter Bill To Name" />
+        <textarea class="form-control mb-1" rows="3" asp-for="BillTo.Address" placeholder="Enter Billing Address here"></textarea>
         <input asp-for="BillTo.ContactNum"
                type="tel"
                class="form-control form-control-sm mb-1"
-               placeholder="Bill To Contact" />
+               placeholder="Enter Bill To Contact" />
 
     </div>
 
@@ -24,33 +25,44 @@
         <h5>Ship To <small>(optional)</small></h5>
         <input type="text"
                class="form-control fw-bold mb-1"
-               asp-for="ShipTo.Name" />
-        <textarea class="form-control mb-1" rows="3" asp-for="ShipTo.Address"></textarea>
+               asp-for="ShipTo.Name"
+               placeholder="Enter Ship To Name" />
+        <textarea class="form-control mb-1" rows="3" asp-for="ShipTo.Address" placeholder="Enter Shipping Address here"></textarea>
         <input asp-for="ShipTo.ContactNum"
                type="tel"
                class="form-control form-control-sm mb-1"
-               placeholder="Ship To Contact" />
+               placeholder="Enter Ship To Contact" />
     </div>
 
     <div class="col-sm-4" id="divOtherInvoiceInfo">
         <div class="d-flex flex-column gap-2 invoice-main-details">
 
             <div class="d-flex align-items-center gap-2 justify-content-end text-end">
-                <label class="form-label mb-0">Date</label>
+                <label class="form-label mb-0" asp-for="InvoiceNumber">Invoice#</label>
+                <input type="text" class="form-control form-control-sm fw-bold" asp-for="InvoiceNumber"
+                       pattern="[a-zA-Z0-9]*"
+                       placeholder="Invoice No."
+                       style="font-size: 1.25rem; padding: 0 5px;" />
+            </div>
+
+            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                <label class="form-label mb-0" asp-for="InvoiceDate">Date</label>
                 <input type="date" class="form-control form-control-sm" asp-for="InvoiceDate" />
             </div>
             <div class="d-flex align-items-center gap-2 justify-content-end text-end">
-                <label class="form-label mb-0">Due Date</label>
+                <label class="form-label mb-0" asp-for="DueDate">Due Date</label>
                 <input type="date" class="form-control form-control-sm" asp-for="DueDate" />
             </div>
+
             <div class="d-flex align-items-center gap-2 justify-content-end text-end">
-                <label class="form-label mb-0">Payment Terms</label>
-                <input type="text" class="form-control form-control-sm" asp-for="PaymentTerms" />
+                <label class="form-label mb-0" asp-for="PaymentTerms">Payment Terms</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Payment Terms" asp-for="PaymentTerms" />
             </div>
             <div class="d-flex align-items-center gap-2 justify-content-end text-end">
-                <label class="form-label mb-0">PO Number</label>
-                <input type="text" class="form-control form-control-sm" asp-for="PONumber" />
+                <label class="form-label mb-0" asp-for="PONumber">PO Number</label>
+                <input type="text" class="form-control form-control-sm" placeholder="PO No." asp-for="PONumber" />
             </div>
+
         </div>
     </div>
 </div>

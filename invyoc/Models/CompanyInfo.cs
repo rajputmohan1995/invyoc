@@ -7,4 +7,5 @@ public class CompanyInfo
     public string Phone { get; set; }
     public string Email { get; set; }
     public string GSTNo { get; set; }
+    public string LogoBase64 { get; set; }
 }

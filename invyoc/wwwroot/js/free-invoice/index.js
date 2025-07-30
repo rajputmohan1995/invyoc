@@ -28,10 +28,23 @@ $('#addRow').click(function () {
 
     const row = `<tr>
         <td><span name="Items[${newRowIndex}].LineNumber">${newRowValue}</span></td>
-        <td><input type="text" class="form-control form-control-sm rounded-0 item-desc" value="New Item" name="Items[${newRowIndex}].Description" id="Items_${newRowIndex}__Description" /></td>
-        <td><input type="number" class="form-control form-control-sm rounded-0 item-qty" value="1" name="Items[${newRowIndex}].Quantity" id="Items_${newRowIndex}__Quantity" /></td>
-        <td><input type="text" class="form-control form-control-sm rounded-0 item-price" value="100" name="Items[${newRowIndex}].Rate" id="Items_${newRowIndex}__Rate" onkeypress="return isNumberKey(event,this.id)" /></td>
-        <td class="item-total">$100.00</td>
+        <td><input type="text" class="form-control form-control-sm rounded-0 item-desc"
+                placeholder="Enter Item Description here"
+                value="Item ${newRowIndex + 1}" 
+                name="Items[${newRowIndex}].Description"
+                id="Items_${newRowIndex}__Description" /></td>
+        <td><input type="number" class="form-control form-control-sm rounded-0 item-qty"
+                placeholder="Quantity"         
+                value="1"
+                name="Items[${newRowIndex}].Quantity" 
+                id="Items_${newRowIndex}__Quantity" /></td>
+        <td><input type="text" class="form-control form-control-sm rounded-0 item-price"
+                placeholder="Rate"                
+                value="100"
+                name="Items[${newRowIndex}].Rate" 
+                id="Items_${newRowIndex}__Rate" 
+                onkeypress="return isNumberKey(event,this.id)" /></td>
+        <td class="item-total">100.00</td>
         <td><button class="btn btn-danger btn-sm remove-row">×</button></td>
       </tr>`;
     $('#invoiceTable tbody').append(row);
@@ -44,18 +57,9 @@ $(document).on('click', '.remove-row', function () {
     updateTotals();
 });
 
-$('#logoUpload').change(function (e) {
-    const reader = new FileReader();
-    reader.onload = function (event) {
-        $('#logoContainer').html(`<img loading="lazy" src="${event.target.result}" class="logo-preview" />`);
-    };
-    reader.readAsDataURL(e.target.files[0]);
-});
-
 $(document).ready(function () {
     updateTotals();
     textarea_auto_grow(document.getElementById('txtPaymentNotes'));
-    setInvoiceWidthAsPerContent();
 });
 
 function textarea_auto_grow(element) {
@@ -100,25 +104,72 @@ function reindexInvoiceRows() {
     });
 }
 
-
-$('#download').click(function () {
-    setTimeout(function () {
-        $("form").prepend('<div class="alert alert-success text-center p-1" role="alert">' +
-            'Invoice Downloaded Successfully.' +
-            '</div>');
-    }, 1000);
-
-    setTimeout(function () {
-        $("div.alert.alert-success").remove()
-    }, 6000)
-});
-
-
-function setInvoiceWidthAsPerContent() {
+function setInvoiceNumWidthAsPerContent() {
     var incoiceNumElem = document.getElementById("InvoiceNumber");
 
     const allowedCharacters = "0123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBNzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ "; // You can add any other character in the same way
     incoiceNumElem.value = incoiceNumElem.value.split('').filter(char => allowedCharacters.includes(char)).join('');
 
     incoiceNumElem.style.width = ((incoiceNumElem.value.length + 1) * 12) + 'px';
+}
+
+
+$("#previewInvoice").on('click', function () {
+
+    var formData = $("#frmInvoice").serializeArray();
+
+    $("#previewInvoice").text("Please Wait...");
+    $("#previewInvoice").attr("disabled", "disabled");
+
+    previewInvoicePdf(formData);
+});
+
+function previewInvoicePdf(invoiceData) {
+
+    $.ajax({
+        url: '/preview-invoice',
+        type: 'POST',
+        data: invoiceData,
+        success: function (blob) {
+
+            enablePreviewButton();
+            $('#pdfFrame').html(blob);
+            $('#pdfPreviewModal').modal('show');
+
+        },
+        error: function (xhr, status, error) {
+            enablePreviewButton();
+            alert('Failed to load Invoice preview.');
+            console.error(error);
+        },
+    });
+}
+
+function enablePreviewButton() {
+    $("#previewInvoice").html('<i class="fa-solid fa-file-pdf"></i>Preview Invoice');
+    $("#previewInvoice").removeAttr("disabled");
+}
+
+$("#btnDownloadInvoice").on('click', function () {
+
+    $("#btnDownloadInvoice").text("Please Wait...");
+    $("#btnDownloadInvoice").attr("disabled", "disabled");
+
+    $("#hdnDownloadInvoice").show();
+    $("#hdnDownloadInvoice").click();
+
+    setTimeout(function () {
+        enableDownloadButton();
+        $("#hdnDownloadInvoice").hide();
+        $("#divInvoiceDownload").show();
+
+        setTimeout(function () {
+            $("#divInvoiceDownload").hide();
+        }, 5000);
+    }, 1500);
+});
+
+function enableDownloadButton() {
+    $("#btnDownloadInvoice").html('<i class="fa fa-download"></i> Download Invoice');
+    $("#btnDownloadInvoice").removeAttr("disabled");
 }

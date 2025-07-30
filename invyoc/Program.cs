@@ -1,7 +1,9 @@
-using DinkToPdf;
+﻿using DinkToPdf;
 using DinkToPdf.Contracts;
 using invyoc.Extensions;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,8 @@ builder.Services.AddScoped<PdfService>();
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
+
+
 builder.Services.AddResponseCompression(options =>
 {
     options.EnableForHttps = true; // compress even on HTTPS
@@ -23,15 +27,16 @@ builder.Services.AddResponseCompression(options =>
     options.Providers.Add<GzipCompressionProvider>();
 
     // Optional: only compress certain MIME types
-    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-    [
-        "application/json",
-        "text/plain",
-        "text/css",
-        "application/javascript",
-        "text/html",
-        "image/svg+xml"
-    ]);
+    options.MimeTypes = ResponseCompressionDefaults.MimeTypes
+            .Where(m => m != "application/pdf") // 🔥 exclude PDFs
+            .Concat([
+                "application/json",
+                "text/plain",
+                "text/css",
+                "application/javascript",
+                "text/html",
+                "image/svg+xml"
+            ]);
 });
 
 // Optional: Customize compression level
@@ -45,6 +50,28 @@ builder.Services.Configure<GzipCompressionProviderOptions>(options =>
     options.Level = System.IO.Compression.CompressionLevel.Fastest;
 });
 
+builder.Services.Configure<KestrelServerOptions>(options =>
+{
+    options.Limits.MaxResponseBufferSize = null; // unlimited
+    options.Limits.MaxRequestBodySize = 104857600; // 100 MB request body
+});
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 104857600; // 100MB
+});
+
+
+builder.WebHost.ConfigureKestrel((context, options) =>
+{
+    options.ListenAnyIP(5001, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http1;
+        listenOptions.UseHttps();
+    });
+});
+
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
@@ -56,12 +83,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
-app.UseHttpsRedirection();
-
-app.UseResponseCompression();
-
-
 
 app.Use(async (context, next) =>
 {
@@ -79,18 +100,19 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    OnPrepareResponse = ctx =>
-    {
-        const int durationInSeconds = 60 * 60 * 24 * 2;
-        ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={durationInSeconds}");
-    }
-});
+app.UseMiddleware<CustomErrorHandlingMiddleware>();
+
+app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
+
+
+app.UseResponseCompression();
+
+app.UseHttpsRedirection();
+
 
 app.MapControllerRoute(
     name: "default",

@@ -60,10 +60,10 @@ namespace invyoc.Models
                 },
 
                 InvoiceNumber = "0001",
-                InvoiceDate = DateTime.Now,
+                InvoiceDate = DateTime.Now.Date,
                 PaymentTerms = "Net 30 Days",
-                DueDate = DateTime.Now.AddDays(30),
-                PONumber = $"PO-{(new Random()).Next(111, 999)}",
+                DueDate = DateTime.Now.AddDays(30).Date,
+                PONumber = $"PO-1234",
 
                 Currency = PrimitiveTypeExtensions.GetEnumDescription(CurrencyType.INR),
                 Currencies = PrimitiveTypeExtensions.ToSelectList<CurrencyType>(),
@@ -81,5 +81,6 @@ namespace invyoc.Models
 
             return tempObj;
         }
+
     }
 }

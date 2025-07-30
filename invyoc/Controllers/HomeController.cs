@@ -1,6 +1,7 @@
 ﻿using invyoc.Extensions;
 using invyoc.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using System.Text.Json;
 
 namespace invyoc.Controllers;
@@ -29,25 +30,15 @@ public class HomeController : Controller
         return View(invoiceVM);
     }
 
-    [HttpPost]
-    public IActionResult Download(InvoiceViewModel invoiceVM)
+    [HttpPost("preview-invoice")]
+    [ValidateAntiForgeryToken]
+    public IActionResult PreviewInvoice([FromForm] InvoiceViewModel invoiceVM)
     {
         try
         {
-            string savedInvoicePath = Path.Combine(_env.WebRootPath, $"invoiceJson\\invoices_{DateTime.UtcNow:MMM-yyyy}.json");
-            PrimitiveTypeExtensions.AppendJsonObjectToFile(savedInvoicePath, new SavedInvoiceData() { InvoiceVM = invoiceVM });
-
-            var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
-            string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "invoice-template.html");
-
-            var pdfBytes = _pdfService.GeneratePdf(ExportExtensions.GetHtmlContent(invoiceVM, invoiceTemplatePath));
-
-            ViewBag.IsDownloadSuccess = true;
             var invoiceLineNum = 0;
             invoiceVM.Items.ForEach(i => i.LineNumber = ++invoiceLineNum);
-            Response.Cookies.Append(_lastSavedInvoiceCookieName, JsonSerializer.Serialize(invoiceVM), new() { Expires = DateTime.Now.AddDays(60) });
-
-            return File(pdfBytes, "application/pdf", newInvoiceFileName);
+            return PartialView("~/Views/Home/Partials/_InvoicePreviewModal.cshtml", invoiceVM);
         }
         catch (Exception)
         {
@@ -55,6 +46,84 @@ public class HomeController : Controller
         }
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<FileStreamResult> OldDownload([FromForm] InvoiceViewModel invoiceVM)
+    {
+        try
+        {
+            var invoiceLineNum = 0;
+            invoiceVM.Items.ForEach(i => i.LineNumber = ++invoiceLineNum);
+
+            if (!ObjectComparer.AreEqual(invoiceVM, InvoiceViewModel.GetTempData()))
+            {
+                string savedInvoicePath = Path.Combine(_env.WebRootPath, $"invoiceJson\\invoices_{DateTime.UtcNow:MMM-yyyy}.json");
+                PrimitiveTypeExtensions.AppendJsonObjectToFile(savedInvoicePath, new SavedInvoiceData() { InvoiceVM = invoiceVM });
+            }
+
+            var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
+            string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "invoice-template.html");
+
+            var pdfBytes = await _pdfService.GeneratePdf(ExportExtensions.GetHtmlContent(invoiceVM, invoiceTemplatePath));
+
+
+            Response.Cookies.Append(_lastSavedInvoiceCookieName, JsonSerializer.Serialize(invoiceVM), new() { Expires = DateTime.Now.AddDays(60) });
+
+            ViewBag.IsDownloadSuccess = true;
+
+            var stream = new MemoryStream(pdfBytes);
+            return new FileStreamResult(stream, new MediaTypeHeaderValue("application/pdf"))
+            {
+                FileDownloadName = newInvoiceFileName
+            };
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Download([FromForm] InvoiceViewModel invoiceVM)
+    {
+        try
+        {
+            var invoiceLineNum = 0;
+            invoiceVM.Items.ForEach(i => i.LineNumber = ++invoiceLineNum);
+
+            if (!ObjectComparer.AreEqual(invoiceVM, InvoiceViewModel.GetTempData()))
+            {
+                string savedInvoicePath = Path.Combine(_env.WebRootPath, $"invoiceJson\\invoices_{DateTime.UtcNow:MMM-yyyy}.json");
+                PrimitiveTypeExtensions.AppendJsonObjectToFile(savedInvoicePath, new SavedInvoiceData() { InvoiceVM = invoiceVM });
+            }
+
+            var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
+            string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "invoice-template.html");
+
+            var pdfBytes = await _pdfService.GeneratePdf(ExportExtensions.GetHtmlContent(invoiceVM, invoiceTemplatePath));
+
+
+            Response.Cookies.Append(_lastSavedInvoiceCookieName, JsonSerializer.Serialize(invoiceVM), new() { Expires = DateTime.Now.AddDays(60) });
+
+            ViewBag.IsDownloadSuccess = true;
+
+            // Disable response buffering for large files
+            Response.Headers.Append("Content-Disposition", "attachment; filename=" + newInvoiceFileName);
+            Response.ContentType = "application/pdf";
+            Response.ContentLength = pdfBytes.Length;
+
+            // Write directly to response stream
+            await Response.Body.WriteAsync(pdfBytes, 0, pdfBytes.Length);
+            await Response.Body.FlushAsync();
+
+            return new EmptyResult();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
 
     #region Static Pages
 
@@ -77,7 +146,6 @@ public class HomeController : Controller
     }
 
     #endregion
-
 
 
     [Route("SavedInfo")]

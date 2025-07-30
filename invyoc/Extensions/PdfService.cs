@@ -7,12 +7,9 @@ public class PdfService
 {
     private readonly IConverter _converter;
 
-    public PdfService(IConverter converter)
-    {
-        _converter = converter;
-    }
+    public PdfService(IConverter converter) => _converter = converter;
 
-    public byte[] GeneratePdf(string htmlContent)
+    public async Task<byte[]> GeneratePdf(string htmlContent)
     {
         var globalSettings = new GlobalSettings
         {
@@ -30,7 +27,8 @@ public class PdfService
         var objectSettings = new ObjectSettings
         {
             PagesCount = true,
-            HtmlContent = htmlContent
+            HtmlContent = htmlContent,
+            WebSettings = { DefaultEncoding = "utf-8" }
         };
 
         var pdf = new HtmlToPdfDocument()
@@ -39,6 +37,6 @@ public class PdfService
             Objects = { objectSettings },
         };
 
-        return _converter.Convert(pdf);
+        return await Task.FromResult(_converter.Convert(pdf));
     }
 }

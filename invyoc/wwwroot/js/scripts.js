@@ -122,9 +122,9 @@ const tourSteps = [
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    if (!localStorage.getItem('invoiceTourCompleted')) {
-        showTourConfirmation()
-    }
+    //if (!localStorage.getItem('invoiceTourCompleted')) {
+    //    showTourConfirmation()
+    //}
 });
 
 function showTourConfirmation() {

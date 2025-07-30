@@ -39,13 +39,19 @@
                         <span>@currentRowIndex</span>
                     </td>
                     <td>
-                        <input type="text" class="form-control form-control-sm rounded-0 item-desc" asp-for="@Model.Items[i].Description" />
+                        <input type="text" class="form-control form-control-sm rounded-0 item-desc"
+                               asp-for="@Model.Items[i].Description"
+                               placeholder="Enter Item Description here" />
                     </td>
                     <td>
-                        <input type="number" class="form-control form-control-sm rounded-0 item-qty" asp-for="@Model.Items[i].Quantity" />
+                        <input type="number" class="form-control form-control-sm rounded-0 item-qty"
+                               asp-for="@Model.Items[i].Quantity"
+                               placeholder="Quantity" />
                     </td>
                     <td>
-                        <input type="text" class="form-control form-control-sm rounded-0 item-price" asp-for="@Model.Items[i].Rate" onkeypress="return isNumberKey(event,this.id)" />
+                        <input type="text" class="form-control form-control-sm rounded-0 item-price" asp-for="@Model.Items[i].Rate"
+                               placeholder="Rate"
+                               onkeypress="return isNumberKey(event,this.id)" />
                     </td>
                     <td class="item-total">@Model.Items[i].Amount</td>
                     <td>

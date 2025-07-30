@@ -26,9 +26,10 @@
         max-height: 300px;
         font-style: italic;
         font-size: small;
+        background-color: white !important;
     }
 
-    .txtPaymentNotes {
+    label.txtPaymentNotes {
         font-size: small;
         font-weight: 600;
     }
@@ -46,6 +47,7 @@
                        id="discountRate"
                        class="form-control form-control-sm"
                        asp-for="DiscountPercentage"
+                       placeholder="Discount %"
                        onkeypress="return isNumberKey(event,this.id)" />
             </div>
 
@@ -56,6 +58,7 @@
                        id="taxRate"
                        class="form-control form-control-sm"
                        asp-for="TaxPercentage"
+                       placeholder="Tax %"
                        onkeypress="return isNumberKey(event,this.id)" />
             </div>
 

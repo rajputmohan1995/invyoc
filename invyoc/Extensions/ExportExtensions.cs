@@ -14,6 +14,13 @@ public static class ExportExtensions
         htmlContent = htmlContent.Replace("[{CompanyPhone}]", invoiceVM.Company.Phone);
         htmlContent = htmlContent.Replace("[{GSTNo}]", invoiceVM.Company.GSTNo);
 
+        var companyLogoContent = "";
+        if (!string.IsNullOrWhiteSpace(invoiceVM.Company.LogoBase64))
+        {
+            companyLogoContent = $"<img src='{invoiceVM.Company.LogoBase64}' alt='Logo not found!' style='max-width:150px;max-height:150px;' />";
+        }
+        htmlContent = htmlContent.Replace("[{CompanyLogoContent}]", companyLogoContent);
+
 
         htmlContent = htmlContent.Replace("[{BillToName}]", invoiceVM.BillTo.Name);
         htmlContent = htmlContent.Replace("[{BillToAddress}]", invoiceVM.BillTo.Address);
