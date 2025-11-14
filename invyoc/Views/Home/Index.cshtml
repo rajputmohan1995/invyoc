@@ -4,15 +4,22 @@
     Layout = "_FreeInvoiceLayout";
 }
 
+<style>
+    form#frmInvoice {
+        max-width: 70rem;
+        margin: auto;
+    }
+</style>
+
 
 @using (Html.BeginForm("Download", "Home", FormMethod.Post, new { @id = "frmInvoice", @enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-    <div class="row mx-1 my-2">
+    <div class="row">
 
         <!-- Left Section (Invoice Editor) -->
-        <div class="col-lg-9 invoice-box bg-light" id="invoice">
+        <div class="col-lg-12 col-md-12 col-sm-12 invoice-box" id="invoice">
 
             @await Html.PartialAsync("Partials/_InvoiceHeader", Model)
 

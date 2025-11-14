@@ -91,8 +91,14 @@ public static class PrimitiveTypeExtensions
             }
             else dataList = [];
         }
-        else dataList = [];
+        else
+        {
+            var jsonFilePath = Path.GetDirectoryName(filePath);
+            if (!string.IsNullOrWhiteSpace(jsonFilePath) && !Directory.Exists(jsonFilePath))
+                Directory.CreateDirectory(jsonFilePath);
 
+            dataList = [];
+        }
 
         newObject.Id = dataList.Count + 1;
         newObject.Timestamp = DateTime.UtcNow;

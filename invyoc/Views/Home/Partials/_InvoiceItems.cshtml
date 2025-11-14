@@ -1,4 +1,11 @@
 ﻿@model InvoiceViewModel
+@{
+    @if (Model.Items == null || Model.Items?.Count == 0)
+    {
+        Model.Items ??= new();
+        Model.Items.Add(new InvoiceItemViewModel() { LineNumber = 1 });
+    }
+}
 
 <style>
     .table th, .table td {
@@ -6,67 +13,159 @@
     }
 
     .invoice-box {
-        padding: 15px 30px;
-        border: 1px solid #eee;
-        box-shadow: 0 0 10px rgba(0,0,0,.15);
+        padding: 5rem;
+    }
+
+    #invoiceTable tr.line-item {
+        border-bottom: 1px solid #ddd;
     }
 </style>
 
-<div class="row text-center" id="divInvoiceItems">
+<div class="row" id="divInvoiceItems">
 
-    <table class="table table-sm table-bordered" id="invoiceTable">
-        <thead class="table-light">
-            <tr>
-                <th width="5%">#</th>
-                <th>Item Description</th>
-                <th width="8%">Quantity</th>
-                <th width="15%">Rate</th>
-                <th width="20%">Amount</th>
-                <th width="6%"></th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="col">
 
-            @for (int i = 0; i < Model.Items.Count; i++)
-            {
-                var currentRowIndex = Model.Items[i].LineNumber;
+        <div class="table-responsive">
 
-                if (currentRowIndex == 0)
-                    currentRowIndex = i + 1;
+            <table class="table table-sm table-borderless" id="invoiceTable">
+                <thead class="table-dark">
+                    <tr>
+                        @* <th width="5%">#</th> *@
+                        <th>Item Description</th>
+                        <th width="8%">Qty</th>
+                        <th width="12%">Rate</th>
+                        <th width="9%">SGST</th>
+                        <th width="9%">CGST</th>
+                        <th width="9%">Cess</th>
+                        <th width="14%" class="text-end">Amount</th>
+                        <th width="4%"></th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                <tr>
-                    <td>
-                        <span>@currentRowIndex</span>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control form-control-sm rounded-0 item-desc"
-                               asp-for="@Model.Items[i].Description"
-                               placeholder="Enter Item Description here" />
-                    </td>
-                    <td>
-                        <input type="number" class="form-control form-control-sm rounded-0 item-qty"
-                               asp-for="@Model.Items[i].Quantity"
-                               placeholder="Quantity" />
-                    </td>
-                    <td>
-                        <input type="text" class="form-control form-control-sm rounded-0 item-price" asp-for="@Model.Items[i].Rate"
-                               placeholder="Rate"
-                               onkeypress="return isNumberKey(event,this.id)" />
-                    </td>
-                    <td class="item-total">@Model.Items[i].Amount</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm remove-row">×</button>
-                    </td>
-                </tr>
-            }
+                    @for (int i = 0; i < Model.Items?.Count; i++)
+                    {
+                        var currentRowIndex = Model.Items[i].LineNumber;
 
-        </tbody>
-    </table>
-</div>
+                        @* if (currentRowIndex == 0)
+                        currentRowIndex = i + 1; *@
 
-<div class="row">
-    <div class="col-3">
-        <button class="btn btn-secondary mb-3" id="addRow" type="button">+ Add Item</button>
+                        var itemDescId = $"Items_{currentRowIndex}__Description";
+                        var itemHSN = $"Items_{currentRowIndex}__HSN_SAC";
+                        var itemQty = $"Items_{currentRowIndex}__Quantity";
+                        var itemRate = $"Items_{currentRowIndex}__Rate";
+                        var itemSGST = $"Items_{currentRowIndex}__SGST";
+                        var itemCGST = $"Items_{currentRowIndex}__CGST";
+                        var itemCess = $"Items_{currentRowIndex}__Cess";
+
+                        var lblSGSTAmtId = $"Label_{currentRowIndex}__SGST";
+                        var lblCGSTAmtId = $"Label_{currentRowIndex}__CGST";
+                        var lblCessAmtId = $"Label_{currentRowIndex}__Cess";
+
+                        <tr class="line-item">
+                            @*   <td>
+                                <span>@currentRowIndex</span>
+                            </td> *@
+                            <td class="align-top">
+                                <input type="text" class="item-desc mb-1 w-100"
+                                       asp-for="@Model.Items[i].Description"
+                                       id="@itemDescId"
+                                       placeholder="Enter item name/description" />
+
+                                <input type="text" class="item-hsn mb-1"
+                                       asp-for="@Model.Items[i].HSN_SAC"
+                                       id="@itemHSN"
+                                       placeholder="HSN/SAC" />
+                            </td>
+                            <td class="align-top">
+                                <input type="text" class="item-qty w-100"
+                                       asp-for="@Model.Items[i].Quantity"
+                                       id="@itemQty"
+                                       placeholder="0"
+                                       onkeypress="return isNumberKey(event, this.id)" />
+                            </td>
+                            <td class="align-top">
+                                <input type="text" class="item-price w-100"
+                                       asp-for="@Model.Items[i].Rate"
+                                       id="@itemRate"
+                                       placeholder="0"
+                                       onkeypress="return isNumberKey(event, this.id)" />
+                            </td>
+
+                            <td class="align-top">
+                                <input type="text" class="item-sgst w-100"
+                                       asp-for="@Model.Items[i].SGST"
+                                       id="@itemSGST"
+                                       placeholder="0"
+                                       onkeypress="return isNumberKey(event, this.id)" />
+
+                                <small class="text-muted lbl-sgst" id="@lblSGSTAmtId">0.00</small>
+                            </td>
+
+                            <td class="align-top">
+                                <input type="text" class="item-cgst w-100"
+                                       asp-for="@Model.Items[i].CGST"
+                                       id="@itemCGST"
+                                       placeholder="0"
+                                       onkeypress="return isNumberKey(event, this.id)" />
+
+                                <small class="text-muted lbl-cgst" id="@lblCGSTAmtId">0.00</small>
+                            </td>
+
+                            <td class="align-top">
+                                <input type="text" class="item-cess w-100"
+                                       asp-for="@Model.Items[i].Cess"
+                                       id="@itemCess"
+                                       placeholder="0"
+                                       onkeypress="return isNumberKey(event, this.id)" />
+
+                                <small class="text-muted lbl-cess" id="@lblCessAmtId">0.00</small>
+                            </td>
+
+                            <td class="item-total text-end align-top">@Model.Items[i].Amount</td>
+                            <td class="text-end align-top">
+                                <button class="btn btn-danger btn-sm p-0 px-1 remove-row rounded-5">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+
+
+                    <tr id="lastRow" class="mt-3 border-top border-dark">
+
+                        <td colspan="4" class="align-top">
+                            <button class="btn btn-link mt-1 px-1 py-0" id="addRow" type="button">
+                                <i class="fa-solid fa-circle-plus mr-2"></i>
+                                <span class="ml-2">Add Line Item</span>
+                            </button>
+                        </td>
+
+                        <td colspan="4">
+                            <table class="table table-bordered border-dark">
+                                <tr>
+                                    <td>
+                                        <span>Sub Total</span>
+                                    </td>
+                                    <td>
+                                        <span id="lblSubTotalValue">0.00</span>
+                                    </td>
+                                </tr>
+                                <tr id="trFinalTotalDetails">
+                                    <td>
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td>
+                                        <h5 class="fw-bold" id="lblFinalTotalValue">0.00</h5>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
     </div>
-    <div class="col-9"></div>
 </div>

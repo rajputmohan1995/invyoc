@@ -117,6 +117,10 @@
         border: 0 !important;
     }
 
+    #pdfFrame .border-top-0 {
+        border-top: 0 !important;
+    }
+
     #pdfFrame .text-left {
         text-align: left;
     }
@@ -159,7 +163,7 @@
         <td width="30%" style="font-size: 16px; text-align: right">
             @if (!string.IsNullOrWhiteSpace(Model.Company.LogoBase64))
             {
-                <img src="@Model.Company.LogoBase64" alt="Logo not found!" id="companyLogo" />                
+                <img src="@Model.Company.LogoBase64" alt="Logo not found!" id="companyLogo" />
             }
         </td>
     </tr>
@@ -261,13 +265,9 @@
 
 
         <tr>
-            <td class='border-0 p-0 m-2' colspan='5'></td>
-        </tr>
-
-        <tr>
             <td class='border-0' colspan='3'></td>
-            <td class='text-right'>Subtotal</td>
-            <td>@Model.Currency @invoiceItemTotal.ToCurrency()</td>
+            <td class='border-top-0 text-right'>Subtotal</td>
+            <td class='border-top-0'>@Model.Currency @invoiceItemTotal.ToCurrency()</td>
         </tr>
 
         <tr>

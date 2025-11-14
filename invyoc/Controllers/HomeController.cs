@@ -11,6 +11,7 @@ public class HomeController : Controller
     private readonly IWebHostEnvironment _env;
     private readonly PdfService _pdfService;
     private const string _lastSavedInvoiceCookieName = "FreeInvoiceLastSavedInvoice";
+    private const string _lastSavedInvoiceLogo = "FreeInvoiceLastSavedInvoiceLogo";
 
     public HomeController(IWebHostEnvironment env, PdfService pdfService)
     {
@@ -21,11 +22,17 @@ public class HomeController : Controller
     [Route("")]
     public IActionResult Index()
     {
-        var invoiceVM = InvoiceViewModel.GetTempData();
+        InvoiceViewModel invoiceVM = new(); //InvoiceViewModel.GetTempData();
         var lastSavedInvoice = Request.Cookies[_lastSavedInvoiceCookieName];
 
         if (!string.IsNullOrWhiteSpace(lastSavedInvoice))
+        {
             invoiceVM = JsonSerializer.Deserialize<InvoiceViewModel>(lastSavedInvoice);
+
+            var lastSavedInvoiceLogo = Request.Cookies[_lastSavedInvoiceLogo];
+            if (invoiceVM != null && invoiceVM.Company != null && !string.IsNullOrWhiteSpace(lastSavedInvoiceLogo))
+                invoiceVM.Company.LogoBase64 = lastSavedInvoiceLogo;
+        }
 
         return View(invoiceVM);
     }
@@ -69,6 +76,7 @@ public class HomeController : Controller
 
             Response.Cookies.Append(_lastSavedInvoiceCookieName, JsonSerializer.Serialize(invoiceVM), new() { Expires = DateTime.Now.AddDays(60) });
 
+
             ViewBag.IsDownloadSuccess = true;
 
             var stream = new MemoryStream(pdfBytes);
@@ -105,6 +113,9 @@ public class HomeController : Controller
 
 
             Response.Cookies.Append(_lastSavedInvoiceCookieName, JsonSerializer.Serialize(invoiceVM), new() { Expires = DateTime.Now.AddDays(60) });
+            if (!string.IsNullOrWhiteSpace(invoiceVM.Company.LogoBase64))
+                Response.Cookies.Append(_lastSavedInvoiceLogo, invoiceVM.Company.LogoBase64, new() { Expires = DateTime.Now.AddDays(60) });
+
 
             ViewBag.IsDownloadSuccess = true;
 

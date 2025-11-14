@@ -1,68 +1,43 @@
 ﻿@model InvoiceViewModel
 
-<style>
-    .invoice-main-details input {
-        max-width: 140px;
-    }
-</style>
-
 <div class="row mb-4">
-    <div class="col-sm-4" id="divBillTo">
-        <h5>Bill To</h5>
-        <input type="text"
-               class="form-control fw-bold mb-1"
-               asp-for="BillTo.Name"
-               placeholder="Enter Bill To Name" />
-        <textarea class="form-control mb-1" rows="3" asp-for="BillTo.Address" placeholder="Enter Billing Address here"></textarea>
-        <input asp-for="BillTo.ContactNum"
-               type="tel"
-               class="form-control form-control-sm mb-1"
-               placeholder="Enter Bill To Contact" />
+    <div class="col" id="divBillTo">
+        <h5>
+            <strong>Bill To</strong>
+        </h5>
+
+        <input type="text" class="mb-1 w-100" asp-for="BillTo.Name" placeholder="Your Client's Company" />
+
+        <input type="text" class="mb-1 w-100" asp-for="BillTo.GSTNo" placeholder="Client's GSTIN" />
+
+        <input type="text" class="mb-1 w-100" asp-for="BillTo.Address" placeholder="Client's Address" />
+
+        <input type="text" class="mb-1 w-100" asp-for="BillTo.City" placeholder="City" />
+
+        <input type="text" class="mb-1 w-100" asp-for="BillTo.State" placeholder="State" />
+
+        <input type="text" class="mb-1 w-100" asp-for="BillTo.Country" placeholder="Country" />
+
+        <input type="tel" class="mb-1 w-100" asp-for="BillTo.ContactNum" placeholder="Client's Contact" />
 
     </div>
 
-    <div class="col-sm-4" id="divShipTo">
-        <h5>Ship To <small>(optional)</small></h5>
-        <input type="text"
-               class="form-control fw-bold mb-1"
-               asp-for="ShipTo.Name"
-               placeholder="Enter Ship To Name" />
-        <textarea class="form-control mb-1" rows="3" asp-for="ShipTo.Address" placeholder="Enter Shipping Address here"></textarea>
-        <input asp-for="ShipTo.ContactNum"
-               type="tel"
-               class="form-control form-control-sm mb-1"
-               placeholder="Enter Ship To Contact" />
+    <div class="col" id="divShipTo">
+        <h5>
+            <strong>Ship To </strong>
+            <small>(optional)</small>
+        </h5>
+
+        <input type="text" class="mb-1 w-100" asp-for="ShipTo.Address" placeholder="Client's Ship To Address" />
+
+        <input type="text" class="mb-1 w-100" asp-for="ShipTo.City" placeholder="City" />
+
+        <input type="text" class="mb-1 w-100" asp-for="ShipTo.State" placeholder="State" />
+
+        <input type="text" class="mb-1 w-100" asp-for="ShipTo.Country" placeholder="Country" />
+
+        <input type="tel" class="mb-1 w-100" asp-for="ShipTo.ContactNum" placeholder="Client's Ship To Contact" />
+
     </div>
 
-    <div class="col-sm-4" id="divOtherInvoiceInfo">
-        <div class="d-flex flex-column gap-2 invoice-main-details">
-
-            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
-                <label class="form-label mb-0" asp-for="InvoiceNumber">Invoice#</label>
-                <input type="text" class="form-control form-control-sm fw-bold" asp-for="InvoiceNumber"
-                       pattern="[a-zA-Z0-9]*"
-                       placeholder="Invoice No."
-                       style="font-size: 1.25rem; padding: 0 5px;" />
-            </div>
-
-            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
-                <label class="form-label mb-0" asp-for="InvoiceDate">Date</label>
-                <input type="date" class="form-control form-control-sm" asp-for="InvoiceDate" />
-            </div>
-            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
-                <label class="form-label mb-0" asp-for="DueDate">Due Date</label>
-                <input type="date" class="form-control form-control-sm" asp-for="DueDate" />
-            </div>
-
-            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
-                <label class="form-label mb-0" asp-for="PaymentTerms">Payment Terms</label>
-                <input type="text" class="form-control form-control-sm" placeholder="Payment Terms" asp-for="PaymentTerms" />
-            </div>
-            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
-                <label class="form-label mb-0" asp-for="PONumber">PO Number</label>
-                <input type="text" class="form-control form-control-sm" placeholder="PO No." asp-for="PONumber" />
-            </div>
-
-        </div>
-    </div>
 </div>

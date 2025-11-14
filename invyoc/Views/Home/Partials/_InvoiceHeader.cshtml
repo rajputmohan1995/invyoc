@@ -7,16 +7,16 @@
         cursor: pointer;
         background-color: #f9f9f9;
         transition: background 0.3s;
-        width: 150px;
-        height: 150px;
+        width: 125px;
+        height: 125px;
     }
 
         #logoDropZone:hover {
-            border-color: #258cfb;
+            border-color: #0dcaf0;
         }
 
         #logoDropZone p {
-            margin-top: 1.5rem;
+            margin-top: 2.5rem;
         }
 
         #logoDropZone.hover {
@@ -24,70 +24,158 @@
         }
 
         #logoDropZone #logoPreview {
-            width: 150px;
-            height: 150px;
+            width: 125px;
+            height: 125px;
         }
+
+    .upload-section-note-main {
+        max-width: 200px;
+        padding: 10px 15px;
+    }
+
+    .upload-section-note {
+        margin: auto;
+    }
+
+        .upload-section-note div {
+            color: #676767;
+            font-size: 10px;
+            padding-top: 5px;
+        }
+
+    .invoice-main-details input {
+        max-width: 150px;
+    }
 </style>
 
 <div class="row">
-    <div class="col-9 px-0" id="divInvoiceFrom">
-        <h2>
-            <input asp-for="Company.Name"
-                   type="text"
-                   class="form-control border-0 fs-2 p-0 bg-light"
-                   placeholder="Company Name" />
-        </h2>
+
+    <div class="col-sm-6 col-md-6 col-lg-6" id="divInvoiceFrom">
+
         <div class="row">
-            <div class="col-6">
-                <input asp-for="Company.GSTNo"
-                       type="text"
-                       class="form-control form-control-sm border-0 p-0 mb-1 bg-light fw-bold text-uppercase"
-                       placeholder="Tax Number" />
+
+            <div class="col mb-2" style="display:flex;">
+
+                <div id="logoDropZone">
+                    <p class="text-info">
+                        <i class="fa-2x fa-solid fa-upload mb-1"></i>
+                        <br />
+                        <strong>Upload</strong>
+                    </p>
+
+                    <input type="file" id="logoInput" accept="image/*" hidden />
+                    @if (!string.IsNullOrWhiteSpace(Model.Company.LogoBase64))
+                    {
+                        <img id="logoPreview" src="@Model.Company.LogoBase64" alt="Logo Preview" />
+                    }
+                    else
+                    {
+                        <img id="logoPreview" src="" alt="Logo Preview" style="display:none;" />
+                    }
+
+                    <input hidden asp-for="Company.LogoBase64" id="companyLogoBase64" />
+                </div>
+
+                <div class="text-center upload-section-note-main">
+                    <div class="upload-section-note mt-4">
+                        Upload Logo
+                        <br />
+                        <div>
+                            Drag & drop company logo here
+                            <br />or click to upload
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="offset-col-6"></div>
+
         </div>
-        <div class="row">
+
+        <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.Address"
-                       type="text"
-                       class="form-control form-control-sm border-0 p-0 mb-1 bg-light"
-                       placeholder="Company Address" />
+                <input asp-for="Company.Name" type="text" class="w-100" placeholder="Your Company" />
             </div>
         </div>
-        <div class="row">
-            <div class="col-3">
-                <input asp-for="Company.Phone"
-                       type="tel"
-                       class="form-control form-control-sm border-0 p-0 bg-light"
-                       placeholder="Company Contact" />
+
+        <div class="row mb-1">
+            <div class="col">
+                <input asp-for="Company.GSTNo" type="text" class="w-100" placeholder="Company's GSTIN" />
             </div>
-            <div class="col-4">
-                <input asp-for="Company.Email"
-                       type="email"
-                       class="form-control form-control-sm border-0 p-0 bg-light"
-                       placeholder="Company Email" />
+        </div>
+
+        <div class="row mb-1">
+            <div class="col">
+                <input asp-for="Company.Phone" type="tel" class="w-100" placeholder="Company Contact" />
             </div>
-            <div class="offset-col-6"></div>
+        </div>
+
+        <div class="row mb-1">
+            <div class="col">
+                <input asp-for="Company.Email" type="email" class="w-100" placeholder="Company Email" />
+            </div>
+        </div>
+
+        <div class="row mb-1">
+            <div class="col">
+                <input asp-for="Company.Address" type="text" class="w-100" placeholder="Company Address" />
+            </div>
+        </div>
+
+        <div class="row mb-1">
+            <div class="col">
+                <input asp-for="Company.City" type="text" class="w-100" placeholder="City" />
+            </div>
+        </div>
+
+        <div class="row mb-1">
+            <div class="col">
+                <input asp-for="Company.State" type="text" class="w-100" placeholder="State" />
+            </div>
+        </div>
+
+        <div class="row mb-1">
+            <div class="col">
+                <input asp-for="Company.Country" type="text" class="w-100" placeholder="Country" />
+            </div>
         </div>
 
     </div>
 
-    <div class="col-3 px-0">
-        <div class="d-flex align-items-center gap-2 justify-content-end text-end" id="divInvoiceNum">
+    <div class="col-sm-6 col-md-6 col-lg-6 text-end">
 
-            <div id="logoDropZone">
-                <p>Drag & drop company logo here, or click to upload</p>
-                <input type="file" id="logoInput" accept="image/*" hidden />
-                @if (!string.IsNullOrWhiteSpace(Model.Company.LogoBase64))
-                {
-                    <img id="logoPreview" src="@Model.Company.LogoBase64" alt="Logo Preview" />
-                }
-                else
-                {
-                    <img id="logoPreview" src="" alt="Logo Preview" style="display:none;" />
-                }
+        <h1 style="height:125px;">
+            Tax Invoice
+        </h1>
 
-                <input hidden asp-for="Company.LogoBase64" id="companyLogoBase64" />
+        <div class="d-flex align-items-center gap-2 justify-content-end" id="divOtherInvoiceInfo">
+
+            <div class="d-flex flex-column gap-2 invoice-main-details">
+
+                <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                    <label class="form-label mb-0" asp-for="InvoiceNumber">Invoice#</label>
+                    <input type="text" class="w-100 fw-bold" asp-for="InvoiceNumber"
+                           pattern="[a-zA-Z0-9]*"
+                           placeholder="#101" />
+                </div>
+
+                <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                    <label class="form-label mb-0" asp-for="InvoiceDate">Date</label>
+                    <input type="date" class="w-100" asp-for="InvoiceDate" />
+                </div>
+                <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                    <label class="form-label mb-0" asp-for="DueDate">Due Date</label>
+                    <input type="date" class="w-100" asp-for="DueDate" />
+                </div>
+
+                <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                    <label class="form-label mb-0" asp-for="PaymentTerms">Payment Terms</label>
+                    <input type="text" class="w-100" placeholder="Payment Terms" asp-for="PaymentTerms" />
+                </div>
+                <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                    <label class="form-label mb-0" asp-for="PONumber">PO Number</label>
+                    <input type="text" class="w-100" placeholder="PO No." asp-for="PONumber" />
+                </div>
+
             </div>
 
             @*    <h5>
@@ -100,6 +188,6 @@
         </div>
     </div>
 
-    <hr class="mt-3">
-
+    <div class="mt-3">
+    </div>
 </div>

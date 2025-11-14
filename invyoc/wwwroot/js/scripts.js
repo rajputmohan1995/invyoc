@@ -54,6 +54,10 @@ function toINRCurrency(val) {
     });
 }
 
+function round2Decimals(num, precision = 2) {
+    return parseFloat(num).toFixed(precision);
+}
+
 
 // Show Tour Information
 
