@@ -112,7 +112,7 @@ function updateTotals() {
         const cgstAmt = parseFloat((total * cgst) / 100);
         const cessAmt = parseFloat((total * cess) / 100);
 
-        finalTotal += subtotal + sgstAmt + cgstAmt + cessAmt;
+        finalTotal += total + sgstAmt + cgstAmt + cessAmt;
 
         $(this).find('.lbl-sgst').text(round2Decimals(sgstAmt));
         $(this).find('.lbl-cgst').text(round2Decimals(cgstAmt));
@@ -133,6 +133,10 @@ function updateTotals() {
     $('#lblFinalTotalValue').text(currency + toINRCurrency(finalTotal));
 
     $(".total-tax").remove();
+
+    sgstArr = sortAndCombinArray(sgstArr);
+    cgstArr = sortAndCombinArray(cgstArr);
+    cessArr = sortAndCombinArray(cessArr);
 
     for (let i = 0; i < sgstArr.length; i++) {
         if (sgstArr[i].value > 0) {

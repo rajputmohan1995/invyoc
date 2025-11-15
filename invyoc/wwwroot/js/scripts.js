@@ -47,3 +47,17 @@ function toINRCurrency(val) {
 function round2Decimals(num, precision = 2) {
     return parseFloat(num).toFixed(precision);
 }
+
+function sortAndCombinArray(data) {
+    const result = Object.values(
+        data.reduce((acc, item) => {
+            if (!acc[item.value])
+                acc[item.value] = { ...item }; // create new entry
+            else acc[item.value].total += item.total; // aggregate total
+
+            return acc;
+        }, {})
+    );
+
+    return result;
+}
