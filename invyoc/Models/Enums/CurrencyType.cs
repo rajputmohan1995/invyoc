@@ -4,6 +4,9 @@ namespace invyoc.Models.Enums;
 
 public enum CurrencyType
 {
+    [Description("₹")]
+    INR,
+
     [Description("$")]
     USD,
 
@@ -15,9 +18,6 @@ public enum CurrencyType
 
     [Description("$")]
     CAD,
-
-    [Description("₹")]
-    INR,
 
     [Description("$")]
     AUD,

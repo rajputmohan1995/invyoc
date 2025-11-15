@@ -6,52 +6,65 @@
     var currencyValues = PrimitiveTypeExtensions.ToSelectList<CurrencyType>();
 }
 
-<style>
-    div.sticky-top {
-        box-shadow: 0 0 10px rgba(0, 0, 0, .15);
-    }
-</style>
-
-<div class="sticky-top py-3 px-1 bg-light rounded">
+<div class="sticky-top" style="top:15px;">
 
     <div class="row">
 
-        <div class="d-flex flex-column gap-2">
+        <div class="col-sm-12">
+            <h5 class="text-center">Invoice Summary</h5>
+        </div>
 
-            <div class="d-flex align-items-center gap-2 justify-content-end text-end" id="divCurrencySection">
-                <label for="currency" class="mb-0 form-label fw-bold">Currency:</label>
-                <select id="currency"
-                        asp-for="Currency"
-                        asp-items="Model.Currencies"
-                        class="form-control"
-                        style="max-width:120px;">
-                </select>
+        <div class="col-sm-12">
+
+            <div class="table-responsive" id="divInvoiceSummary">
+                <table class="table table-bordered">
+      
+                    <tr>
+                        <td width="40%">
+                            <span>Sub Total</span>
+                        </td>
+                        <td>
+                            <span id="lblSubTotalValue">0.00</span>
+                        </td>
+                    </tr>
+                    <tr id="trFinalTotalDetails">
+                        <td>
+                            <strong>Total</strong>
+                            <select id="currency" asp-for="Currency" asp-items="Model.Currencies" style="width:80px;"></select>
+
+                        </td>
+                        <td>
+                            <h5 class="fw-bold" id="lblFinalTotalValue">0.00</h5>
+                        </td>
+                    </tr>
+                </table>
             </div>
-
-            <hr class="mt-0">
         </div>
 
     </div>
 
-
-    @await Html.PartialAsync("Partials/_InvoiceFooter", Model)
+    <br />
 
     <div class="row">
-        <div class="text-center mx-2" id="divDownloadInvoice">
-            <button class="btn btn-primary" id="hdnDownloadInvoice" type="submit" style="display:none">
-            </button>
-            <button class="btn btn-primary btn-lg" id="previewInvoice" type="button">
-                <i class="fa-solid fa-file-pdf"></i>
-                Preview Invoice
-            </button>
 
-           @*  <div class="mt-2">
-                <p style="font-style:italic; font-size:x-small;" class="border">
-                    <i class="fa-solid fa-circle-info"></i>
-                    If the 'Preview Invoice' button is not functioning, please try clearing your browser's cache and site data, then reload the page.
-                </p>
-            </div> *@
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="d-grid gap-2">
+                <button class="btn btn-dark btn-lg" id="printInvoice" type="button">
+                    <i class="fa fa-print"></i>
+                    Print
+                </button>
+            </div>
         </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="d-grid gap-2">
+                <button class="btn btn-dark btn-lg" id="downloadInvoice" type="button">
+                    <i class="fa-solid fa-download"></i>
+                    Download
+                </button>
+            </div>
+        </div>
+
     </div>
 
 </div>

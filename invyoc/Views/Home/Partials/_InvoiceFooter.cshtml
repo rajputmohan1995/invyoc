@@ -1,95 +1,25 @@
 ﻿@model InvoiceViewModel
 
-<style>
-    span.invoice-total-details {
-        min-width: 110px;
-        display: inline-block;
-    }
+@{
+    Model.PaymentNotes = string.IsNullOrWhiteSpace(Model.PaymentNotes)
+        ? "It was great doing business with you."
+        : Model.PaymentNotes;
 
-    div#invoiceNotes, div#invoiceTerms {
-        position: absolute;
-        bottom: 0;
-    }
+    Model.PaymentTerms = string.IsNullOrWhiteSpace(Model.PaymentTerms)
+        ? "Please make the payment by the due date."
+        : Model.PaymentTerms;
+}
 
-    div#divInvoiceTotals input {
-        max-width: 110px;
-    }
+<div class="row">
 
-    div#divInvoiceTotals p {
-        margin-bottom: 0;
-    }
-
-    textarea#txtPaymentNotes {
-        resize: none;
-        overflow: hidden;
-        min-height: 50px;
-        max-height: 300px;
-        font-style: italic;
-        font-size: small;
-        background-color: white !important;
-    }
-
-    label.txtPaymentNotes {
-        font-size: small;
-        font-weight: 600;
-    }
-</style>
-
-<div class="row mb-4">
-
-    <div class="col-md-12 justify-content-end text-end" id="divInvoiceTotals">
-
-        <div class="d-flex flex-column gap-2">
-
-            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
-                <label class="form-label mb-0">Discount (%)</label>
-                <input type="text"
-                       id="discountRate"
-                       class="form-control form-control-sm"
-                       asp-for="DiscountPercentage"
-                       placeholder="Discount %"
-                       onkeypress="return isNumberKey(event,this.id)" />
-            </div>
-
-
-            <div class="d-flex align-items-center gap-2 justify-content-end text-end">
-                <label class="form-label mb-0">Tax (%)</label>
-                <input type="text"
-                       id="taxRate"
-                       class="form-control form-control-sm"
-                       asp-for="TaxPercentage"
-                       placeholder="Tax %"
-                       onkeypress="return isNumberKey(event,this.id)" />
-            </div>
-
-            <p>
-                <strong>Subtotal:</strong>
-                <span id="subtotal" class="invoice-total-details">$100.00</span>
-            </p>
-
-            <p>
-                <strong>Discount:</strong>
-                <span id="discountAmount" class="invoice-total-details">$0.00</span>
-            </p>
-            <p>
-                <strong>Tax:</strong>
-                <span id="taxAmount" class="invoice-total-details"> $0.00</span>
-            </p>
-
-            <hr class="m-0" />
-            <p class="fs-5">
-                <strong>Total:</strong>
-                <span id="grandTotal" class="invoice-total-details">$100.00</span>
-            </p>
-
-        </div>
-
+    <div class="col-sm-12 col-md-12 col-lg-12 mb-3">
+        <label for="txtPaymentNotes" class="txtPaymentNotes mx-1 fw-bold">Notes</label>
+        <textarea id="txtPaymentNotes" asp-for="PaymentNotes" rows="2" class="w-100"></textarea>
     </div>
 
-    <div class="col" id="divRemarksSection">
-        <hr />
-        <label for="txtPaymentNotes" class="txtPaymentNotes mx-1">Remarks:</label>
-        <textarea id="txtPaymentNotes" class="form-control bg-light" asp-for="PaymentNotes" oninput="textarea_auto_grow(this)"></textarea>
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <label for="txtPaymentTerms" class="txtPaymentTerms mx-1 fw-bold">Terms & Conditions</label>
+        <textarea id="txtPaymentTerms" asp-for="PaymentTerms" rows="2" class="w-100"></textarea>
     </div>
 
 </div>

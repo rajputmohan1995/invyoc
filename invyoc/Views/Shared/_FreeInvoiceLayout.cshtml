@@ -20,6 +20,10 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=TikTok+Sans:opsz,wght@12..36,300..900&display=swap" rel="stylesheet" />
+
 
     @RenderSection("Styles", false)
 
@@ -30,34 +34,11 @@
 </head>
 <body>
 
-    <div class="container-fluid">
-
-        <nav class="navbar navbar-expand-lg navbar-light row pt-0">
-            <div class="container pt-0 pb-0 border-bottom">
-
-                <a class="navbar-brand ms-4 me-2" asp-controller="Home" asp-action="Index">
-                    <img class="img-icon" src="~/default-icon.png" loading="lazy" alt="site-icon" />
-                </a>
-
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav float-end navbar-link">
-
-                        <li class="nav-item">
-                            <h1 class="fs-5 m-0">
-                                <a class="nav-link active" asp-controller="Home" asp-action="Index">
-                                    Free Invoices - Create and Download Invoices Instantly
-                                </a>
-                            </h1>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
+    <div>
 
         @RenderBody()
 
-        <footer class="text-center my-3">
+        <footer class="text-center mb-3 mt-5">
             <div class="footer-container">
                 <p class="m-1">&copy; <span id="spanCurrentYear"></span> Free Invoices. All rights reserved.</p>
                 <nav>
@@ -83,9 +64,9 @@
         {
             "@@context": "https://schema.org",
             "@@type": "WebSite",
-            "name": "Free Invoices",
-            "url": "https://freeinvoice.runasp.net/",
-            "description": "Generate invoices quickly and for free. Customize, download, and send invoices instantly.",
+            "name": "Free Gst Bill",
+            "url": "https://freegstbill.co.in/",
+            "description": "Generate gst bill quickly and for free. Customize, download, and send bills instantly.",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "All",
             "offers": {
@@ -95,7 +76,7 @@
             },
             "publisher": {
               "@@type": "Organization",
-              "name": "FreeInvoices"
+              "name": "FreeGSTBills"
             }
         }
     </script>

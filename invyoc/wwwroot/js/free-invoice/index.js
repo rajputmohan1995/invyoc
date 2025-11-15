@@ -39,7 +39,7 @@
     });
 
     $('#lblSubTotalValue').text(round2Decimals(subtotal));
-    $('#lblFinalTotalValue').text(toINRCurrency(finalTotal));
+    $('#lblFinalTotalValue').text(currency + toINRCurrency(finalTotal));
 
     $(".total-tax").remove();
 
@@ -64,16 +64,16 @@
         }
     }
 
-    const discountRate = parseFloat($('#discountRate').val()) || 0;
-    const taxRate = parseFloat($('#taxRate').val()) || 0;
-    const discount = subtotal * (discountRate / 100);
-    const tax = (subtotal - discount) * (taxRate / 100);
-    const grandTotal = subtotal - discount + tax;
+    //const discountRate = parseFloat($('#discountRate').val()) || 0;
+    //const taxRate = parseFloat($('#taxRate').val()) || 0;
+    //const discount = subtotal * (discountRate / 100);
+    //const tax = (subtotal - discount) * (taxRate / 100);
+    //const grandTotal = subtotal - discount + tax;
 
-    $('#subtotal').text(currency + toINRCurrency(subtotal));
-    $('#discountAmount').text(currency + toINRCurrency(discount));
-    $('#taxAmount').text(currency + toINRCurrency(tax));
-    $('#grandTotal').text(currency + toINRCurrency(grandTotal));
+    //$('#subtotal').text(currency + toINRCurrency(subtotal));
+    //$('#discountAmount').text(currency + toINRCurrency(discount));
+    //$('#taxAmount').text(currency + toINRCurrency(tax));
+    //$('#grandTotal').text(currency + toINRCurrency(grandTotal));
 }
 
 $(document).on('input', '.item-qty, .item-price, .item-sgst, .item-cgst, .item-cess, #taxRate, #discountRate, #currency', updateTotals);
@@ -143,9 +143,9 @@ $('#addRow').click(function () {
 
         <td class="item-total text-end align-top">0.00</td>
         <td class="text-end align-top">
-            <button class="btn btn-danger btn-sm p-0 px-1 remove-row rounded-5">  
-                <span aria-hidden="true">×</span>
-            </button>
+            <button class="btn btn-sm btn-outline-danger remove-row">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </button>    
         </td>
       </tr>`;
 
@@ -161,7 +161,7 @@ $(document).on('click', '.remove-row', function () {
 
 $(document).ready(function () {
     updateTotals();
-    textarea_auto_grow(document.getElementById('txtPaymentNotes'));
+    //textarea_auto_grow(document.getElementById('txtPaymentNotes'));
 });
 
 function textarea_auto_grow(element) {

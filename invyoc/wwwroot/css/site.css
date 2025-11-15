@@ -1,14 +1,3 @@
-html {
-    font-size: 14px;
-    height: -webkit-fill-available;
-}
-
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-}
-
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -18,18 +7,12 @@ html {
     min-height: 100%;
 }
 
-body {
-    margin-bottom: 60px;
-}
-
-html, html body {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    height: auto;
-    min-height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    font-size: 14px;
-}
+    html, html body {
+        font-family: TikTok Sans, sans-serif, Verdana, Geneva, Tahoma, sans-serif;
+        height: auto;
+        min-height: 100%;
+        font-size: 14px;
+    }
 
 .img-icon {
     height: 40px;
@@ -39,4 +22,89 @@ html, html body {
 
 input {
     font-size: 14px;
+}
+
+
+
+form#frmInvoice {
+    max-width: 95%;
+    margin: auto;
+}
+
+#invoiceTable.table th, #invoiceTable.table td {
+    vertical-align: middle;
+}
+
+.invoice-box {
+    padding: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 2rem;
+}
+
+#invoiceTable tr.line-item {
+    border-bottom: 1px solid #ddd;
+}
+
+#logoDropZone {
+    border: 2px dashed #ccc;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: background 0.3s;
+    width: 125px;
+    height: 125px;
+}
+
+    #logoDropZone:hover {
+        border-color: #555555;
+        color: #555555;
+    }
+
+    #logoDropZone p {
+        margin-top: 3rem;
+    }
+
+    #logoDropZone.hover {
+        background-color: #e6f7ff;
+    }
+
+    #logoDropZone #logoPreview {
+        width: 125px;
+        height: 125px;
+    }
+
+.upload-section-note-main {
+    max-width: 200px;
+    padding: 10px 15px;
+}
+
+.upload-section-note {
+    margin: auto;
+}
+
+    .upload-section-note div {
+        color: #676767;
+        font-size: 10px;
+        padding-top: 5px;
+    }
+
+.invoice-main-details input {
+    max-width: 150px;
+}
+
+#divBillToAndShipTo {
+    margin: 5rem 0;
+}
+
+#divInvoiceSummary {
+    border: 1px solid #ccc;
+    border-radius: 1rem;
+}
+
+
+/* Mobile Responsive */
+@media (min-width: 768px) {
+    html {
+        font-size: 12px;
+    }
 }

@@ -6,11 +6,17 @@ namespace invyoc.Models;
 
 public class InvoiceViewModel
 {
-    public string InvoiceNumber { get; set; }
+    public InvoiceViewModel()
+    {
+        InvoiceNumber = "INV01";
+        Currency = CurrencyType.INR.ToString();
+    }
+
+    public string InvoiceNumber { get; set; } = string.Empty;
     public DateTime InvoiceDate { get; set; }
-    public string PaymentTerms { get; set; }
+    public string? PaymentTerms { get; set; }
     public DateTime DueDate { get; set; }
-    public string PONumber { get; set; }
+    public string? PONumber { get; set; }
 
     public CompanyInfo Company { get; set; } = new();
     public ClientInfo BillTo { get; set; } = new();
@@ -21,7 +27,7 @@ public class InvoiceViewModel
     public decimal DiscountPercentage { get; set; }
     public decimal TaxPercentage { get; set; }
 
-    public string Currency { get; set; }
+    public string Currency { get; set; } = string.Empty;
 
     public decimal Subtotal => Items.Sum(i => i.Amount).ToFormat();
     public decimal Discount => (Subtotal * (DiscountPercentage / 100)).ToFormat();
@@ -30,7 +36,7 @@ public class InvoiceViewModel
 
     public List<SelectListItem> Currencies = PrimitiveTypeExtensions.ToSelectList<CurrencyType>();
 
-    public string PaymentNotes { get; set; }
+    public string? PaymentNotes { get; set; }
 
     public static InvoiceViewModel GetTempData()
     {
