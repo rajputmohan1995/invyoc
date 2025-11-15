@@ -1,89 +1,16 @@
-﻿function updateTotals() {
-    let subtotal = 0;
-    let finalTotal = 0;
-    let currency = $('#currency').val();
+﻿
+$(function () {
+    $("#spanCurrentYear").text(new Date().getFullYear());
+    updateTotals();
+});
 
-    let sgstArr = [];
-    let cgstArr = [];
-    let cessArr = [];
 
-    $('#invoiceTable tbody tr.line-item').each(function () {
-        const qty = parseFloat($(this).find('.item-qty').val()) || 0;
-        const price = parseFloat($(this).find('.item-price').val()) || 0;
-        const total = qty * price;
-        subtotal += total;
+$(document).on('click', '#addRow', function () {
 
-        const sgst = parseFloat($(this).find('.item-sgst').val()) || 0;
-        const cgst = parseFloat($(this).find('.item-cgst').val()) || 0;
-        const cess = parseFloat($(this).find('.item-cess').val()) || 0;
-
-        const sgstAmt = parseFloat((total * sgst) / 100);
-        const cgstAmt = parseFloat((total * cgst) / 100);
-        const cessAmt = parseFloat((total * cess) / 100);
-
-        finalTotal += subtotal + sgstAmt + cgstAmt + cessAmt;
-
-        $(this).find('.lbl-sgst').text(round2Decimals(sgstAmt));
-        $(this).find('.lbl-cgst').text(round2Decimals(cgstAmt));
-        $(this).find('.lbl-cess').text(round2Decimals(cessAmt));
-        $(this).find('.item-total').text(round2Decimals(total));
-
-        let sgstName = `SGST (${sgst}%)`
-        sgstArr.push({ name: sgstName, total: sgstAmt, value: sgst });
-
-        let cgstName = `CGST (${cgst}%)`
-        cgstArr.push({ name: cgstName, total: cgstAmt, value: cgst });
-
-        let cessName = `Cess (${cess}%)`
-        cessArr.push({ name: cessName, total: cessAmt, value: cess });
-    });
-
-    $('#lblSubTotalValue').text(round2Decimals(subtotal));
-    $('#lblFinalTotalValue').text(currency + toINRCurrency(finalTotal));
-
-    $(".total-tax").remove();
-
-    for (let i = 0; i < sgstArr.length; i++) {
-        if (sgstArr[i].value > 0) {
-            $("#trFinalTotalDetails").before(`<tr class="total-tax">
-                                            <td><span>${sgstArr[i].name}</span></td>
-                                            <td><span>${round2Decimals(sgstArr[i].total)}</span></td>
-                                        </tr>`);
-        }
-        if (cgstArr[i].value > 0) {
-            $("#trFinalTotalDetails").before(`<tr class="total-tax">
-                                            <td><span>${cgstArr[i].name}</span></td>
-                                            <td><span>${round2Decimals(cgstArr[i].total)}</span></td>
-                                        </tr>`);
-        }
-        if (cessArr[i].value > 0) {
-            $("#trFinalTotalDetails").before(`<tr class="total-tax">
-                                            <td></strong>${cessArr[i].name}</strong></td>
-                                            <td>${round2Decimals(cessArr[i].total)}</td>
-                                        </tr>`);
-        }
-    }
-
-    //const discountRate = parseFloat($('#discountRate').val()) || 0;
-    //const taxRate = parseFloat($('#taxRate').val()) || 0;
-    //const discount = subtotal * (discountRate / 100);
-    //const tax = (subtotal - discount) * (taxRate / 100);
-    //const grandTotal = subtotal - discount + tax;
-
-    //$('#subtotal').text(currency + toINRCurrency(subtotal));
-    //$('#discountAmount').text(currency + toINRCurrency(discount));
-    //$('#taxAmount').text(currency + toINRCurrency(tax));
-    //$('#grandTotal').text(currency + toINRCurrency(grandTotal));
-}
-
-$(document).on('input', '.item-qty, .item-price, .item-sgst, .item-cgst, .item-cess, #taxRate, #discountRate, #currency', updateTotals);
-
-$('#addRow').click(function () {
     var currentRowValue = $('#invoiceTable tbody tr').length - 1;
     var newRowValue = currentRowValue + 1;
     var newRowIndex = newRowValue - 1;
 
-    //<td><span name="Items[${newRowIndex}].LineNumber">${newRowValue}</span></td>
 
     const row = `<tr class="line-item">
         <td class="align-top">
@@ -151,6 +78,7 @@ $('#addRow').click(function () {
 
     $('#invoiceTable tbody tr#lastRow').before(row);
     updateTotals();
+
 });
 
 $(document).on('click', '.remove-row', function () {
@@ -159,21 +87,80 @@ $(document).on('click', '.remove-row', function () {
     updateTotals();
 });
 
-$(document).ready(function () {
-    updateTotals();
-    //textarea_auto_grow(document.getElementById('txtPaymentNotes'));
-});
+$(document).on('input', '.item-qty, .item-price, .item-sgst, .item-cgst, .item-cess, #taxRate, #discountRate, #currency', updateTotals);
 
-function textarea_auto_grow(element) {
-    element.style.height = "5px";
-    element.style.height = (element.scrollHeight) + "px";
+function updateTotals() {
+    let subtotal = 0;
+    let finalTotal = 0;
+    let currency = $('#currency').val();
+
+    let sgstArr = [];
+    let cgstArr = [];
+    let cessArr = [];
+
+    $('#invoiceTable tbody tr.line-item').each(function () {
+        const qty = parseFloat($(this).find('.item-qty').val()) || 0;
+        const price = parseFloat($(this).find('.item-price').val()) || 0;
+        const total = qty * price;
+        subtotal += total;
+
+        const sgst = parseFloat($(this).find('.item-sgst').val()) || 0;
+        const cgst = parseFloat($(this).find('.item-cgst').val()) || 0;
+        const cess = parseFloat($(this).find('.item-cess').val()) || 0;
+
+        const sgstAmt = parseFloat((total * sgst) / 100);
+        const cgstAmt = parseFloat((total * cgst) / 100);
+        const cessAmt = parseFloat((total * cess) / 100);
+
+        finalTotal += subtotal + sgstAmt + cgstAmt + cessAmt;
+
+        $(this).find('.lbl-sgst').text(round2Decimals(sgstAmt));
+        $(this).find('.lbl-cgst').text(round2Decimals(cgstAmt));
+        $(this).find('.lbl-cess').text(round2Decimals(cessAmt));
+        $(this).find('.item-total').text(round2Decimals(total));
+
+        let sgstName = `SGST (${sgst}%)`
+        sgstArr.push({ name: sgstName, total: sgstAmt, value: sgst });
+
+        let cgstName = `CGST (${cgst}%)`
+        cgstArr.push({ name: cgstName, total: cgstAmt, value: cgst });
+
+        let cessName = `Cess (${cess}%)`
+        cessArr.push({ name: cessName, total: cessAmt, value: cess });
+    });
+
+    $('#lblSubTotalValue').text(round2Decimals(subtotal));
+    $('#lblFinalTotalValue').text(currency + toINRCurrency(finalTotal));
+
+    $(".total-tax").remove();
+
+    for (let i = 0; i < sgstArr.length; i++) {
+        if (sgstArr[i].value > 0) {
+            $("#trFinalTotalDetails").before(`<tr class="total-tax">
+                                            <td><span>${sgstArr[i].name}</span></td>
+                                            <td><span>${round2Decimals(sgstArr[i].total)}</span></td>
+                                        </tr>`);
+        }
+        if (cgstArr[i].value > 0) {
+            $("#trFinalTotalDetails").before(`<tr class="total-tax">
+                                            <td><span>${cgstArr[i].name}</span></td>
+                                            <td><span>${round2Decimals(cgstArr[i].total)}</span></td>
+                                        </tr>`);
+        }
+        if (cessArr[i].value > 0) {
+            $("#trFinalTotalDetails").before(`<tr class="total-tax">
+                                            <td></strong>${cessArr[i].name}</strong></td>
+                                            <td>${round2Decimals(cessArr[i].total)}</td>
+                                        </tr>`);
+        }
+    }
 }
+
 
 function reindexInvoiceRows() {
     const rows = document.querySelectorAll("table#invoiceTable tbody tr");
 
     rows.forEach((row, index) => {
-        //row.querySelector("td:first-child span").textContent = index + 1;
 
         const descInput = row.querySelector(".item-desc");
         if (descInput) {
@@ -242,15 +229,6 @@ function reindexInvoiceRows() {
             cgstInvariant.value = `Items[${index}].Cess`;
         }
     });
-}
-
-function setInvoiceNumWidthAsPerContent() {
-    var incoiceNumElem = document.getElementById("InvoiceNumber");
-
-    const allowedCharacters = "0123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBNzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ "; // You can add any other character in the same way
-    incoiceNumElem.value = incoiceNumElem.value.split('').filter(char => allowedCharacters.includes(char)).join('');
-
-    incoiceNumElem.style.width = ((incoiceNumElem.value.length + 1) * 12) + 'px';
 }
 
 

@@ -3,13 +3,26 @@
     Layout = "_FreeInvoiceLayout";
 }
 
-<main class="my-2">
+<div class="my-4 container">
 
-    <h2 class="text-center text-decoration-underline">About Us</h2>
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="text-center text-decoration-underline">@ViewData["Title"]</h2>
+        </div>
 
-    <div class="card">
+        <div class="col-sm-12 text-end">
+            <a asp-controller="Home" asp-action="Index">
+                Back to create bill
+            </a>
+        </div>
+    </div>
 
-        <div class="card-body">
+
+    <hr />
+
+    <div class="row">
+
+        <div class="col">
             <p>
                 Welcome to <strong>Free Invoices</strong>, your go-to solution for creating professional invoices quickly, easily, and for free.
             </p>
@@ -65,4 +78,4 @@
         </div>
     </div>
 
-</main>
+</div>

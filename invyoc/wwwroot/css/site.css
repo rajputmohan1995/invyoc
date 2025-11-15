@@ -93,7 +93,8 @@ form#frmInvoice {
 }
 
 #divBillToAndShipTo {
-    margin: 5rem 0;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
 }
 
 #divInvoiceSummary {
@@ -101,6 +102,9 @@ form#frmInvoice {
     border-radius: 1rem;
 }
 
+#divInvoiceItems {
+    margin-bottom: 3rem;
+}
 
 /* Mobile Responsive */
 @media (min-width: 768px) {

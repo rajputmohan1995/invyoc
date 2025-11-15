@@ -10,6 +10,8 @@ public class InvoiceViewModel
     {
         InvoiceNumber = "INV01";
         Currency = CurrencyType.INR.ToString();
+        DueDate = DateTime.Now.AddDays(15);
+        InvoiceDate = DateTime.Now;
     }
 
     public string InvoiceNumber { get; set; } = string.Empty;
