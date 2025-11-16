@@ -10,6 +10,7 @@
         </h5>
 
         <input type="text" class="mb-1 w-100" asp-for="BillTo.Name" placeholder="Your Client's Company" />
+        <span asp-validation-for="BillTo.Name" class="text-danger"></span>
 
         <input type="text" class="mb-1 w-100" asp-for="BillTo.GSTNo" placeholder="Client's GSTIN" />
 

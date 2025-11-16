@@ -33,9 +33,14 @@
                     var itemCount = item.InvoiceVM?.Items?.Count ?? 0;
 
                     var subTotal = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Subtotal ?? 0);
+
+                    @* 
                     var discountAmount = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Discount ?? 0);
                     var taxAmount = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Tax ?? 0);
                     var total = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Subtotal ?? 0 + item.InvoiceVM?.Tax ?? 0 + item.InvoiceVM?.Discount ?? 0);
+                    *@
+
+                    var total = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Subtotal ?? 0);
 
                     <tr style="cursor:pointer;" onclick="location.href='@Url.Action("InvoiceDetails", "Home", new { invoiceData = JsonSerializer.Serialize(invoiceVM) })'">
                         <td>@item.Id</td>
@@ -56,13 +61,13 @@
                             @(invoiceVM?.BillTo?.Address ?? "[Ship To Address]")
                         </td>
 
-                        <td>
+                        @*   <td>
                             Items Count : @itemCount <br />
                             SubTotal : @subTotal<br />
                             Discount (@invoiceVM?.DiscountPercentage%) : @discountAmount<br />
                             Tax (@invoiceVM?.TaxPercentage%) : @taxAmount<br />
                             Total : @total
-                        </td>
+                        </td> *@
 
                         <td>@item.Timestamp.ToLocalTime().ToString("dd-MMM-yyyy hh:mm:ss tt")</td>
                     </tr>

@@ -2,9 +2,6 @@
 @using invyoc.Models.Enums
 @model InvoiceViewModel
 
-@{
-    var currencyValues = PrimitiveTypeExtensions.ToSelectList<CurrencyType>();
-}
 
 <div class="sticky-top" style="top:15px;">
 
@@ -49,7 +46,7 @@
 
         <div class="col-sm-12 col-md-6 col-lg-6">
             <div class="d-grid gap-2">
-                <button class="btn btn-dark btn-lg" id="printInvoice" type="button">
+                <button class="btn btn-dark btn-lg" id="printInvoice" type="submit">
                     <i class="fa fa-print"></i>
                     Print
                 </button>
@@ -58,7 +55,7 @@
 
         <div class="col-sm-12 col-md-6 col-lg-6">
             <div class="d-grid gap-2">
-                <button class="btn btn-dark btn-lg" id="downloadInvoice" type="button">
+                <button class="btn btn-dark btn-lg" id="downloadInvoice" type="submit">
                     <i class="fa-solid fa-download"></i>
                     Download
                 </button>

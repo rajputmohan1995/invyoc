@@ -70,7 +70,7 @@ $(document).on('click', '#addRow', function () {
 
         <td class="item-total text-end align-top">0.00</td>
         <td class="text-end align-top">
-            <button class="btn btn-sm btn-outline-danger remove-row">
+            <button class="btn btn-sm btn-outline-danger remove-row px-1 py-0">
                 <i class="fa fa-times" aria-hidden="true"></i>
             </button>    
         </td>
@@ -272,26 +272,26 @@ function enablePreviewButton() {
     $("#previewInvoice").removeAttr("disabled");
 }
 
-$("#btnDownloadInvoice").on('click', function () {
+//$("#btnDownloadInvoice").on('click', function () {
 
-    $("#btnDownloadInvoice").text("Please Wait...");
-    $("#btnDownloadInvoice").attr("disabled", "disabled");
+//    $("#btnDownloadInvoice").text("Please Wait...");
+//    $("#btnDownloadInvoice").attr("disabled", "disabled");
 
-    $("#hdnDownloadInvoice").show();
-    $("#hdnDownloadInvoice").click();
+//    $("#hdnDownloadInvoice").show();
+//    $("#hdnDownloadInvoice").click();
 
-    setTimeout(function () {
-        enableDownloadButton();
-        $("#hdnDownloadInvoice").hide();
-        $("#divInvoiceDownload").show();
+//    setTimeout(function () {
+//        enableDownloadButton();
+//        $("#hdnDownloadInvoice").hide();
+//        $("#divInvoiceDownload").show();
 
-        setTimeout(function () {
-            $("#divInvoiceDownload").hide();
-        }, 5000);
-    }, 1500);
-});
+//        setTimeout(function () {
+//            $("#divInvoiceDownload").hide();
+//        }, 5000);
+//    }, 1500);
+//});
 
-function enableDownloadButton() {
-    $("#btnDownloadInvoice").html('<i class="fa fa-download"></i> Download Invoice');
-    $("#btnDownloadInvoice").removeAttr("disabled");
-}
+//function enableDownloadButton() {
+//    $("#btnDownloadInvoice").html('<i class="fa fa-download"></i> Download Invoice');
+//    $("#btnDownloadInvoice").removeAttr("disabled");
+//}

@@ -1,15 +1,5 @@
 ﻿@model InvoiceViewModel
 
-@{
-    Model.PaymentNotes = string.IsNullOrWhiteSpace(Model.PaymentNotes)
-        ? "It was great doing business with you."
-        : Model.PaymentNotes;
-
-    Model.PaymentTerms = string.IsNullOrWhiteSpace(Model.PaymentTerms)
-        ? "Please make the payment by the due date."
-        : Model.PaymentTerms;
-}
-
 <div class="row">
 
     <div class="col-sm-12 col-md-6 col-lg-6 mb-3">

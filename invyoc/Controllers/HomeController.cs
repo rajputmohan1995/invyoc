@@ -19,22 +19,64 @@ public class HomeController : Controller
         _pdfService = pdfService;
     }
 
-    [Route("")]
+    [HttpGet]
     public IActionResult Index()
     {
-        InvoiceViewModel invoiceVM = new(); //InvoiceViewModel.GetTempData();
-        var lastSavedInvoice = Request.Cookies[_lastSavedInvoiceCookieName];
-
-        if (!string.IsNullOrWhiteSpace(lastSavedInvoice))
-        {
-            invoiceVM = JsonSerializer.Deserialize<InvoiceViewModel>(lastSavedInvoice);
-
-            var lastSavedInvoiceLogo = Request.Cookies[_lastSavedInvoiceLogo];
-            if (invoiceVM != null && invoiceVM.Company != null && !string.IsNullOrWhiteSpace(lastSavedInvoiceLogo))
-                invoiceVM.Company.LogoBase64 = lastSavedInvoiceLogo;
-        }
-
+        InvoiceViewModel invoiceVM = new();
         return View(invoiceVM);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Index(InvoiceViewModel invoiceVM)
+    {
+        try
+        {
+            ArgumentNullException.ThrowIfNull(invoiceVM);
+
+            if (!ModelState.IsValid)
+            {
+                return View(invoiceVM);
+            }
+
+            var invoiceLineNum = 0;
+            invoiceVM.Items.ForEach(i => i.LineNumber = ++invoiceLineNum);
+
+            if (!ObjectComparer.AreEqual(invoiceVM, InvoiceViewModel.GetTempData()))
+            {
+                string savedInvoicePath = Path.Combine(_env.WebRootPath, $"invoiceJson\\invoices_{DateTime.UtcNow:MMM-yyyy}.json");
+                PrimitiveTypeExtensions.AppendJsonObjectToFile(savedInvoicePath, new SavedInvoiceData() { InvoiceVM = invoiceVM });
+            }
+
+            var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
+            string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "invoice-template.html");
+
+            var pdfBytes = await _pdfService.GeneratePdf(ExportExtensions.GetHtmlContent(invoiceVM, invoiceTemplatePath));
+
+
+            Response.Cookies.Append(_lastSavedInvoiceCookieName, JsonSerializer.Serialize(invoiceVM), new() { Expires = DateTime.Now.AddDays(60) });
+            if (!string.IsNullOrWhiteSpace(invoiceVM.Company.LogoBase64))
+                Response.Cookies.Append(_lastSavedInvoiceLogo, invoiceVM.Company.LogoBase64, new() { Expires = DateTime.Now.AddDays(60) });
+
+
+            ViewBag.IsDownloadSuccess = true;
+
+            // Disable response buffering for large files
+            Response.Headers.Append("Content-Disposition", "attachment; filename=" + newInvoiceFileName);
+            Response.ContentType = "application/pdf";
+            Response.ContentLength = pdfBytes.Length;
+
+            // Write directly to response stream
+            await Response.Body.WriteAsync(pdfBytes, 0, pdfBytes.Length);
+            await Response.Body.FlushAsync();
+
+            return View(invoiceVM);
+        }
+        catch (Exception)
+        {
+            ModelState.AddModelError("", "An error occurred while saving.");
+            return View(invoiceVM);
+        }
     }
 
     [HttpPost("preview-invoice")]

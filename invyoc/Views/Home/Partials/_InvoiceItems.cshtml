@@ -3,7 +3,7 @@
     @if (Model.Items == null || Model.Items?.Count == 0)
     {
         Model.Items ??= new();
-        Model.Items.Add(new InvoiceItemViewModel() { LineNumber = 1 });
+        Model.Items.Add(new());
     }
 }
 
@@ -24,7 +24,7 @@
                         <th width="9%">CGST</th>
                         <th width="9%">Cess</th>
                         <th width="14%" class="text-end">Amount</th>
-                        <th width="4%"></th>
+                        <th width="3%" class="bg-white"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -105,7 +105,7 @@
 
                             <td class="item-total text-end align-top">@Model.Items[i].Amount</td>
                             <td class="text-end align-top">
-                                <button class="btn btn-sm btn-outline-danger remove-row">
+                                <button class="btn btn-sm btn-outline-danger remove-row px-1 py-0">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </button>
                             </td>

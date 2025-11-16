@@ -46,6 +46,7 @@
         <div class="row mb-1">
             <div class="col">
                 <input asp-for="Company.Name" type="text" class="w-100" placeholder="Your Company" />
+                <span asp-validation-for="Company.Name" class="text-danger"></span>
             </div>
         </div>
 
@@ -109,15 +110,29 @@
                            pattern="[a-zA-Z0-9]*"
                            placeholder="#101" />
                 </div>
+                <div class="d-flex justify-content-end text-end">
+                    <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
+                </div>
+
 
                 <div class="d-flex align-items-center gap-2 justify-content-end text-end">
                     <label class="form-label mb-0" asp-for="InvoiceDate">Date</label>
                     <input type="date" class="w-100" asp-for="InvoiceDate" />
+
                 </div>
+                <div class="d-flex justify-content-end text-end">
+                    <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+                </div>
+
+
                 <div class="d-flex align-items-center gap-2 justify-content-end text-end">
                     <label class="form-label mb-0" asp-for="DueDate">Due Date</label>
                     <input type="date" class="w-100" asp-for="DueDate" />
                 </div>
+                <div class="d-flex justify-content-end text-end">
+                    <span asp-validation-for="DueDate" class="text-danger"></span>
+                </div>
+
 
                 <div class="d-flex align-items-center gap-2 justify-content-end text-end">
                     <label class="form-label mb-0" asp-for="PONumber">PO Number</label>

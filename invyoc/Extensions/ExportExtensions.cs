@@ -86,9 +86,10 @@ public static class ExportExtensions
             invoiceItems += invoiceItemTemplate;
         }
 
-        var discountAmount = ((invoiceItemTotal * invoiceVM.DiscountPercentage) / 100).ToFormat();
-        var taxAmount = (((invoiceItemTotal - discountAmount) * invoiceVM.TaxPercentage) / 100).ToFormat();
-        var finalAmount = (invoiceItemTotal - discountAmount + taxAmount).ToFormat();
+        //var discountAmount = ((invoiceItemTotal * invoiceVM.DiscountPercentage) / 100).ToFormat();
+        //var taxAmount = (((invoiceItemTotal - discountAmount) * invoiceVM.TaxPercentage) / 100).ToFormat();
+        //var finalAmount = (invoiceItemTotal - discountAmount + taxAmount).ToFormat();
+        var finalAmount = invoiceItemTotal.ToFormat();
 
         invoiceItems += @"<tr>
             <td class='border-0 p-0 m-0' colspan='5'></td>
@@ -100,17 +101,17 @@ public static class ExportExtensions
             <td>{invoiceVM.Currency + invoiceItemTotal.ToCurrency()}</td>
         </tr>";
 
-        invoiceItems += @$"<tr>
-            <td class='border-0' colspan='3'></td>
-            <td class='text-right'>Discount ({invoiceVM.DiscountPercentage}%)</td>
-            <td>{invoiceVM.Currency + discountAmount.ToCurrency()}</td>
-        </tr>";
+        //invoiceItems += @$"<tr>
+        //    <td class='border-0' colspan='3'></td>
+        //    <td class='text-right'>Discount ({invoiceVM.DiscountPercentage}%)</td>
+        //    <td>{invoiceVM.Currency + discountAmount.ToCurrency()}</td>
+        //</tr>";
 
-        invoiceItems += @$"<tr>
-            <td class='border-0' colspan='3'></td>
-            <td class='text-right'>Tax ({invoiceVM.TaxPercentage}%)</td>
-            <td>{invoiceVM.Currency + taxAmount.ToCurrency()}</td>
-        </tr>";
+        //invoiceItems += @$"<tr>
+        //    <td class='border-0' colspan='3'></td>
+        //    <td class='text-right'>Tax ({invoiceVM.TaxPercentage}%)</td>
+        //    <td>{invoiceVM.Currency + taxAmount.ToCurrency()}</td>
+        //</tr>";
 
         invoiceItems += @$"<tr>
             <td class='border-0' colspan='3'></td>

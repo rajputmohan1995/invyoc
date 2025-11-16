@@ -1,6 +1,7 @@
 ﻿using invyoc.Extensions;
 using invyoc.Models.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace invyoc.Models;
 
@@ -12,12 +13,23 @@ public class InvoiceViewModel
         Currency = CurrencyType.INR.ToString();
         DueDate = DateTime.Now.AddDays(15);
         InvoiceDate = DateTime.Now;
+        PaymentNotes = "It was great doing business with you.";
+        PaymentTerms = "Please make the payment by the due date.";
     }
 
+    [Required(ErrorMessage = "Invoice Number is required")]
     public string InvoiceNumber { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Invoice Date is required")]
     public DateTime InvoiceDate { get; set; }
+
     public string? PaymentTerms { get; set; }
+
+    public string? PaymentNotes { get; set; }
+
+    [Required(ErrorMessage = "Due Date is required")]
     public DateTime DueDate { get; set; }
+
     public string? PONumber { get; set; }
 
     public CompanyInfo Company { get; set; } = new();
@@ -26,19 +38,17 @@ public class InvoiceViewModel
 
     public List<InvoiceItemViewModel> Items { get; set; } = [];
 
-    public decimal DiscountPercentage { get; set; }
-    public decimal TaxPercentage { get; set; }
-
     public string Currency { get; set; } = string.Empty;
 
     public decimal Subtotal => Items.Sum(i => i.Amount).ToFormat();
-    public decimal Discount => (Subtotal * (DiscountPercentage / 100)).ToFormat();
-    public decimal Tax => ((Subtotal - Discount) * (TaxPercentage / 100)).ToFormat();
-    public decimal Total => (Subtotal - Discount + Tax).ToFormat();
 
     public List<SelectListItem> Currencies = PrimitiveTypeExtensions.ToSelectList<CurrencyType>();
 
-    public string? PaymentNotes { get; set; }
+    //public decimal DiscountPercentage { get; set; }
+    //public decimal TaxPercentage { get; set; }
+    //public decimal Discount => (Subtotal * (DiscountPercentage / 100)).ToFormat();
+    //public decimal Tax => ((Subtotal - Discount) * (TaxPercentage / 100)).ToFormat();
+    //public decimal Total => (Subtotal - Discount + Tax).ToFormat();
 
     public static InvoiceViewModel GetTempData()
     {
@@ -81,8 +91,8 @@ public class InvoiceViewModel
                 new() { LineNumber = 1, Description = "Item 1", Quantity = 1, Rate = 100 },
             ],
 
-            DiscountPercentage = 0,
-            TaxPercentage = 0,
+            //DiscountPercentage = 0,
+            //TaxPercentage = 0,
 
             PaymentNotes = "Thank you for doing business with us.\r\nPayment terms: to be received within 30 days."
         };

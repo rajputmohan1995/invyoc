@@ -98,14 +98,12 @@ app.Use(async (context, next) =>
 
 app.UseMiddleware<CustomErrorHandlingMiddleware>();
 
+app.UseResponseCompression();
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
-
-
-app.UseResponseCompression();
 
 app.UseHttpsRedirection();
 

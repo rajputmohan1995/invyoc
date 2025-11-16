@@ -1,17 +1,27 @@
 ﻿@model InvoiceViewModel
 @{
-    ViewData["Title"] = "Create and Download Invoices Instantly";
+    ViewData["Title"] = "Free GST Bills";
     Layout = "_FreeInvoiceLayout";
 }
 
-@using (Html.BeginForm("Download", "Home", FormMethod.Post,
+@* @using (Html.BeginForm("Index", "Home", FormMethod.Post,
         new
         {
             @id = "frmInvoice",
             @enctype = "multipart/form-data",
             @class = "mt-3"
         }))
-{
+{ 
+}*@
+
+<form id="frmInvoice"
+      class="mt-3"
+      asp-controller="Home"
+      asp-action="Index"
+      method="post"
+      enctype="multipart/form-data"
+      novalidate>
+
     @Html.AntiForgeryToken()
 
     <div class="row">
@@ -35,7 +45,8 @@
         </div>
 
     </div>
-}
+</form>
+
 
 @section Scripts {
     <script src="~/js/free-invoice/index.js"></script>
