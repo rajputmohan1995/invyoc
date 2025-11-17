@@ -89,6 +89,38 @@ $(document).on('click', '.remove-row', function () {
 
 $(document).on('input', '.item-qty, .item-price, .item-sgst, .item-cgst, .item-cess, #taxRate, #discountRate, #currency', updateTotals);
 
+$(document).on('change', '#chkSameAsBillTo', function () {
+
+    let isChecked = $("#chkSameAsBillTo").prop('checked');
+
+    if (isChecked) {
+        let billToAddress = $("#BillTo_ClientAddress_Address").val().trim();
+        let billToAddressCity = $("#BillTo_ClientAddress_City").val().trim();
+        let billToAddressState = $("#BillTo_ClientAddress_State").val().trim();
+        let billToAddressCountry = $("#BillTo_ClientAddress_Country").val().trim();
+        let billToAddressContactNum = $("#BillTo_ClientAddress_ContactNum").val().trim();
+
+        $("#ShipTo_Address").val(billToAddress);
+        $("#ShipTo_City").val(billToAddressCity);
+        $("#ShipTo_State").val(billToAddressState);
+        $("#ShipTo_Country").val(billToAddressCountry);
+        $("#ShipTo_ContactNum").val(billToAddressContactNum);
+
+        $("#ShipTo_Address").attr('disabled', 'disabled');
+        $("#ShipTo_City").attr('disabled', 'disabled');
+        $("#ShipTo_State").attr('disabled', 'disabled');
+        $("#ShipTo_Country").attr('disabled', 'disabled');
+        $("#ShipTo_ContactNum").attr('disabled', 'disabled');
+    }
+    else {
+        $("#ShipTo_Address").removeAttr('disabled');
+        $("#ShipTo_City").removeAttr('disabled');
+        $("#ShipTo_State").removeAttr('disabled');
+        $("#ShipTo_Country").removeAttr('disabled');
+        $("#ShipTo_ContactNum").removeAttr('disabled');
+    }
+});
+
 function updateTotals() {
     let subtotal = 0;
     let finalTotal = 0;

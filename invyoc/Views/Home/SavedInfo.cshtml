@@ -47,18 +47,18 @@
                         <td>
                             @(invoiceVM?.Company?.Name ?? "[Invoice From Name]")
                             <br />
-                            @(invoiceVM?.Company?.Address ?? "[Invoice From Address]")
+                            @(invoiceVM?.Company?.CompanyAddress?.Address ?? "[Invoice From Address]")
                         </td>
                         <td>
                             @(invoiceVM?.BillTo?.Name ?? "[Bill To Name]")
                             <br />
-                            @(invoiceVM?.BillTo?.Address ?? "[Bill To Address]")
+                            @(invoiceVM?.BillTo?.ClientAddress?.Address ?? "[Bill To Address]")
                             <br />
 
                             <strong>[Ship To]</strong>
                             @(invoiceVM?.BillTo?.Name ?? "[Ship To Name]")
                             <br />
-                            @(invoiceVM?.BillTo?.Address ?? "[Ship To Address]")
+                            @(invoiceVM?.ShipTo?.Address ?? "[Ship To Address]")
                         </td>
 
                         @*   <td>

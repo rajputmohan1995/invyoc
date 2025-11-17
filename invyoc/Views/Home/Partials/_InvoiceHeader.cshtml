@@ -58,7 +58,7 @@
 
         <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.Phone" type="tel" class="w-100" placeholder="Company Contact" />
+                <input asp-for="Company.CompanyAddress.ContactNum" type="tel" class="w-100" placeholder="Company Contact" />
             </div>
         </div>
 
@@ -70,25 +70,25 @@
 
         <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.Address" type="text" class="w-100" placeholder="Company Address" />
+                <input asp-for="Company.CompanyAddress.Address" type="text" class="w-100" placeholder="Company Address" />
             </div>
         </div>
 
         <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.City" type="text" class="w-100" placeholder="City" />
+                <input asp-for="Company.CompanyAddress.City" type="text" class="w-100" placeholder="City" />
             </div>
         </div>
 
         <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.State" type="text" class="w-100" placeholder="State" />
+                <input asp-for="Company.CompanyAddress.State" type="text" class="w-100" placeholder="State" />
             </div>
         </div>
 
         <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.Country" type="text" class="w-100" placeholder="Country" />
+                <input asp-for="Company.CompanyAddress.Country" type="text" class="w-100" placeholder="Country" />
             </div>
         </div>
 
@@ -100,11 +100,11 @@
             Tax Invoice
         </h1>
 
-        <div class="d-flex align-items-center gap-2 justify-content-end" id="divOtherInvoiceInfo">
+        <div class="justify-content-end" id="divOtherInvoiceInfo">
 
-            <div class="d-flex flex-column gap-2 invoice-main-details">
+            <div class="d-flex flex-column gap-1 invoice-main-details">
 
-                <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                <div class="d-flex align-items-center gap-1 justify-content-end text-end">
                     <label class="form-label mb-0" asp-for="InvoiceNumber">Invoice#</label>
                     <input type="text" class="w-100 fw-bold" asp-for="InvoiceNumber"
                            pattern="[a-zA-Z0-9]*"
@@ -115,7 +115,7 @@
                 </div>
 
 
-                <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                <div class="d-flex align-items-center gap-1 justify-content-end text-end">
                     <label class="form-label mb-0" asp-for="InvoiceDate">Date</label>
                     <input type="date" class="w-100" asp-for="InvoiceDate" />
 
@@ -125,7 +125,7 @@
                 </div>
 
 
-                <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                <div class="d-flex align-items-center gap-1 justify-content-end text-end">
                     <label class="form-label mb-0" asp-for="DueDate">Due Date</label>
                     <input type="date" class="w-100" asp-for="DueDate" />
                 </div>
@@ -134,7 +134,7 @@
                 </div>
 
 
-                <div class="d-flex align-items-center gap-2 justify-content-end text-end">
+                <div class="d-flex align-items-center gap-1 justify-content-end text-end">
                     <label class="form-label mb-0" asp-for="PONumber">PO Number</label>
                     <input type="text" class="w-100" placeholder="PO No." asp-for="PONumber" />
                 </div>

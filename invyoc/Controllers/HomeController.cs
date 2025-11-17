@@ -42,22 +42,30 @@ public class HomeController : Controller
             var invoiceLineNum = 0;
             invoiceVM.Items.ForEach(i => i.LineNumber = ++invoiceLineNum);
 
-            if (!ObjectComparer.AreEqual(invoiceVM, InvoiceViewModel.GetTempData()))
-            {
-                string savedInvoicePath = Path.Combine(_env.WebRootPath, $"invoiceJson\\invoices_{DateTime.UtcNow:MMM-yyyy}.json");
-                PrimitiveTypeExtensions.AppendJsonObjectToFile(savedInvoicePath, new SavedInvoiceData() { InvoiceVM = invoiceVM });
-            }
+            SaveInvoice(invoiceVM);
 
-            var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
-            string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "invoice-template.html");
+            var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(
+                invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
 
-            var pdfBytes = await _pdfService.GeneratePdf(ExportExtensions.GetHtmlContent(invoiceVM, invoiceTemplatePath));
+            string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "templates", "type1.html");
 
+            var pdfBytes = await _pdfService.GeneratePdf(
+                ExportExtensions.GetHtmlContent(
+                    invoiceVM,
+                    invoiceTemplatePath));
 
-            Response.Cookies.Append(_lastSavedInvoiceCookieName, JsonSerializer.Serialize(invoiceVM), new() { Expires = DateTime.Now.AddDays(60) });
+            Response.Cookies.Append(
+                _lastSavedInvoiceCookieName,
+                JsonSerializer.Serialize(invoiceVM),
+                new() { Expires = DateTime.Now.AddDays(60) });
+
             if (!string.IsNullOrWhiteSpace(invoiceVM.Company.LogoBase64))
-                Response.Cookies.Append(_lastSavedInvoiceLogo, invoiceVM.Company.LogoBase64, new() { Expires = DateTime.Now.AddDays(60) });
-
+            {
+                Response.Cookies.Append(
+                    _lastSavedInvoiceLogo,
+                    invoiceVM.Company.LogoBase64,
+                    new() { Expires = DateTime.Now.AddDays(60) });
+            }
 
             ViewBag.IsDownloadSuccess = true;
 
@@ -95,6 +103,17 @@ public class HomeController : Controller
         }
     }
 
+    private void SaveInvoice(InvoiceViewModel invoiceVM)
+    {
+        string savedInvoicePath = Path.Combine(
+               _env.WebRootPath,
+               $"invoiceJson\\invoices_{DateTime.UtcNow:MMM-yyyy}.json");
+
+        PrimitiveTypeExtensions.AppendJsonObjectToFile(
+            savedInvoicePath,
+            new() { InvoiceVM = invoiceVM });
+    }
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<FileStreamResult> OldDownload([FromForm] InvoiceViewModel invoiceVM)
@@ -104,11 +123,12 @@ public class HomeController : Controller
             var invoiceLineNum = 0;
             invoiceVM.Items.ForEach(i => i.LineNumber = ++invoiceLineNum);
 
-            if (!ObjectComparer.AreEqual(invoiceVM, InvoiceViewModel.GetTempData()))
-            {
-                string savedInvoicePath = Path.Combine(_env.WebRootPath, $"invoiceJson\\invoices_{DateTime.UtcNow:MMM-yyyy}.json");
-                PrimitiveTypeExtensions.AppendJsonObjectToFile(savedInvoicePath, new SavedInvoiceData() { InvoiceVM = invoiceVM });
-            }
+            //if (!ObjectComparer.AreEqual(invoiceVM, InvoiceViewModel.GetTempData()))
+            //{
+            //}
+            string savedInvoicePath = Path.Combine(_env.WebRootPath, $"invoiceJson\\invoices_{DateTime.UtcNow:MMM-yyyy}.json");
+            PrimitiveTypeExtensions.AppendJsonObjectToFile(savedInvoicePath, new SavedInvoiceData() { InvoiceVM = invoiceVM });
+
 
             var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
             string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "invoice-template.html");
@@ -142,11 +162,12 @@ public class HomeController : Controller
             var invoiceLineNum = 0;
             invoiceVM.Items.ForEach(i => i.LineNumber = ++invoiceLineNum);
 
-            if (!ObjectComparer.AreEqual(invoiceVM, InvoiceViewModel.GetTempData()))
-            {
-                string savedInvoicePath = Path.Combine(_env.WebRootPath, $"invoiceJson\\invoices_{DateTime.UtcNow:MMM-yyyy}.json");
-                PrimitiveTypeExtensions.AppendJsonObjectToFile(savedInvoicePath, new SavedInvoiceData() { InvoiceVM = invoiceVM });
-            }
+            //if (!ObjectComparer.AreEqual(invoiceVM, InvoiceViewModel.GetTempData()))
+            //{
+            //}
+            string savedInvoicePath = Path.Combine(_env.WebRootPath, $"invoiceJson\\invoices_{DateTime.UtcNow:MMM-yyyy}.json");
+            PrimitiveTypeExtensions.AppendJsonObjectToFile(savedInvoicePath, new SavedInvoiceData() { InvoiceVM = invoiceVM });
+
 
             var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
             string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "invoice-template.html");
