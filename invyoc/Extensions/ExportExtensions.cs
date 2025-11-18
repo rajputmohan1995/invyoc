@@ -75,13 +75,20 @@ public static class ExportExtensions
         var invoiceItems = "";
         var invoiceItemTotal = 0m;
         var invoiceItemIndex = 1;
+
+        invoiceVM.Items = [.. invoiceVM.Items
+            .OrderBy(o => o.SGST)
+            .ThenBy(o => o.CGST)
+            .ThenBy(o => o.Cess)];
+
+
         foreach (var item in invoiceVM.Items)
         {
             var itemTotal = (item.Rate * item.Quantity).ToFormat();
-
             var invoiceItemTemplate = @"<tr>
                                             <td>[{Items[i].LineNumber}]</td>
                                             <td class='text-left'>[{Items[i].Description}]</td>
+                                            <td class='text-left'>[{Items[i].HSN_SAC}]</td>
                                             <td>[{Items[i].Quantity}]</td>
                                             <td>[{Items[i].Rate}]</td>
                                             <td>[{Items[i].SGST}]</td>
@@ -92,22 +99,22 @@ public static class ExportExtensions
 
             invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].LineNumber}]", invoiceItemIndex.ToString());
             invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Description}]", item.Description);
+            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].HSN_SAC}]", item.HSN_SAC);
             invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Quantity}]", item.Quantity.ToString());
-            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Rate}]", item.Rate.ToFormat().ToString());
-            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].SGST}]", item.SGST.ToFormat().ToString());
-            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].CGST}]", item.CGST.ToFormat().ToString());
-            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Cess}]", item.Cess.ToFormat().ToString());
-            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Total}]", itemTotal.ToFormat().ToString());
+            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Rate}]", item.Rate.ToCurrency());
+            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Total}]", itemTotal.ToCurrency());
 
             invoiceItemIndex++;
             invoiceItemTotal += itemTotal;
+
+
+            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].SGST}]", BuildTaxHtml(itemTotal, item.SGST));
+            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].CGST}]", BuildTaxHtml(itemTotal, item.CGST));
+            invoiceItemTemplate = invoiceItemTemplate.Replace("[{Items[i].Cess}]", BuildTaxHtml(itemTotal, item.Cess));
+
             invoiceItems += invoiceItemTemplate;
         }
 
-        //var discountAmount = ((invoiceItemTotal * invoiceVM.DiscountPercentage) / 100).ToFormat();
-        //var taxAmount = (((invoiceItemTotal - discountAmount) * invoiceVM.TaxPercentage) / 100).ToFormat();
-        //var finalAmount = (invoiceItemTotal - discountAmount + taxAmount).ToFormat();
-        var finalAmount = invoiceItemTotal.ToFormat();
 
         invoiceItems += @"<tr>
             <td class='border-0 p-0 m-0' colspan='8'></td>
@@ -115,40 +122,89 @@ public static class ExportExtensions
 
         invoiceItems += @$"<tr>
             <td class='border-0' colspan='5'></td>
-            <td class='text-right' colspan='2'>Subtotal</td>
-            <td>{invoiceItemTotal.ToFormat()}</td>
+            <td class='text-right' colspan='2'>Sub Total</td>
+            <td colspan='2'>{invoiceItemTotal.ToFormat()}</td>
         </tr>";
 
-        //invoiceItems += @$"<tr>
-        //    <td class='border-0' colspan='3'></td>
-        //    <td class='text-right'>Discount ({invoiceVM.DiscountPercentage}%)</td>
-        //    <td>{invoiceVM.Currency + discountAmount.ToCurrency()}</td>
-        //</tr>";
 
-        //invoiceItems += @$"<tr>
-        //    <td class='border-0' colspan='3'></td>
-        //    <td class='text-right'>Tax ({invoiceVM.TaxPercentage}%)</td>
-        //    <td>{invoiceVM.Currency + taxAmount.ToCurrency()}</td>
-        //</tr>";
+        // SGST grouped
+        var sgstCollection = invoiceVM.Items
+            .GroupBy(x => x.SGST)
+            .Select(g => ($"SGST ({g.Key}%)", g.Sum(i => ((i.Rate * i.Quantity * i.SGST) / 100).ToFormat())))
+            .Where(x => x.Item2 > 0)
+            .ToList();
+
+        // CGST grouped
+        var cgstCollection = invoiceVM.Items
+            .GroupBy(x => x.CGST)
+            .Select(g => ($"CGST ({g.Key}%)", g.Sum(i => ((i.Rate * i.Quantity * i.CGST) / 100).ToFormat())))
+            .Where(x => x.Item2 > 0)
+            .ToList();
+
+        // Cess grouped
+        var cessCollection = invoiceVM.Items
+            .GroupBy(x => x.Cess)
+            .Select(g => ($"Cess ({g.Key}%)", g.Sum(i => ((i.Rate * i.Quantity * i.Cess) / 100).ToFormat())))
+            .Where(x => x.Item2 > 0)
+            .ToList();
+
+
+        for (int i = 0; i < sgstCollection.Count; i++)
+        {
+            invoiceItems += BuildTaxGroupRow(
+                sgstCollection[i],
+                cgstCollection[i],
+                cessCollection[i]
+            );
+        }
+
+        var finalAmount = (invoiceItemTotal
+           + sgstCollection.Sum(x => x.Item2)
+           + cgstCollection.Sum(x => x.Item2)
+           + cessCollection.Sum(x => x.Item2))
+           .ToFormat();
 
         invoiceItems += @$"<tr>
             <td class='border-0' colspan='5'></td>
             <td class='text-right' colspan='2'><strong>Total</strong></td>
-            <td><strong>{invoiceVM.Currency + finalAmount.ToCurrency()}</strong></td>
+            <td colspan='2'>
+                <strong style='font-size:16px;'>{invoiceVM.Currency + finalAmount.ToCurrency()}</strong>
+            </td>
         </tr>";
 
         htmlContent = htmlContent.Replace("[{InvoiceItems}]", invoiceItems);
 
-        //htmlContent = htmlContent.Replace("[{SubTotal}]", invoiceVM.Currency + invoiceItemTotal.ToINRCurrency());
-
-        //htmlContent = htmlContent.Replace("[{DiscountPercentage}]", invoiceVM.DiscountPercentage.ToString() + "%");
-        //htmlContent = htmlContent.Replace("[{DiscountAmount}]", invoiceVM.Currency + discountAmount.ToINRCurrency());
-
-        //htmlContent = htmlContent.Replace("[{TaxAmount}]", invoiceVM.Currency + taxAmount.ToINRCurrency());
-        //htmlContent = htmlContent.Replace("[{TaxPercentage}]", invoiceVM.TaxPercentage.ToString() + "%");
-
-        //htmlContent = htmlContent.Replace("[{FinalAmount}]", invoiceVM.Currency + finalAmount.ToINRCurrency());
-
         return htmlContent;
+    }
+
+    private static string BuildTaxHtml(decimal itemTotal, decimal taxPercent)
+    {
+        var taxValue = ((itemTotal * taxPercent) / 100).ToCurrency();
+        var percentLabel = $"({taxPercent.ToFormat()}%)";
+
+        return $"{taxValue}<br /><span class='text-muted'>{percentLabel}</span>";
+    }
+
+    private static string BuildTaxGroupRow(
+        (string Label, decimal Amount) sgst,
+        (string Label, decimal Amount) cgst,
+        (string Label, decimal Amount) cess)
+    {
+        var html = string.Empty;
+
+        html += BuildTaxRow(sgst.Label, sgst.Amount);
+        html += BuildTaxRow(cgst.Label, cgst.Amount);
+        html += BuildTaxRow(cess.Label, cess.Amount);
+
+        return html;
+    }
+
+    private static string BuildTaxRow(string label, decimal value)
+    {
+        return @$"<tr>
+            <td class='border-0' colspan='5'></td>
+            <td class='text-right' colspan='2'>{label}</td>
+            <td colspan='2'>{value.ToCurrency()}</td>
+        </tr>";
     }
 }
