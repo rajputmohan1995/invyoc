@@ -304,6 +304,18 @@ function enablePreviewButton() {
     $("#previewInvoice").removeAttr("disabled");
 }
 
+$("#printInvoice").on('click', function () {
+    $("#hdnIsPreview").val("true");
+    $("form#frmInvoice").submit();
+
+});
+
+$("#downloadInvoice").on('click', function () {
+    $("#hdnIsPreview").val("false");
+    $("form#frmInvoice").submit();
+
+});
+
 //$("#btnDownloadInvoice").on('click', function () {
 
 //    $("#btnDownloadInvoice").text("Please Wait...");

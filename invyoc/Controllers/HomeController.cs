@@ -23,6 +23,7 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         var invoiceVM = InvoiceViewModel.GetTempData();
+        //InvoiceViewModel invoiceVM = new();
         return View(invoiceVM);
     }
 
@@ -42,7 +43,7 @@ public class HomeController : Controller
             var invoiceLineNum = 0;
             invoiceVM.Items.ForEach(i => i.LineNumber = ++invoiceLineNum);
 
-            SaveInvoice(invoiceVM);
+            SaveBillDetailsInServerAsJson(invoiceVM);
 
             var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(
                 invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
@@ -54,30 +55,23 @@ public class HomeController : Controller
                     invoiceVM,
                     invoiceTemplatePath));
 
-            Response.Cookies.Append(
-                _lastSavedInvoiceCookieName,
-                JsonSerializer.Serialize(invoiceVM),
-                new() { Expires = DateTime.Now.AddDays(60) });
-
-            if (!string.IsNullOrWhiteSpace(invoiceVM.Company.LogoBase64))
-            {
-                Response.Cookies.Append(
-                    _lastSavedInvoiceLogo,
-                    invoiceVM.Company.LogoBase64,
-                    new() { Expires = DateTime.Now.AddDays(60) });
-            }
-
             ViewBag.IsDownloadSuccess = true;
 
-            // Disable response buffering for large files
-            Response.Headers.Append("Content-Disposition", "attachment; filename=" + newInvoiceFileName);
-            Response.ContentType = "application/pdf";
-            Response.ContentLength = pdfBytes.Length;
+            if (invoiceVM.IsPreview)
+            {
+                return File(pdfBytes, "application/pdf");
+            }
+            else
+            {
+                // Disable response buffering for large files
+                Response.Headers.Append("Content-Disposition", "attachment; filename=" + newInvoiceFileName);
+                Response.ContentType = "application/pdf";
+                Response.ContentLength = pdfBytes.Length;
 
-            // Write directly to response stream
-            await Response.Body.WriteAsync(pdfBytes, 0, pdfBytes.Length);
-            await Response.Body.FlushAsync();
-
+                // Write directly to response stream
+                await Response.Body.WriteAsync(pdfBytes);
+                await Response.Body.FlushAsync();
+            }
             return View(invoiceVM);
         }
         catch (Exception)
@@ -103,7 +97,7 @@ public class HomeController : Controller
         }
     }
 
-    private void SaveInvoice(InvoiceViewModel invoiceVM)
+    private void SaveBillDetailsInServerAsJson(InvoiceViewModel invoiceVM)
     {
         string savedInvoicePath = Path.Combine(
                _env.WebRootPath,

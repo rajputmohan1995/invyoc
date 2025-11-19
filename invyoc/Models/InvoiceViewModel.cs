@@ -44,6 +44,8 @@ public class InvoiceViewModel
 
     public List<SelectListItem> Currencies = PrimitiveTypeExtensions.ToSelectList<CurrencyType>();
 
+    public bool IsPreview { get; set; } = false;
+
     public static InvoiceViewModel GetTempData()
     {
         var tempObj = new InvoiceViewModel

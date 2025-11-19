@@ -48,25 +48,25 @@
                         <tr class="line-item">
 
                             <td class="align-top">
-                                <input type="text" class="item-desc mb-1 w-100"
+                                <input type="text" class="item-desc mb-1 w-100 item-field"
                                        asp-for="@Model.Items[i].Description"
                                        id="@itemDescId"
                                        placeholder="Enter item name/description" />
 
-                                <input type="text" class="item-hsn mb-1"
+                                <input type="text" class="item-hsn mb-1 item-field"
                                        asp-for="@Model.Items[i].HSN_SAC"
                                        id="@itemHSN"
                                        placeholder="HSN/SAC" />
                             </td>
                             <td class="align-top">
-                                <input type="text" class="item-qty w-100"
+                                <input type="text" class="item-qty w-100 item-field"
                                        asp-for="@Model.Items[i].Quantity"
                                        id="@itemQty"
                                        placeholder="0"
                                        onkeypress="return isNumberKey(event, this.id)" />
                             </td>
                             <td class="align-top">
-                                <input type="text" class="item-price w-100"
+                                <input type="text" class="item-price w-100 item-field"
                                        asp-for="@Model.Items[i].Rate"
                                        id="@itemRate"
                                        placeholder="0"
@@ -74,7 +74,7 @@
                             </td>
 
                             <td class="align-top">
-                                <input type="text" class="item-sgst w-100"
+                                <input type="text" class="item-sgst w-100 item-field"
                                        asp-for="@Model.Items[i].SGST"
                                        id="@itemSGST"
                                        placeholder="0"
@@ -84,7 +84,7 @@
                             </td>
 
                             <td class="align-top">
-                                <input type="text" class="item-cgst w-100"
+                                <input type="text" class="item-cgst w-100 item-field"
                                        asp-for="@Model.Items[i].CGST"
                                        id="@itemCGST"
                                        placeholder="0"
@@ -94,7 +94,7 @@
                             </td>
 
                             <td class="align-top">
-                                <input type="text" class="item-cess w-100"
+                                <input type="text" class="item-cess w-100 item-field"
                                        asp-for="@Model.Items[i].Cess"
                                        id="@itemCess"
                                        placeholder="0"

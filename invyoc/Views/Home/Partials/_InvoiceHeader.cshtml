@@ -25,7 +25,7 @@
                         <img id="logoPreview" src="" alt="Logo Preview" style="display:none;" />
                     }
 
-                    <input hidden asp-for="Company.LogoBase64" id="companyLogoBase64" />
+                    <input hidden asp-for="Company.LogoBase64" id="companyLogoBase64" data-save />
                 </div>
 
                 <div class="text-center upload-section-note-main">
@@ -45,50 +45,50 @@
 
         <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.Name" type="text" class="w-100" placeholder="Your Company" />
+                <input asp-for="Company.Name" type="text" class="w-100" placeholder="Your Company" data-save />
                 <span asp-validation-for="Company.Name" class="text-danger"></span>
             </div>
         </div>
 
         <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.GSTNo" type="text" class="w-100" placeholder="Company's GSTIN" />
+                <input asp-for="Company.GSTNo" type="text" class="w-100" placeholder="Company's GSTIN" data-save />
             </div>
         </div>
 
         <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.CompanyAddress.ContactNum" type="tel" class="w-100" placeholder="Company Contact" />
+                <input asp-for="Company.CompanyAddress.ContactNum" type="tel" class="w-100" placeholder="Company Contact" data-save />
             </div>
         </div>
 
         <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.Email" type="email" class="w-100" placeholder="Company Email" />
+                <input asp-for="Company.Email" type="email" class="w-100" placeholder="Company Email" data-save />
             </div>
         </div>
 
         <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.CompanyAddress.Address" type="text" class="w-100" placeholder="Company Address" />
+                <input asp-for="Company.CompanyAddress.Address" type="text" class="w-100" placeholder="Company Address" data-save />
             </div>
         </div>
 
         <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.CompanyAddress.City" type="text" class="w-100" placeholder="City" />
+                <input asp-for="Company.CompanyAddress.City" type="text" class="w-100" placeholder="City" data-save />
             </div>
         </div>
 
         <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.CompanyAddress.State" type="text" class="w-100" placeholder="State" />
+                <input asp-for="Company.CompanyAddress.State" type="text" class="w-100" placeholder="State" data-save />
             </div>
         </div>
 
         <div class="row mb-1">
             <div class="col">
-                <input asp-for="Company.CompanyAddress.Country" type="text" class="w-100" placeholder="Country" />
+                <input asp-for="Company.CompanyAddress.Country" type="text" class="w-100" placeholder="Country" data-save />
             </div>
         </div>
 
@@ -108,7 +108,8 @@
                     <label class="form-label mb-0" asp-for="InvoiceNumber">Invoice#</label>
                     <input type="text" class="w-100 fw-bold" asp-for="InvoiceNumber"
                            pattern="[a-zA-Z0-9]*"
-                           placeholder="#101" />
+                           placeholder="#101"
+                           data-save />
                 </div>
                 <div class="d-flex justify-content-end text-end">
                     <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
@@ -117,8 +118,7 @@
 
                 <div class="d-flex align-items-center gap-1 justify-content-end text-end">
                     <label class="form-label mb-0" asp-for="InvoiceDate">Date</label>
-                    <input type="date" class="w-100" asp-for="InvoiceDate" />
-
+                    <input type="date" class="w-100" asp-for="InvoiceDate" data-save />
                 </div>
                 <div class="d-flex justify-content-end text-end">
                     <span asp-validation-for="InvoiceDate" class="text-danger"></span>
@@ -127,7 +127,7 @@
 
                 <div class="d-flex align-items-center gap-1 justify-content-end text-end">
                     <label class="form-label mb-0" asp-for="DueDate">Due Date</label>
-                    <input type="date" class="w-100" asp-for="DueDate" />
+                    <input type="date" class="w-100" asp-for="DueDate" data-save />
                 </div>
                 <div class="d-flex justify-content-end text-end">
                     <span asp-validation-for="DueDate" class="text-danger"></span>
@@ -136,7 +136,7 @@
 
                 <div class="d-flex align-items-center gap-1 justify-content-end text-end">
                     <label class="form-label mb-0" asp-for="PONumber">PO Number</label>
-                    <input type="text" class="w-100" placeholder="PO No." asp-for="PONumber" />
+                    <input type="text" class="w-100" placeholder="PO No." asp-for="PONumber" data-save />
                 </div>
 
             </div>

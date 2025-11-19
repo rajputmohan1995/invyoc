@@ -9,20 +9,20 @@
             <strong>Bill To</strong>
         </h5>
 
-        <input type="text" class="mb-1 w-100" asp-for="BillTo.Name" placeholder="Your Client's Company" />
+        <input type="text" class="mb-1 w-100" asp-for="BillTo.Name" placeholder="Your Client's Company" data-save />
         <span asp-validation-for="BillTo.Name" class="text-danger"></span>
 
-        <input type="text" class="mb-1 w-100" asp-for="BillTo.GSTNo" placeholder="Client's GSTIN" />
+        <input type="text" class="mb-1 w-100" asp-for="BillTo.GSTNo" placeholder="Client's GSTIN" data-save />
 
-        <input type="text" class="mb-1 w-100" asp-for="BillTo.ClientAddress.Address" placeholder="Client's Address" />
+        <input type="text" class="mb-1 w-100" asp-for="BillTo.ClientAddress.Address" placeholder="Client's Address" data-save />
 
-        <input type="text" class="mb-1 w-100" asp-for="BillTo.ClientAddress.City" placeholder="City" />
+        <input type="text" class="mb-1 w-100" asp-for="BillTo.ClientAddress.City" placeholder="City" data-save />
 
-        <input type="text" class="mb-1 w-100" asp-for="BillTo.ClientAddress.State" placeholder="State" />
+        <input type="text" class="mb-1 w-100" asp-for="BillTo.ClientAddress.State" placeholder="State" data-save />
 
-        <input type="text" class="mb-1 w-100" asp-for="BillTo.ClientAddress.Country" placeholder="Country" />
+        <input type="text" class="mb-1 w-100" asp-for="BillTo.ClientAddress.Country" placeholder="Country" data-save />
 
-        <input type="tel" class="mb-1 w-100" asp-for="BillTo.ClientAddress.ContactNum" placeholder="Client's Contact" />
+        <input type="tel" class="mb-1 w-100" asp-for="BillTo.ClientAddress.ContactNum" placeholder="Client's Contact" data-save />
 
     </div>
 
@@ -32,15 +32,15 @@
             <small>(optional)</small>
         </h5>
 
-        <input type="text" class="mb-1 w-100" asp-for="ShipTo.Address" placeholder="Client's Ship To Address" />
+        <input type="text" class="mb-1 w-100" asp-for="ShipTo.Address" placeholder="Client's Ship To Address" data-save />
 
-        <input type="text" class="mb-1 w-100" asp-for="ShipTo.City" placeholder="City" />
+        <input type="text" class="mb-1 w-100" asp-for="ShipTo.City" placeholder="City" data-save />
 
-        <input type="text" class="mb-1 w-100" asp-for="ShipTo.State" placeholder="State" />
+        <input type="text" class="mb-1 w-100" asp-for="ShipTo.State" placeholder="State" data-save />
 
-        <input type="text" class="mb-1 w-100" asp-for="ShipTo.Country" placeholder="Country" />
+        <input type="text" class="mb-1 w-100" asp-for="ShipTo.Country" placeholder="Country" data-save />
 
-        <input type="tel" class="mb-1 w-100" asp-for="ShipTo.ContactNum" placeholder="Client's Ship To Contact" />
+        <input type="tel" class="mb-1 w-100" asp-for="ShipTo.ContactNum" placeholder="Client's Ship To Contact" data-save />
 
         <label>
             <input type="checkbox" style="vertical-align: middle;" id="chkSameAsBillTo"> Same as Bill To
