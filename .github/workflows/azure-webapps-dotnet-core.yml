@@ -1,4 +1,4 @@
-name: publish to azure 🚀
+name: live publish🚀
 
 env:
   AZURE_WEBAPP_NAME: invyoc
@@ -31,3 +31,10 @@ jobs:
 
       - name: Publish
         run: dotnet publish ./invyoc.sln -c Release --no-build
+
+      - name: Deploy to Azure
+        uses: actions/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
