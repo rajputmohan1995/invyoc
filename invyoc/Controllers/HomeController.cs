@@ -61,18 +61,8 @@ public class HomeController : Controller
             {
                 return File(pdfBytes, "application/pdf");
             }
-            else
-            {
-                // Disable response buffering for large files
-                Response.Headers.Append("Content-Disposition", "attachment; filename=" + newInvoiceFileName);
-                Response.ContentType = "application/pdf";
-                Response.ContentLength = pdfBytes.Length;
 
-                // Write directly to response stream
-                await Response.Body.WriteAsync(pdfBytes);
-                await Response.Body.FlushAsync();
-            }
-            return View(invoiceVM);
+            return File(pdfBytes, "application/pdf", newInvoiceFileName);
         }
         catch (Exception)
         {

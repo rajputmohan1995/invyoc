@@ -1,4 +1,4 @@
-name: live publish🚀
+name: publish to azure 🚀
 
 env:
   AZURE_WEBAPP_NAME: invyoc
@@ -6,13 +6,14 @@ env:
   DOTNET_VERSION: '8.x'
   
 on:
-  push:
-    branches: [ "main" ]
   workflow_dispatch:
+  push:
+    branches: 
+    - main
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -25,16 +26,8 @@ jobs:
       - name: Restore
         run: dotnet restore ./invyoc.sln
 
-      - name: Build with dotnet
+      - name: Build
         run: dotnet build ./invyoc.sln --configuration Release --no-restore
 
-      - name: dotnet publish
-        run: dotnet publish ./invyoc.sln -c Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
-
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-          
+      - name: Publish
+        run: dotnet publish ./invyoc.sln -c Release --no-build
