@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\invoiceJson\" />
+    <Folder Include="wwwroot\output\" />
   </ItemGroup>
 
 </Project>

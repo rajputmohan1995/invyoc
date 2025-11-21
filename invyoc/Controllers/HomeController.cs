@@ -46,9 +46,6 @@ public class HomeController : Controller
 
             SaveBillDetailsInServerAsJson(invoiceVM);
 
-            var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName(
-                invoiceVM.Company.Name + "_Invoice_" + invoiceVM.InvoiceNumber + ".pdf");
-
             string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "templates", "type1.html");
 
             var pdfBytes = await _pdfService.GeneratePdf(
@@ -56,23 +53,45 @@ public class HomeController : Controller
                     invoiceVM,
                     invoiceTemplatePath));
 
-            ViewBag.IsDownloadSuccess = true;
+            var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName($"{invoiceVM.InvoiceNumber}_{DateTime.Now:ddMMyyyyHHmmss}.pdf");
+            string invoiceFilePath = Path.Combine(_env.WebRootPath, "output");
 
-            if (invoiceVM.IsPreview)
-            {
-                return File(pdfBytes, "application/pdf");
-            }
+            EmptyPdfOutputFolder(invoiceFilePath);
 
-            return File(pdfBytes, "application/pdf", newInvoiceFileName);
+            System.IO.File.WriteAllBytes(
+                Path.Combine(invoiceFilePath, newInvoiceFileName),
+                pdfBytes);
+
+            return RedirectToAction("Download",
+                new
+                {
+                    pdfFilePath = invoiceFilePath,
+                    fileName = newInvoiceFileName,
+                    isPreview = invoiceVM.IsPreview
+                });
         }
         catch (Exception ex)
         {
             var exceptionLogPath = Path.Combine(_env.WebRootPath, "globalException.json");
             ExceptionLogger.LogException(ex, exceptionLogPath);
             throw;
-            //ModelState.AddModelError("", "An error occurred while saving.");
-            //return View(invoiceVM);
         }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Download(string pdfFilePath, string fileName, bool isPreview)
+    {
+        var pdfFileFullPath = Path.Combine(pdfFilePath, fileName);
+
+        if (!System.IO.File.Exists(pdfFileFullPath))
+            throw new FileNotFoundException("Unable to generate PDF file.", pdfFileFullPath);
+
+        var pdfBytes = await System.IO.File.ReadAllBytesAsync(pdfFileFullPath);
+
+        if (isPreview)
+            return File(pdfBytes, "application/pdf");
+
+        return File(pdfBytes, "application/pdf", fileName);
     }
 
     [ResponseCache(Duration = 0,
@@ -81,6 +100,20 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    private void EmptyPdfOutputFolder(string outputPath)
+    {
+        DirectoryInfo di = new(outputPath);
+
+        foreach (FileInfo file in di.GetFiles())
+        {
+            file.Delete();
+        }
+        foreach (DirectoryInfo dir in di.GetDirectories())
+        {
+            dir.Delete(true);
+        }
     }
 
     [HttpPost("preview-invoice")]

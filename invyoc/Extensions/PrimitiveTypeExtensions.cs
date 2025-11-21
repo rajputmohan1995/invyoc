@@ -48,7 +48,7 @@ public static class PrimitiveTypeExtensions
 
         // Trim to max length
         if (result.Length > maxLength)
-            result = result.Substring(0, maxLength);
+            result = result[..maxLength];
 
         // Ensure it's not empty
         if (string.IsNullOrWhiteSpace(result))
