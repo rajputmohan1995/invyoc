@@ -71,7 +71,7 @@ public static class PrimitiveTypeExtensions
 
     public static void AppendJsonObjectToFile(string filePath, SavedInvoiceData newObject)
     {
-        List<SavedInvoiceData> dataList;
+        List<SavedInvoiceData> dataList = [];
 
         if (File.Exists(filePath))
         {

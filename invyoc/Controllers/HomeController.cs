@@ -2,6 +2,7 @@
 using invyoc.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace invyoc.Controllers;
@@ -64,12 +65,22 @@ public class HomeController : Controller
 
             return File(pdfBytes, "application/pdf", newInvoiceFileName);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            var exceptionLogPath = Path.Combine(_env.WebRootPath, "globalException.json");
+            ExceptionLogger.LogException(ex, exceptionLogPath);
             throw;
             //ModelState.AddModelError("", "An error occurred while saving.");
             //return View(invoiceVM);
         }
+    }
+
+    [ResponseCache(Duration = 0,
+        Location = ResponseCacheLocation.None,
+        NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
     [HttpPost("preview-invoice")]
