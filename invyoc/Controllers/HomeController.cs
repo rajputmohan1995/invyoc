@@ -66,8 +66,9 @@ public class HomeController : Controller
         }
         catch (Exception)
         {
-            ModelState.AddModelError("", "An error occurred while saving.");
-            return View(invoiceVM);
+            throw;
+            //ModelState.AddModelError("", "An error occurred while saving.");
+            //return View(invoiceVM);
         }
     }
 
