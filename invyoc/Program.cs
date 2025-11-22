@@ -22,7 +22,6 @@ builder.Services.AddResponseCompression(options =>
     options.Providers.Add<GzipCompressionProvider>();
 });
 
-
 // safer upload limit (5 MB is enough)
 builder.Services.Configure<FormOptions>(o =>
 {
