@@ -96,7 +96,7 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.UseMiddleware<CustomErrorHandlingMiddleware>();
+//app.UseMiddleware<CustomErrorHandlingMiddleware>();
 
 app.UseResponseCompression();
 app.UseStaticFiles();
