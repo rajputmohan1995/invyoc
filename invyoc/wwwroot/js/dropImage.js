@@ -40,6 +40,8 @@ function handleFile() {
                     $("#companyLogoBase64").val(smallBase64);
                     $("#logoDropZone p").addClass("d-none");
                     $("#logoDropZone").addClass("border-0");
+
+                    localStorage.setItem(LOGO_STORAGE_KEY, JSON.stringify(smallBase64));
                 });
             };
             reader.readAsDataURL(file);

@@ -63,6 +63,7 @@ function sortAndCombinArray(data) {
 }
 
 const STORAGE_KEY = "invoiceDraft";
+const LOGO_STORAGE_KEY = "invoiceDraftLogo";
 
 
 
@@ -109,3 +110,52 @@ document.addEventListener("input", function (e) {
         saveDraft();
     }
 });
+
+
+
+// Load data back
+function loadDraft() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+
+    const data = JSON.parse(saved);
+
+    // Load single fields
+    const fields = document.querySelectorAll("[data-save]");
+    fields.forEach(f => {
+        if (data[f.id] !== undefined) {
+            f.value = data[f.id];
+        }
+    });
+
+    // Load dynamic items
+    if (data.items && data.items.length > 0) {
+
+        data.items.forEach((item, index) => {
+            addNewLineItem(
+                item.description,
+                item.hSN_SAC,
+                item.qty,
+                item.rate,
+                item.sgst,
+                item.cgst,
+                item.cess);
+        });
+
+        $('#invoiceTable tbody tr.line-item:first button.remove-row').click();
+    }
+
+    var logoStr = localStorage.getItem(LOGO_STORAGE_KEY);
+
+    if (logoStr) {
+        $("#logoPreview").attr("src", logoStr.substring(1, logoStr.length - 1));
+        $("#logoPreview").show();
+
+        $("#companyLogoBase64").val(logoStr);
+        $("#logoDropZone p").addClass("d-none");
+        $("#logoDropZone").addClass("border-0");
+    }
+}
+
+// Run on first page load
+window.onload = loadDraft;

@@ -6,82 +6,14 @@ $(function () {
 
 
 $(document).on('click', '#addRow', function () {
-
-    var currentRowValue = $('#invoiceTable tbody tr').length - 1;
-    var newRowValue = currentRowValue + 1;
-    var newRowIndex = newRowValue - 1;
-
-
-    const row = `<tr class="line-item">
-        <td class="align-top">
-            <input type="text" class="item-desc mb-1 w-100"
-                   placeholder="Enter item name/description"
-                   name="Items[${newRowIndex}].Description"
-                   id="Items_${newRowIndex}__Description" />
-            <input type="text" class="item-hsn mb-1"
-                   name="Items[${newRowIndex}].HSN_SAC"
-                   placeholder="HSN/SAC"
-                   id="Items_${newRowIndex}__HSN_SAC" />
-        </td>
-        <td class="align-top">
-            <input type="text" class="item-qty mb-1 w-100"
-                placeholder="0"         
-                value="0"
-                name="Items[${newRowIndex}].Quantity"
-                id="Items_${newRowIndex}__Quantity"
-                onkeypress="return isNumberKey(event,this.id)" />
-        </td>
-        <td class="align-top">
-            <input type="text" class="item-price w-100"
-                placeholder="0"                
-                value="0"
-                name="Items[${newRowIndex}].Rate"
-                id="Items_${newRowIndex}__Rate"
-                onkeypress="return isNumberKey(event,this.id)" />
-        </td>
-
-        <td class="align-top">
-            <input type="text" class="item-sgst w-100"
-                placeholder="0"
-                value="0"
-                name="Items[${newRowIndex}].SGST"
-                id="Items_${newRowIndex}__SGST"
-                onkeypress="return isNumberKey(event,this.id)" />
-            <small class="text-muted lbl-sgst" id="Label_${newRowIndex}__SGST">0.00</small>
-        </td>
-        <td class="align-top">
-            <input type="text" class="item-cgst w-100"
-                placeholder="0"
-                value="0"
-                name="Items[${newRowIndex}].CGST"
-                id="Items_${newRowIndex}__CGST"
-                onkeypress="return isNumberKey(event,this.id)" />
-            <small class="text-muted lbl-cgst" id="Label_${newRowIndex}__CGST">0.00</small>
-        </td>
-        <td class="align-top">
-            <input type="text" class="item-cess w-100"
-                placeholder="0"
-                value="0"
-                name="Items[${newRowIndex}].Cess"
-                id="Items_${newRowIndex}__Cess"
-                onkeypress="return isNumberKey(event,this.id)" />
-            <small class="text-muted lbl-cess" id="Label_${newRowIndex}__Cess">0.00</small>
-        </td>
-
-        <td class="item-total text-end align-top">0.00</td>
-        <td class="text-end align-top">
-            <button class="btn btn-sm btn-outline-danger remove-row px-1 py-0">
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </button>    
-        </td>
-      </tr>`;
-
-    $('#invoiceTable tbody tr#lastRow').before(row);
-    updateTotals();
-
+    addNewLineItem();
 });
 
 $(document).on('click', '.remove-row', function () {
+
+    if ($('#invoiceTable tbody tr.line-item').length == 1)
+        return;
+
     $(this).closest('tr').remove();
     reindexInvoiceRows();
     updateTotals();
@@ -281,41 +213,82 @@ function reindexInvoiceRows() {
     });
 }
 
+function addNewLineItem(desc = "", hsn = "", rate = "100", qty = "1", sgst = "0", cgst = "0", cess = "0") {
 
-$("#previewInvoice").on('click', function () {
+    var currentRowValue = $('#invoiceTable tbody tr').length - 1;
+    var newRowValue = currentRowValue + 1;
+    var newRowIndex = newRowValue - 1;
 
-    var formData = $("#frmInvoice").serializeArray();
 
-    $("#previewInvoice").text("Please Wait...");
-    $("#previewInvoice").attr("disabled", "disabled");
+    const row = `<tr class="line-item">
+        <td class="align-top">
+            <input type="text" class="item-desc mb-1 w-100"
+                   placeholder="Enter item name/description"
+                   name="Items[${newRowIndex}].Description"
+                   id="Items_${newRowIndex}__Description"
+                   value="${desc}" />
+            <input type="text" class="item-hsn mb-1"
+                   name="Items[${newRowIndex}].HSN_SAC"
+                   placeholder="HSN/SAC"
+                   id="Items_${newRowIndex}__HSN_SAC"
+                   value="${hsn}" />
+        </td>
+        <td class="align-top">
+            <input type="text" class="item-qty mb-1 w-100"
+                placeholder="0"         
+                name="Items[${newRowIndex}].Quantity"
+                id="Items_${newRowIndex}__Quantity"
+                onkeypress="return isNumberKey(event,this.id)"
+                value="${qty}" />
+        </td>
+        <td class="align-top">
+            <input type="text" class="item-price w-100"
+                placeholder="0"                
+                name="Items[${newRowIndex}].Rate"
+                id="Items_${newRowIndex}__Rate"
+                onkeypress="return isNumberKey(event,this.id)"
+                value="${rate}" />
+        </td>
 
-    previewInvoicePdf(formData);
-});
+        <td class="align-top">
+            <input type="text" class="item-sgst w-100"
+                placeholder="0"
+                name="Items[${newRowIndex}].SGST"
+                id="Items_${newRowIndex}__SGST"
+                onkeypress="return isNumberKey(event,this.id)"
+                value="${sgst}" />
+            <small class="text-muted lbl-sgst" id="Label_${newRowIndex}__SGST">0.00</small>
+        </td>
+        <td class="align-top">
+            <input type="text" class="item-cgst w-100"
+                placeholder="0"
+                name="Items[${newRowIndex}].CGST"
+                id="Items_${newRowIndex}__CGST"
+                onkeypress="return isNumberKey(event,this.id)"
+                value="${cgst}" />
+            <small class="text-muted lbl-cgst" id="Label_${newRowIndex}__CGST">0.00</small>
+        </td>
+        <td class="align-top">
+            <input type="text" class="item-cess w-100"
+                placeholder="0"
+                name="Items[${newRowIndex}].Cess"
+                id="Items_${newRowIndex}__Cess"
+                onkeypress="return isNumberKey(event,this.id)"
+                value="${cess}" />
+            <small class="text-muted lbl-cess" id="Label_${newRowIndex}__Cess">0.00</small>
+        </td>
 
-function previewInvoicePdf(invoiceData) {
+        <td class="item-total text-end align-top">0.00</td>
+        <td class="text-end align-top">
+            <button class="btn btn-sm btn-outline-danger remove-row px-1 py-0" type="button">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </button>    
+        </td>
+      </tr>`;
 
-    $.ajax({
-        url: '/preview-invoice',
-        type: 'POST',
-        data: invoiceData,
-        success: function (blob) {
+    $('#invoiceTable tbody tr#lastRow').before(row);
 
-            enablePreviewButton();
-            $('#pdfFrame').html(blob);
-            $('#pdfPreviewModal').modal('show');
-
-        },
-        error: function (xhr, status, error) {
-            enablePreviewButton();
-            alert('Failed to load Invoice preview.');
-            console.error(error);
-        },
-    });
-}
-
-function enablePreviewButton() {
-    $("#previewInvoice").html('<i class="fa-solid fa-file-pdf"></i>Preview Invoice');
-    $("#previewInvoice").removeAttr("disabled");
+    updateTotals();
 }
 
 $("#printInvoice").on('click', function () {

@@ -22,9 +22,7 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         InvoiceViewModel invoiceVM = new();
-#if DEBUG
-        invoiceVM = InvoiceViewModel.GetTempData();
-#endif
+        //invoiceVM = InvoiceViewModel.GetTempData();
         return View(invoiceVM);
     }
 
