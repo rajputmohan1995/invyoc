@@ -148,13 +148,14 @@ public static class ExportExtensions
             .Where(x => x.Item2 > 0)
             .ToList();
 
+        var maxTaxLength = Math.Max(sgstCollection.Count, Math.Max(cgstCollection.Count, cessCollection.Count));
 
-        for (int i = 0; i < sgstCollection.Count; i++)
+        for (int i = 0; i < maxTaxLength; i++)
         {
             invoiceItems += BuildTaxGroupRow(
-                sgstCollection[i],
-                cgstCollection[i],
-                cessCollection[i]
+                sgstCollection.Count > i ? sgstCollection[i] : new("Empty", 0),
+                cgstCollection.Count > i ? cgstCollection[i] : new("Empty", 0),
+                cessCollection.Count > i ? cessCollection[i] : new("Empty", 0)
             );
         }
 
@@ -201,10 +202,15 @@ public static class ExportExtensions
 
     private static string BuildTaxRow(string label, decimal value)
     {
-        return @$"<tr>
-            <td class='border-0' colspan='5'></td>
-            <td class='text-right' colspan='2'>{label}</td>
-            <td colspan='2'>{value.ToCurrency()}</td>
-        </tr>";
+        if (value > 0)
+        {
+            return @$"<tr>
+                <td class='border-0' colspan='5'></td>
+                <td class='text-right' colspan='2'>{label}</td>
+                <td colspan='2'>{value.ToCurrency()}</td>
+            </tr>";
+        }
+
+        return string.Empty;
     }
 }

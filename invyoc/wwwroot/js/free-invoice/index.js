@@ -152,13 +152,19 @@ function updateTotals() {
         $(this).find('.item-total').text(round2Decimals(total));
 
         let sgstName = `SGST (${sgst}%)`
-        sgstArr.push({ name: sgstName, total: sgstAmt, value: sgst });
+        if (sgst > 0) {
+            sgstArr.push({ name: sgstName, total: sgstAmt, value: sgst });
+        }
 
         let cgstName = `CGST (${cgst}%)`
-        cgstArr.push({ name: cgstName, total: cgstAmt, value: cgst });
+        if (cgst > 0) {
+            cgstArr.push({ name: cgstName, total: cgstAmt, value: cgst });
+        }
 
         let cessName = `Cess (${cess}%)`
-        cessArr.push({ name: cessName, total: cessAmt, value: cess });
+        if (cess > 0) {
+            cessArr.push({ name: cessName, total: cessAmt, value: cess });
+        }
     });
 
     $('#lblSubTotalValue').text(round2Decimals(subtotal));
@@ -166,24 +172,32 @@ function updateTotals() {
 
     $(".total-tax").remove();
 
+    updateTaxTotals(sgstArr, cgstArr, cessArr);
+}
+
+function updateTaxTotals(sgstArr, cgstArr, cessArr) {
+
     sgstArr = sortAndCombinArray(sgstArr);
     cgstArr = sortAndCombinArray(cgstArr);
     cessArr = sortAndCombinArray(cessArr);
 
-    for (let i = 0; i < sgstArr.length; i++) {
-        if (sgstArr[i].value > 0) {
+    const maxLength = Math.max(sgstArr.length, cgstArr.length, cessArr.length);
+
+    for (let i = 0; i < maxLength; i++) {
+        if (sgstArr[i] && sgstArr[i].value > 0) {
             $("#trFinalTotalDetails").before(`<tr class="total-tax">
                                             <td><span>${sgstArr[i].name}</span></td>
                                             <td><span>${round2Decimals(sgstArr[i].total)}</span></td>
                                         </tr>`);
         }
-        if (cgstArr[i].value > 0) {
+
+        if (cgstArr[i] && cgstArr[i].value > 0) {
             $("#trFinalTotalDetails").before(`<tr class="total-tax">
                                             <td><span>${cgstArr[i].name}</span></td>
                                             <td><span>${round2Decimals(cgstArr[i].total)}</span></td>
                                         </tr>`);
         }
-        if (cessArr[i].value > 0) {
+        if (cessArr[i] && cessArr[i].value > 0) {
             $("#trFinalTotalDetails").before(`<tr class="total-tax">
                                             <td></strong>${cessArr[i].name}</strong></td>
                                             <td>${round2Decimals(cessArr[i].total)}</td>
@@ -315,27 +329,3 @@ $("#downloadInvoice").on('click', function () {
     $("form#frmInvoice").submit();
 
 });
-
-//$("#btnDownloadInvoice").on('click', function () {
-
-//    $("#btnDownloadInvoice").text("Please Wait...");
-//    $("#btnDownloadInvoice").attr("disabled", "disabled");
-
-//    $("#hdnDownloadInvoice").show();
-//    $("#hdnDownloadInvoice").click();
-
-//    setTimeout(function () {
-//        enableDownloadButton();
-//        $("#hdnDownloadInvoice").hide();
-//        $("#divInvoiceDownload").show();
-
-//        setTimeout(function () {
-//            $("#divInvoiceDownload").hide();
-//        }, 5000);
-//    }, 1500);
-//});
-
-//function enableDownloadButton() {
-//    $("#btnDownloadInvoice").html('<i class="fa fa-download"></i> Download Invoice');
-//    $("#btnDownloadInvoice").removeAttr("disabled");
-//}
