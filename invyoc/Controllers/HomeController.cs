@@ -56,6 +56,7 @@ public class HomeController : Controller
             var newInvoiceFileName = PrimitiveTypeExtensions.MakeValidFileName($"{invoiceVM.InvoiceNumber}_{DateTime.Now:ddMMyyyyHHmmss}.pdf");
             string invoiceFilePath = Path.Combine(_env.WebRootPath, "output");
 
+
             EmptyPdfOutputFolder(invoiceFilePath);
 
             System.IO.File.WriteAllBytes(
