@@ -89,7 +89,7 @@ form#frmInvoice {
     }
 
 .invoice-main-details input {
-    max-width: 120px;
+    max-width: 125px;
 }
 
 #divBillToAndShipTo {
