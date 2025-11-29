@@ -135,8 +135,8 @@ function loadDraft() {
             addNewLineItem(
                 item.description,
                 item.hSN_SAC,
-                item.qty,
                 item.rate,
+                item.qty,
                 item.sgst,
                 item.cgst,
                 item.cess);
@@ -148,10 +148,11 @@ function loadDraft() {
     var logoStr = localStorage.getItem(LOGO_STORAGE_KEY);
 
     if (logoStr) {
-        $("#logoPreview").attr("src", logoStr.substring(1, logoStr.length - 1));
+        let formattedLogoStr = logoStr.substring(1, logoStr.length - 1);
+        $("#logoPreview").attr("src", formattedLogoStr);
         $("#logoPreview").show();
 
-        $("#companyLogoBase64").val(logoStr);
+        $("#companyLogoBase64").val(formattedLogoStr);
         $("#logoDropZone p").addClass("d-none");
         $("#logoDropZone").addClass("border-0");
     }

@@ -1,44 +1,140 @@
 ﻿@model InvoiceViewModel
 @{
-    ViewData["Title"] = "Free GST Bills";
+    ViewData["Title"] = "Invoice Generator Without Login – Free Online Invoice Tool India";
     Layout = "_FreeInvoiceLayout";
 }
 
-<form id="frmInvoice"
-      class="mt-3"
-      asp-controller="Home"
-      asp-action="Index"
-      method="post"
-      enctype="multipart/form-data"
-      novalidate
-      target="_blank">
+<header class="container py-2">
+    <div class="row gy-4">
+        <div class="col">
 
-    @Html.AntiForgeryToken()
+            <div class="hero p-4 text-center border-bottom">
+                <h1 class="display-6 fw-bold">
+                    Free GST Invoice Generator for Indian Sellers
+                </h1>
+                <p class="lead mb-4">
+                    Create professional GST-compliant invoices in seconds. No login, no software, no watermark — download GST bill PDF instantly.
+                </p>
 
-    <input type="hidden" id="hdnIsPreview" asp-for="IsPreview" />
+                <div class="gap-2 flex-column flex-sm-row">
+                    <a href="#divInvoiceGenerator" class="btn btn-primary btn-lg">
+                        Create GST Invoice
+                    </a>
+                </div>
 
-    <div class="row">
+                <div class="mt-4 gap-2 align-items-center">
+                    <small>No Login Required • GST-compliant • Mobile-friendly • Free</small>
+                </div>
+            </div>
 
-        <!-- Left Section (Invoice Editor) -->
-        <div class="col-lg-9 col-md-9 col-sm-12 invoice-box" id="invoice">
 
-            @await Html.PartialAsync("Partials/_InvoiceHeader", Model)
+            <section id="how" class="my-4">
+                <h2 class="h4 fw-semibold">
+                    Create GST Invoice Online — Free, Fast &amp; Simple
+                </h2>
 
-            @await Html.PartialAsync("Partials/_InvoiceBody", Model)
+                <p>
+                    Whether you're a retailer, wholesaler, freelancer, or eCommerce seller — create an accurate and professional invoice with GSTIN, HSN codes, tax rates, totals and customer details.
+                </p>
 
-            @await Html.PartialAsync("Partials/_InvoiceItems", Model)
+                <div class="row row-cols-1 row-cols-md-2 g-3">
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="card p-2">
+                            <div class="d-flex gap-3 align-items-start">
+                                <div class="feature-icon">📄</div>
+                                <div>
+                                    <h3 class="h6 mb-1 text-decoration-underline">Download PDF</h3>
+                                    <p class="mb-0">Instantly download GST invoice as a print-ready PDF.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            @await Html.PartialAsync("Partials/_InvoiceFooter", Model)
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="card p-2">
+                            <div class="d-flex gap-3 align-items-start">
+                                <div class="feature-icon">🔒</div>
+                                <div>
+                                    <h3 class="h6 mb-1 text-decoration-underline">Privacy-first</h3>
+                                    <p class="mb-0">Your invoice data is not stored on our servers.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-        </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="card p-2">
+                            <div class="d-flex gap-3 align-items-start">
+                                <div class="feature-icon">⚡</div>
+                                <div>
+                                    <h3 class="h6 mb-1 text-decoration-underline">Auto Calculations</h3>
+                                    <p class="mb-0">Auto-calc CGST/SGST/IGST and totals as you add items.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-        <!-- Right Side Static Panel -->
-        <div class="col-lg-3 col-md-3 col-sm-12">
-            @await Html.PartialAsync("Partials/_InvoiceRightSidebar", Model)
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="card p-2">
+                            <div class="d-flex gap-3 align-items-start">
+                                <div class="feature-icon">📱</div>
+                                <div>
+                                    <h3 class="h6 mb-1 text-decoration-underline">Mobile Friendly</h3>
+                                    <p class="mb-0">Works perfectly on any devices. It can be PC, laptop, phones and tablets.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </div>
 
     </div>
-</form>
+</header>
+
+
+<main class="mt-4" id="divInvoiceGenerator">
+
+    <h2 class="text-center text-decoration-underline">Start Creating Your Invoice</h2>
+
+    <form id="frmInvoice"
+          class="mt-3"
+          asp-controller="Home"
+          asp-action="Index"
+          method="post"
+          enctype="multipart/form-data"
+          novalidate
+          target="_blank">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="hdnIsPreview" asp-for="IsPreview" />
+
+        <div class="row">
+
+            <!-- Left Section (Invoice Editor) -->
+            <div class="col-lg-9 col-md-9 col-sm-12 invoice-box" id="invoice">
+
+                @await Html.PartialAsync("Partials/_InvoiceHeader", Model)
+
+                @await Html.PartialAsync("Partials/_InvoiceBody", Model)
+
+                @await Html.PartialAsync("Partials/_InvoiceItems", Model)
+
+                @await Html.PartialAsync("Partials/_InvoiceFooter", Model)
+
+            </div>
+
+            <!-- Right Side Static Panel -->
+            <div class="col-lg-3 col-md-3 col-sm-12">
+                @await Html.PartialAsync("Partials/_InvoiceRightSidebar", Model)
+            </div>
+
+        </div>
+    </form>
+
+</main>
 
 @section Scripts {
     <script src="~/js/free-invoice/index.js"></script>
