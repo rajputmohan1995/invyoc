@@ -6,7 +6,22 @@ $(function () {
 
 
 $(document).on('click', '#addRow', function () {
-    addNewLineItem();
+    let allLineItems = $('#invoiceTable tbody tr.line-item');
+    var lastLineItemCount = allLineItems.length - 1;
+
+    let lastRowCGST = 0, lastRowSGST = 0, lastRowCess = 0;
+
+    if (lastLineItemCount >= 0) {
+        lastRowCGST = $(allLineItems[lastLineItemCount]).find(".item-cgst").val();
+        lastRowSGST = $(allLineItems[lastLineItemCount]).find(".item-sgst").val();
+        lastRowCess = $(allLineItems[lastLineItemCount]).find(".item-cess").val();
+    }
+
+    if (!lastRowCGST) lastRowCGST = "0";
+    if (!lastRowSGST) lastRowSGST = "0";
+    if (!lastRowCess) lastRowCess = "0";
+
+    addNewLineItem(lastLineItemCount + 1, "", "", "1", "0", lastRowCGST, lastRowSGST, lastRowCess);
 });
 
 $(document).on('click', '.remove-row', function () {
@@ -15,8 +30,13 @@ $(document).on('click', '.remove-row', function () {
         return;
 
     $(this).closest('tr').remove();
+
     reindexInvoiceRows();
     updateTotals();
+
+    setTimeout(function () {
+        saveDraft();
+    }, 200);
 });
 
 $(document).on('input', '.item-qty, .item-price, .item-sgst, .item-cgst, .item-cess, #taxRate, #discountRate, #currency', updateTotals);
@@ -25,32 +45,60 @@ $(document).on('change', '#chkSameAsBillTo', function () {
 
     let isChecked = $("#chkSameAsBillTo").prop('checked');
 
+
     if (isChecked) {
-        let billToAddress = $("#BillTo_ClientAddress_Address").val().trim();
-        let billToAddressCity = $("#BillTo_ClientAddress_City").val().trim();
-        let billToAddressState = $("#BillTo_ClientAddress_State").val().trim();
-        let billToAddressCountry = $("#BillTo_ClientAddress_Country").val().trim();
-        let billToAddressContactNum = $("#BillTo_ClientAddress_ContactNum").val().trim();
+        let billToName = $("#BillToName").val().trim();
+        let billToGSTNo = $("#BillToGSTNo").val().trim();
+        let billToAddress = $("#BillToAddress").val().trim();
+        let billToAddressCity = $("#BillToCity").val().trim();
+        let billToAddressState = $("#BillToState").val().trim();
+        let billToAddressCountry = $("#BillToCountry").val().trim();
+        let billToAddressPincode = $("#BillToPinCode").val().trim();
+        let billToAddressContactNum = $("#BillToContact").val().trim();
 
-        $("#ShipTo_Address").val(billToAddress);
-        $("#ShipTo_City").val(billToAddressCity);
-        $("#ShipTo_State").val(billToAddressState);
-        $("#ShipTo_Country").val(billToAddressCountry);
-        $("#ShipTo_ContactNum").val(billToAddressContactNum);
+        $("#ShipToName").val(billToName);
+        $("#ShipToGSTIN").val(billToGSTNo);
+        $("#ShipToAddress").val(billToAddress);
+        $("#ShipToCity").val(billToAddressCity);
+        $("#ShipToState").val(billToAddressState);
+        $("#ShipToCountry").val(billToAddressCountry);
+        $("#ShipToPincode").val(billToAddressPincode);
+        $("#ShipToContact").val(billToAddressContactNum);
 
-        $("#ShipTo_Address").attr('disabled', 'disabled');
-        $("#ShipTo_City").attr('disabled', 'disabled');
-        $("#ShipTo_State").attr('disabled', 'disabled');
-        $("#ShipTo_Country").attr('disabled', 'disabled');
-        $("#ShipTo_ContactNum").attr('disabled', 'disabled');
+        $("#ShipToName").attr('disabled', 'disabled');
+        $("#ShipToGSTIN").attr('disabled', 'disabled');
+        $("#ShipToAddress").attr('disabled', 'disabled');
+        $("#ShipToCity").attr('disabled', 'disabled');
+        $("#ShipToState").attr('disabled', 'disabled');
+        $("#ShipToCountry").attr('disabled', 'disabled');
+        $("#ShipToPincode").attr('disabled', 'disabled');
+        $("#ShipToContact").attr('disabled', 'disabled');
     }
     else {
-        $("#ShipTo_Address").removeAttr('disabled');
-        $("#ShipTo_City").removeAttr('disabled');
-        $("#ShipTo_State").removeAttr('disabled');
-        $("#ShipTo_Country").removeAttr('disabled');
-        $("#ShipTo_ContactNum").removeAttr('disabled');
+        $("#ShipToName").removeAttr('disabled', 'disabled');
+        $("#ShipToGSTIN").removeAttr('disabled', 'disabled');
+        $("#ShipToAddress").removeAttr('disabled', 'disabled');
+        $("#ShipToCity").removeAttr('disabled', 'disabled');
+        $("#ShipToState").removeAttr('disabled', 'disabled');
+        $("#ShipToCountry").removeAttr('disabled', 'disabled');
+        $("#ShipToPincode").removeAttr('disabled', 'disabled');
+        $("#ShipToContact").removeAttr('disabled', 'disabled');
     }
+
+    let invoiceDraft = JSON.parse(localStorage.getItem("invoiceDraft"));
+
+    if (invoiceDraft) {
+        invoiceDraft.ShipToName = $("#ShipToName").val();
+        invoiceDraft.ShipToGSTIN = $("#ShipToGSTIN").val();
+        invoiceDraft.ShipToAddress = $("#ShipToAddress").val();
+        invoiceDraft.ShipToCity = $("#ShipToCity").val();
+        invoiceDraft.ShipToState = $("#ShipToState").val();
+        invoiceDraft.ShipToCountry = $("#ShipToCountry").val();
+        invoiceDraft.ShipToPincode = $("#ShipToPincode").val();
+        invoiceDraft.ShipToContactNum = $("#ShipToContact").val();
+    }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(invoiceDraft));
 });
 
 function updateTotals() {
@@ -213,82 +261,35 @@ function reindexInvoiceRows() {
     });
 }
 
-function addNewLineItem(desc = "", hsn = "", rate = "100", qty = "1", sgst = "0", cgst = "0", cess = "0") {
+function addNewLineItem(lineNum, desc = "", hsn = "", qty = "1", rate = "100", cgst = "0", sgst = "0", cess = "0") {
 
-    var currentRowValue = $('#invoiceTable tbody tr').length - 1;
-    var newRowValue = currentRowValue + 1;
-    var newRowIndex = newRowValue - 1;
+    let lineItem = {
+        LineNumber: lineNum,
+        Description: desc,
+        HSN_SAC: hsn,
+        Quantity: qty,
+        Rate: rate,
+        SGST: sgst,
+        CGST: cgst,
+        Cess: cess
+    }
 
+    $("button#addRow").attr("disabled", "disabled");
 
-    const row = `<tr class="line-item">
-        <td class="align-top">
-            <input type="text" class="item-desc mb-1 w-100"
-                   placeholder="Enter item name/description"
-                   name="Items[${newRowIndex}].Description"
-                   id="Items_${newRowIndex}__Description"
-                   value="${desc}" />
-            <input type="text" class="item-hsn mb-1"
-                   name="Items[${newRowIndex}].HSN_SAC"
-                   placeholder="HSN/SAC"
-                   id="Items_${newRowIndex}__HSN_SAC"
-                   value="${hsn}" />
-        </td>
-        <td class="align-top">
-            <input type="text" class="item-qty mb-1 w-100"
-                placeholder="0"         
-                name="Items[${newRowIndex}].Quantity"
-                id="Items_${newRowIndex}__Quantity"
-                onkeypress="return isNumberKey(event,this.id)"
-                value="${qty}" />
-        </td>
-        <td class="align-top">
-            <input type="text" class="item-price w-100"
-                placeholder="0"                
-                name="Items[${newRowIndex}].Rate"
-                id="Items_${newRowIndex}__Rate"
-                onkeypress="return isNumberKey(event,this.id)"
-                value="${rate}" />
-        </td>
+    $.ajax({
+        url: '/Invoice/NewLineItem',
+        type: 'POST',
+        data: lineItem,
+        success: function (lineItemHtmlContent) {
+            $('#invoiceTable tbody tr#lastRow').before(lineItemHtmlContent);
 
-        <td class="align-top">
-            <input type="text" class="item-sgst w-100"
-                placeholder="0"
-                name="Items[${newRowIndex}].SGST"
-                id="Items_${newRowIndex}__SGST"
-                onkeypress="return isNumberKey(event,this.id)"
-                value="${sgst}" />
-            <small class="text-muted lbl-sgst" id="Label_${newRowIndex}__SGST">0.00</small>
-        </td>
-        <td class="align-top">
-            <input type="text" class="item-cgst w-100"
-                placeholder="0"
-                name="Items[${newRowIndex}].CGST"
-                id="Items_${newRowIndex}__CGST"
-                onkeypress="return isNumberKey(event,this.id)"
-                value="${cgst}" />
-            <small class="text-muted lbl-cgst" id="Label_${newRowIndex}__CGST">0.00</small>
-        </td>
-        <td class="align-top">
-            <input type="text" class="item-cess w-100"
-                placeholder="0"
-                name="Items[${newRowIndex}].Cess"
-                id="Items_${newRowIndex}__Cess"
-                onkeypress="return isNumberKey(event,this.id)"
-                value="${cess}" />
-            <small class="text-muted lbl-cess" id="Label_${newRowIndex}__Cess">0.00</small>
-        </td>
+            setTimeout(function () {
+                updateTotals();
+                $("button#addRow").removeAttr("disabled")
+            }, 200);
+        }
+    });
 
-        <td class="item-total text-end align-top">0.00</td>
-        <td class="text-end align-top">
-            <button class="btn btn-sm btn-outline-danger remove-row px-1 py-0" type="button">
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </button>    
-        </td>
-      </tr>`;
-
-    $('#invoiceTable tbody tr#lastRow').before(row);
-
-    updateTotals();
 }
 
 $("#printInvoice").on('click', function () {
@@ -300,5 +301,4 @@ $("#printInvoice").on('click', function () {
 $("#downloadInvoice").on('click', function () {
     $("#hdnIsPreview").val("false");
     $("form#frmInvoice").submit();
-
 });

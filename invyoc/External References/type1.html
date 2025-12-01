@@ -80,15 +80,17 @@
             }
 
             table.invoice-items th {
-                background-color: #f0f0f0;
+                background-color: #000;
+                color: #fff;
             }
 
 
         .footer {
             font-size: 13px;
-            font-style: italic;
             clear: both;
-            text-align: center;
+            margin-top: 3rem;
+            /*border-top: 1px solid #000;*/
+            /*padding-top: 3rem;*/
         }
 
         .invoice-info {
@@ -131,10 +133,24 @@
         .p-0 {
             padding: 0;
         }
+
+        .w-100 {
+            width: 100%;
+        }
+
+        textarea {
+            border: 1px solid #ccc;
+        }
+
+        .text-muted {
+            color: rgba(33, 37, 41, 0.75) !important;
+        }
     </style>
+
 </head>
 <body>
-    <table width="100%"
+
+    <table class="w-100"
            style="border-bottom: 2px solid #000;
                   margin-bottom: 10px;
                   padding-bottom: 10px;
@@ -146,42 +162,48 @@
                 <div style="margin-top: 5px; font-size: 13px">
                     <strong style="text-transform: uppercase">[{GSTNo}]</strong><br />
                     [{CompanyAddress}]<br />
+                    [{CompanyCity}]<br />
+                    [{CompanyState}]<br />
+                    [{CompanyCountry}]<br />
                     [{CompanyPhone}] | <span style="text-transform: lowercase">[{CompanyEmail}]</span>
                 </div>
             </td>
             <td width="30%" style="font-size: 16px; text-align: right">
-                Invoice# [{InvoiceNumber}]
+                [{CompanyLogoContent}]
             </td>
         </tr>
     </table>
 
-    <table width="100%" style="margin-bottom: 20px; font-size: 14px">
+    <table class="w-100" style="margin-bottom: 20px; font-size: 14px">
         <tr valign="top">
             <td width="[{BillToContentWidth}]%" class="pr-20">
                 <strong>Bill To</strong>
                 <div style="margin-top:2px;">
-                    [{BillToName}]<br />
+                    [{BillToName}]
+                    <br />
+                    [{BillToGSTNo}]
+                    <br />
                     <span style="word-wrap: break-word">[{BillToAddress}]</span>
+                    <br />
+                    <span style="word-wrap: break-word">[{BillToCity}]</span>
+                    <br />
+                    <span style="word-wrap: break-word">[{BillToState}]</span>
+                    <br />
+                    <span style="word-wrap: break-word">[{BillToCountry}]</span>
                     <br />
                     <span style="word-wrap: break-word">[{BillToContact}]</span>
                 </div>
             </td>
 
-
             [{ShipToContent}]
-
-            <!--<td width="35%" class="pr-20">
-                <strong>Ship To</strong>
-                <div style="margin-top:2px;">
-                    [{ShipToName}]<br />
-                    <span style="word-wrap: break-word">[{ShipToAddress}]</span>
-                    <br />
-                    <span style="word-wrap: break-word">[{ShipToContact}]</span>
-                </div>
-            </td>-->
 
             <td width="30%" style="min-width: 200px; text-align: right">
                 <table class="invoiceInfo">
+                    <tr>
+                        <td><strong>Invoice#</strong></td>
+                        <td>:</td>
+                        <td><span style="font-weight:bold;">[{InvoiceNumber}]</span></td>
+                    </tr>
                     <tr>
                         <td><strong>Date</strong></td>
                         <td>:</td>
@@ -193,28 +215,28 @@
                         <td><span>[{DueDate}]</span></td>
                     </tr>
                     <tr>
-                        <td><strong>Payment Terms</strong></td>
-                        <td>:</td>
-                        <td><span>[{PaymentTerms}]</span></td>
-                    </tr>
-                    <tr>
                         <td><strong>PO Number</strong></td>
                         <td>:</td>
                         <td><span>[{PONumber}]</span></td>
                     </tr>
                 </table>
             </td>
+
         </tr>
     </table>
 
     <table class="invoice-items">
         <thead>
             <tr>
-                <th width="7%">#</th>
+                <th width="4%">#</th>
                 <th class="text-left">Item Description</th>
-                <th width="10%">Quantity</th>
-                <th width="15%">Rate</th>
-                <th width="18%">Amount</th>
+                <th width="11%">HSN/SAC</th>
+                <th width="8%">Qty</th>
+                <th width="12%">Rate</th>
+                <th width="10%">SGST</th>
+                <th width="10%">CGST</th>
+                <th width="9%">Cess</th>
+                <th width="14%">Amount</th>
             </tr>
         </thead>
         <tbody>
@@ -222,27 +244,29 @@
         </tbody>
     </table>
 
-
-    <!--<table class="summary">
-        <tr>
-            <td>Subtotal</td>
-            <td>[{SubTotal}]</td>
-        </tr>
-        <tr>
-            <td>Discount ([{DiscountPercentage}])</td>
-            <td>[{DiscountAmount}]</td>
-        </tr>
-        <tr>
-            <td>Tax ([{TaxPercentage}])</td>
-            <td>[{TaxAmount}]</td>
-        </tr>
-        <tr>
-            <td><strong>Total</strong></td>
-            <td><strong>[{FinalAmount}]</strong></td>
-        </tr>
-    </table>-->
-
     <br />
-    <div class="footer">[{PaymentNotes}]</div>
+
+    <div class="footer">
+        <table class="w-100">
+            <tr>
+                <td><strong>Notes</strong> </td>
+                <td><strong>Terms & Conditions</strong></td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea id="txtPaymentNotes"
+                              class="w-100"
+                              style="margin-right: 10px; width: 98%;"
+                              rows="5">[{PaymentNotes}]</textarea>
+                </td>
+                <td>
+                    <textarea id="txtPaymentTerms"
+                              class="w-100"
+                              rows="5">[{PaymentTerms}]</textarea>
+                </td>
+            </tr>
+        </table>
+    </div>
+
 </body>
 </html>

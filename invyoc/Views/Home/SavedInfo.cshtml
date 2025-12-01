@@ -58,7 +58,7 @@
                             <strong>[Ship To]</strong>
                             @(invoiceVM?.BillTo?.Name ?? "[Ship To Name]")
                             <br />
-                            @(invoiceVM?.ShipTo?.Address ?? "[Ship To Address]")
+                            @(invoiceVM?.ShipTo?.ClientAddress?.Address ?? "[Ship To Address]")
                         </td>
 
                         @*   <td>

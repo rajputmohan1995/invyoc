@@ -1,0 +1,164 @@
+﻿@model InvoiceViewModel
+
+<div class="row">
+
+    <div class="col-sm-12 col-md-8 col-lg-8" id="divInvoiceFrom">
+
+        <div class="row mb-4">
+
+            <div class="col" style="display:flex;">
+
+                <div id="logoDropZone">
+                    <p>
+                        <i class="fa-2x fa-solid fa-upload mb-1"></i>
+                        <br />
+                        <strong>Upload</strong>
+                    </p>
+
+                    <input type="file" id="logoInput" accept="image/*" hidden />
+                    @if (!string.IsNullOrWhiteSpace(Model.Company.LogoBase64))
+                    {
+                        <img id="logoPreview" src="@Model.Company.LogoBase64" alt="Logo Preview" />
+                    }
+                    else
+                    {
+                        <img id="logoPreview" src="" alt="Logo Preview" style="display:none;" />
+                    }
+
+                    <input hidden asp-for="Company.LogoBase64" id="companyLogoBase64" data-save />
+                </div>
+
+                <div class="text-center upload-section-note-main">
+                    <div class="upload-section-note mt-4">
+                        Upload Logo
+                        <br />
+                        <div>
+                            Drag & drop company logo here
+                            <br />or click to upload
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label">
+                    <input id="CompanyName" asp-for="Company.Name" type="text" class="w-100" placeholder="" data-save />
+                    <label for="CompanyName">Your Company</label>
+                </div>
+                <span asp-validation-for="Company.Name" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label">
+                    <input id="CompanyGSTNo" asp-for="Company.GSTNo" type="text" class="w-100" placeholder="" data-save />
+                    <label for="CompanyGSTNo">Company's GSTIN</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="CompanyContactNum" asp-for="Company.CompanyAddress.ContactNum" type="tel" class="w-100" placeholder="" data-save />
+                    <label for="CompanyContactNum">Company Contact</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="CompanyEmail" asp-for="Company.Email" type="email" class="w-100" placeholder="" data-save />
+                    <label for="CompanyEmail">Company Email</label>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label">
+                    <input id="CompanyAddress" asp-for="Company.CompanyAddress.Address" type="text" class="w-100" placeholder="" data-save />
+                    <label for="CompanyAddress">Company Address</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="CompanyAddressCity" asp-for="Company.CompanyAddress.City" type="text" class="w-100" placeholder="" data-save />
+                    <label for="CompanyAddressCity">City</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="CompanyAddressState" asp-for="Company.CompanyAddress.State" type="text" class="w-100" placeholder="" data-save />
+                    <label for="CompanyAddressState">State</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="CompanyAddressCountry" asp-for="Company.CompanyAddress.Country" type="text" class="w-100" placeholder="" data-save />
+                    <label for="CompanyAddressCountry">Country</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="CompanyAddressPincode" asp-for="Company.CompanyAddress.Pincode" type="text" class="w-100" placeholder="" data-save />
+                    <label for="CompanyAddressPincode">Pin Code</label>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-sm-12 col-md-4 col-lg-4 text-end">
+
+        <h1 style="height:140px;">
+            Tax Invoice
+        </h1>
+
+        <div class="row invoice-main-details">
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label-right">
+                    <input id="InvoiceNumber" type="text"
+                           class="w-100 fw-bold"
+                           asp-for="InvoiceNumber"
+                           pattern="[a-zA-Z0-9]*"
+                           placeholder=""
+                           data-save />
+                    <label for="InvoiceNumber">Invoice#</label>
+                </div>
+                <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label-right">
+                    <input id="InvoiceDate" type="date" class="w-100" asp-for="InvoiceDate" data-save />
+                    <label for="InvoiceDate">Date</label>
+                </div>
+                <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label-right">
+                    <input id="DueDate" type="date" class="w-100" asp-for="DueDate" data-save />
+                    <label for="DueDate">Due Date</label>
+                </div>
+                <span asp-validation-for="DueDate" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label-right">
+                    <input id="PONumber" type="text" class="w-100" placeholder="" asp-for="PONumber" data-save />
+                    <label for="PONumber">PO Number</label>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

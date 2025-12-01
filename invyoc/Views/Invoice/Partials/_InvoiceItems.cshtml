@@ -1,0 +1,57 @@
+﻿@model InvoiceViewModel
+@{
+    @if (Model.Items == null || Model.Items?.Count == 0)
+    {
+        Model.Items ??= new();
+        Model.Items.Add(new());
+    }
+}
+
+<div class="row" id="divInvoiceItems">
+
+    <div class="col">
+
+        <div class="table-responsive">
+
+            <table class="table table-sm table-borderless" id="invoiceTable">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Item Description</th>
+                        <th width="8%">Qty</th>
+                        <th width="12%">Rate</th>
+                        <th width="9%">SGST</th>
+                        <th width="9%">CGST</th>
+                        <th width="9%">Cess</th>
+                        <th width="14%" class="text-end">Amount</th>
+                        <th width="2%" class="bg-white"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (int i = 0; i < Model.Items?.Count; i++)
+                    {
+                        var lineItemVM = Model.Items[i];
+                        lineItemVM.LineNumber = i;
+
+                        await Html.PartialAsync("Partials/_LineItem", lineItemVM);
+                    }
+
+                    <tr id="lastRow" class="mt-3 border-top border-dark">
+
+                        <td colspan="8" class="align-top">
+                            <button class="btn btn-lg btn-outline-dark mt-1" id="addRow" type="button">
+                                <i class="fa-solid fa-circle-plus mr-2"></i>
+                                <span class="ml-2">Add Line Item</span>
+                            </button>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

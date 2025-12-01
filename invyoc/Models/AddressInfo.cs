@@ -6,5 +6,6 @@ public class AddressInfo
     public string? City { get; set; }
     public string? State { get; set; }
     public string? Country { get; set; }
+    public string? Pincode { get; set; }
     public string? ContactNum { get; set; }
 }

@@ -1,0 +1,155 @@
+﻿@model InvoiceViewModel
+
+
+<div class="row" id="divBillToAndShipTo">
+
+    <div class="col-sm-6 col-md-6 col-lg-6" id="divBillTo">
+
+        <h5>
+            <strong>Bill To</strong>
+        </h5>
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label">
+                    <input id="BillToName" type="text" class="mb-1 w-100" asp-for="BillTo.Name" placeholder="" data-save />
+                    <label for="BillToName">Your Client's Company</label>
+                </div>
+
+                <span asp-validation-for="BillTo.Name" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label">
+                    <input id="BillToGSTNo" type="text" class="mb-1 w-100" asp-for="BillTo.GSTNo" placeholder="" data-save />
+                    <label for="BillToGSTNo">Client's GSTIN</label>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label">
+                    <input id="BillToAddress" type="text" class="mb-1 w-100" asp-for="BillTo.ClientAddress.Address" placeholder="" data-save />
+                    <label for="BillToAddress">Client's Address</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="BillToCity" type="text" class="mb-1 w-100" asp-for="BillTo.ClientAddress.City" placeholder="" data-save />
+                    <label for="BillToCity">City</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="BillToState" type="text" class="mb-1 w-100" asp-for="BillTo.ClientAddress.State" placeholder="" data-save />
+                    <label for="BillToState">State</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="BillToCountry" type="text" class="mb-1 w-100" asp-for="BillTo.ClientAddress.Country" placeholder="" data-save />
+                    <label for="BillToCountry">Country</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="BillToPinCode" type="text" class="mb-1 w-100" asp-for="BillTo.ClientAddress.Pincode" placeholder="" data-save />
+                    <label for="BillToPinCode">Pin Code</label>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label">
+                    <input id="BillToContact" type="tel" class="mb-1 w-100" asp-for="BillTo.ClientAddress.ContactNum" placeholder="" data-save />
+                    <label for="BillToContact">Client's Contact</label>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-6" id="divShipTo">
+
+        <div class="row">
+            <div class="col">
+                <h5>
+                    <strong>Ship To </strong>
+                    <small>(optional)</small>
+                </h5>
+            </div>
+            <div class="col text-end">
+                <label class="text-end">
+                    <input type="checkbox" id="chkSameAsBillTo" data-save>
+                    <span>Same as Bill To</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label">
+                    <input id="ShipToName" type="text" class="mb-1 w-100" asp-for="ShipTo.Name" placeholder="" data-save />
+                    <label for="ShipToName">Ship To Name</label>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label">
+                    <input id="ShipToGSTIN" type="text" class="mb-1 w-100" asp-for="ShipTo.GSTNo" placeholder="" data-save />
+                    <label for="ShipToGSTIN">Ship To GSTIN</label>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label">
+                    <input id="ShipToAddress" type="text" class="mb-1 w-100" asp-for="ShipTo.ClientAddress.Address" placeholder="" data-save />
+                    <label for="ShipToAddress">Client's Ship To Address</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="ShipToCity" type="text" class="mb-1 w-100" asp-for="ShipTo.ClientAddress.City" placeholder="" data-save />
+                    <label for="ShipToCity">City</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="ShipToState" type="text" class="mb-1 w-100" asp-for="ShipTo.ClientAddress.State" placeholder="" data-save />
+                    <label for="ShipToState">State</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="ShipToCountry" type="text" class="mb-1 w-100" asp-for="ShipTo.ClientAddress.Country" placeholder="" data-save />
+                    <label for="ShipToCountry">Country</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="floating-label">
+                    <input id="ShipToPincode" type="text" class="mb-1 w-100" asp-for="ShipTo.ClientAddress.Pincode" placeholder="" data-save />
+                    <label for="ShipToPincode">Pin Code</label>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="floating-label">
+                    <input id="ShipToContact" type="tel" class="mb-1 w-100" asp-for="ShipTo.ClientAddress.ContactNum" placeholder="" data-save />
+                    <label for="ShipToContact">Client's Ship To Contact</label>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

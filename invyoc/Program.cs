@@ -85,7 +85,9 @@ app.Use(async (context, next) =>
 
     if (!string.IsNullOrWhiteSpace(path))
     {
-        if (path.StartsWith("/invoiceJson") || path.Equals("/invoice-template.html", StringComparison.OrdinalIgnoreCase))
+        if (path.StartsWith("/invoiceJson")
+        || path.StartsWith("/output")
+        || path.StartsWith("/templates"))
         {
             context.Response.StatusCode = 404;
             await context.Response.WriteAsync("Not Found!");
@@ -95,7 +97,7 @@ app.Use(async (context, next) =>
     await next();
 });
 
-//app.UseMiddleware<CustomErrorHandlingMiddleware>();
+app.UseMiddleware<CustomErrorHandlingMiddleware>();
 
 app.UseResponseCompression();
 app.UseStaticFiles();
@@ -109,6 +111,6 @@ app.UseHttpsRedirection();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Invoice}/{action=Index}/{id?}");
 
 app.Run();

@@ -1,0 +1,116 @@
+﻿@model InvoiceItemViewModel
+
+@{
+    var currentRowIndex = Model.LineNumber;
+
+    var itemDescId = $"Items_{currentRowIndex}__Description";
+    var itemHSN = $"Items_{currentRowIndex}__HSN_SAC";
+    var itemQty = $"Items_{currentRowIndex}__Quantity";
+    var itemRate = $"Items_{currentRowIndex}__Rate";
+    var itemSGST = $"Items_{currentRowIndex}__SGST";
+    var itemCGST = $"Items_{currentRowIndex}__CGST";
+    var itemCess = $"Items_{currentRowIndex}__Cess";
+
+    var lblSGSTAmtId = $"Label_{currentRowIndex}__SGST";
+    var lblCGSTAmtId = $"Label_{currentRowIndex}__CGST";
+    var lblCessAmtId = $"Label_{currentRowIndex}__Cess";
+}
+
+<tr class="line-item">
+
+    <td class="align-top pt-3">
+
+        <div class="floating-label">
+            <input type="text" class="item-desc mb-1 w-100 item-field"
+                   asp-for="@Model.Description"
+                   id="@itemDescId"
+                   name="Items[@currentRowIndex].Description"
+                   placeholder="" />
+            <label for="@itemDescId">Enter item name/description</label>
+        </div>
+
+        <div class="floating-label">
+            <input type="text" class="item-hsn mb-1 item-field"
+                   asp-for="@Model.HSN_SAC"
+                   id="@itemHSN"
+                   name="Items[@currentRowIndex].HSN_SAC"
+                   placeholder="" />
+            <label for="@itemHSN">HSN/SAC</label>
+        </div>
+    </td>
+
+    <td class="align-top pt-3">
+        <div class="floating-label">
+            <input type="text" class="item-qty w-100 item-field"
+                   asp-for="@Model.Quantity"
+                   id="@itemQty"
+                   placeholder="0"
+                   name="Items[@currentRowIndex].Quantity"
+                   onkeypress="return isNumberKey(event, this.id)" />
+        </div>
+
+
+    </td>
+
+    <td class="align-top pt-3">
+        <div class="floating-label">
+
+            <input type="text" class="item-price w-100 item-field"
+                   asp-for="@Model.Rate"
+                   id="@itemRate"
+                   placeholder="0"
+                   name="Items[@currentRowIndex].Rate"
+                   onkeypress="return isNumberKey(event, this.id)" />
+        </div>
+
+    </td>
+
+    <td class="align-top pt-3">
+        <div class="floating-label">
+            <input type="text" class="item-sgst w-100 item-field"
+                   asp-for="@Model.SGST"
+                   id="@itemSGST"
+                   placeholder="0"
+                   name="Items[@currentRowIndex].SGST"
+                   onkeypress="return isNumberKey(event, this.id)" />
+        </div>
+        <small class="text-muted lbl-sgst" id="@lblSGSTAmtId">0.00</small>
+    </td>
+
+    <td class="align-top pt-3">
+
+        <div class="floating-label">
+            <input type="text" class="item-cgst w-100 item-field"
+                   asp-for="@Model.CGST"
+                   id="@itemCGST"
+                   placeholder="0"
+                   name="Items[@currentRowIndex].CGST"
+                   onkeypress="return isNumberKey(event, this.id)" />
+        </div>
+
+        <small class="text-muted lbl-cgst" id="@lblCGSTAmtId">0.00</small>
+    </td>
+
+    <td class="align-top pt-3">
+        <div class="floating-label">
+            <input type="text" class="item-cess w-100 item-field"
+                   asp-for="@Model.Cess"
+                   id="@itemCess"
+                   placeholder="0"
+                   name="Items[@currentRowIndex].Cess"
+                   onkeypress="return isNumberKey(event, this.id)" />
+        </div>
+
+        <small class="text-muted lbl-cess" id="@lblCessAmtId">0.00</small>
+    </td>
+
+    <td class="item-total text-end align-top pt-3">
+        @Model.Amount
+    </td>
+
+    <td class="text-end align-top pt-3">
+        <button class="btn btn-sm btn-outline-danger remove-row px-1 py-0" type="button" data-save>
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+    </td>
+</tr>

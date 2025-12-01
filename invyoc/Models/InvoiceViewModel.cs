@@ -34,7 +34,7 @@ public class InvoiceViewModel
 
     public CompanyInfo Company { get; set; } = new();
     public ClientInfo BillTo { get; set; } = new();
-    public AddressInfo ShipTo { get; set; } = new();
+    public ClientInfo ShipTo { get; set; } = new();
 
     public List<InvoiceItemViewModel> Items { get; set; } = [];
 
@@ -81,11 +81,14 @@ public class InvoiceViewModel
 
             ShipTo = new()
             {
-                Address = "J-2, Jhalana Institutional Area, Jhalana Doongri",
-                City = "Jaipur",
-                State = "RJ - 302004",
-                Country = "India",
-                ContactNum = "+91-97733 85303"
+                ClientAddress = new()
+                {
+                    Address = "J-2, Jhalana Institutional Area, Jhalana Doongri",
+                    City = "Jaipur",
+                    State = "RJ - 302004",
+                    Country = "India",
+                    ContactNum = "+91-97733 85303"
+                }
             },
 
             InvoiceNumber = "INV001",

@@ -37,29 +37,47 @@ public static class ExportExtensions
         var shipToContent = "";
         var billToContentWidth = "70";
 
-        if (!string.IsNullOrWhiteSpace(invoiceVM.ShipTo.Address) ||
-            !string.IsNullOrWhiteSpace(invoiceVM.ShipTo.City) ||
-            !string.IsNullOrWhiteSpace(invoiceVM.ShipTo.State) ||
-            !string.IsNullOrWhiteSpace(invoiceVM.ShipTo.Country) ||
-            !string.IsNullOrWhiteSpace(invoiceVM.ShipTo.ContactNum))
+
+        if (invoiceVM.ShipTo != null)
         {
-            shipToContent = @$"<td width='35%' class='pr-20' >
+            if (!string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.Name) ||
+                !string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.GSTNo))
+            {
+                shipToContent = @$"<td width='35%' class='pr-20' >
                 <strong>Ship To</strong>
                 <div style='margin-top:2px;'>
-                    <span style='word-wrap: break-word'>{invoiceVM.ShipTo.Address}</span>
-                    <br />
-                    <span style=""word-wrap: break-word"">{invoiceVM.ShipTo.City}</span>
-                    <br />
-                    <span style=""word-wrap: break-word"">{invoiceVM.ShipTo.State}</span>
-                    <br />
-                    <span style=""word-wrap: break-word"">{invoiceVM.ShipTo.Country}</span>
-                    <br />
-                    <span style='word-wrap: break-word'>{invoiceVM.ShipTo.ContactNum}</span>
-                </div>
-            </td>";
+                    <span style='word-wrap: break-word'>{invoiceVM.ShipTo.Name}</span>
+                    <br />                 
+                    <span style='word-wrap: break-word'>{invoiceVM.ShipTo.GSTNo}</span>";
+            }
 
+
+            if (!string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.ClientAddress?.Address) ||
+               !string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.ClientAddress?.City) ||
+               !string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.ClientAddress?.State) ||
+               !string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.ClientAddress?.Country) ||
+               !string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.ClientAddress?.Pincode) ||
+               !string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.ClientAddress?.ContactNum))
+            {
+
+                shipToContent +=
+                    @$"<br />                 
+                    <span style='word-wrap: break-word'>{invoiceVM.ShipTo.ClientAddress.Address}</span>
+                    <br />
+                    <span style=""word-wrap: break-word"">{invoiceVM.ShipTo.ClientAddress.City}</span>
+                    <br />
+                    <span style=""word-wrap: break-word"">{invoiceVM.ShipTo.ClientAddress.State}</span>
+                    <br />
+                    <span style=""word-wrap: break-word"">{invoiceVM.ShipTo.ClientAddress.Country}</span>
+                    <br />
+                    <span style='word-wrap: break-word'>{invoiceVM.ShipTo.ClientAddress.ContactNum}</span>";
+
+            }
+
+            shipToContent += "</div></td>";
             billToContentWidth = "35";
         }
+
 
         htmlContent = htmlContent.Replace("[{ShipToContent}]", shipToContent);
         htmlContent = htmlContent.Replace("[{BillToContentWidth}]", billToContentWidth);
@@ -123,7 +141,7 @@ public static class ExportExtensions
         invoiceItems += @$"<tr>
             <td class='border-0' colspan='5'></td>
             <td class='text-right' colspan='2'>Sub Total</td>
-            <td colspan='2'>{invoiceItemTotal.ToFormat()}</td>
+            <td colspan='2'>{invoiceItemTotal.ToCurrency()}</td>
         </tr>";
 
 

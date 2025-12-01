@@ -111,8 +111,6 @@ document.addEventListener("input", function (e) {
     }
 });
 
-
-
 // Load data back
 function loadDraft() {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -133,12 +131,13 @@ function loadDraft() {
 
         data.items.forEach((item, index) => {
             addNewLineItem(
+                index,
                 item.description,
                 item.hSN_SAC,
-                item.rate,
                 item.qty,
-                item.sgst,
+                item.rate,
                 item.cgst,
+                item.sgst,
                 item.cess);
         });
 
