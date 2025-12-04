@@ -101,6 +101,21 @@ $(document).on('change', '#chkSameAsBillTo', function () {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(invoiceDraft));
 });
 
+$(document).on('click', 'button.remove-logo', function (event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    $("#companyLogoBase64").val('');
+    $("#logoDropZone p").removeClass("d-none");
+    $("#logoDropZone").removeClass("border-0");
+
+    $("#logoPreview").hide();
+    $("button.remove-logo").hide();
+
+    localStorage.setItem(LOGO_STORAGE_KEY, '');
+});
+
+
 function updateTotals() {
     let subtotal = 0;
     let finalTotal = 0;

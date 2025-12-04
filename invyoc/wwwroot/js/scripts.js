@@ -150,6 +150,7 @@ function loadDraft() {
         let formattedLogoStr = logoStr.substring(1, logoStr.length - 1);
         $("#logoPreview").attr("src", formattedLogoStr);
         $("#logoPreview").show();
+        $("button.remove-logo").show();
 
         $("#companyLogoBase64").val(formattedLogoStr);
         $("#logoDropZone p").addClass("d-none");

@@ -16,6 +16,7 @@
                     </p>
 
                     <input type="file" id="logoInput" accept="image/*" hidden />
+
                     @if (!string.IsNullOrWhiteSpace(Model.Company.LogoBase64))
                     {
                         <img id="logoPreview" src="@Model.Company.LogoBase64" alt="Logo Preview" />
@@ -26,6 +27,7 @@
                     }
 
                     <input hidden asp-for="Company.LogoBase64" id="companyLogoBase64" data-save />
+
                 </div>
 
                 <div class="text-center upload-section-note-main">
@@ -37,6 +39,11 @@
                             <br />or click to upload
                         </div>
                     </div>
+                         <button class="btn btn-sm btn-danger remove-logo mt-2" 
+                                 style="display: @(!string.IsNullOrWhiteSpace(Model.Company.LogoBase64) ? "block" :"none");">
+                            <i class="fa fa-trash" aria-hidden="true"></i> 
+                            Remove Logo
+                        </button>
                 </div>
 
             </div>

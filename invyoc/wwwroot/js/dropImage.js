@@ -41,6 +41,8 @@ function handleFile() {
                     $("#logoDropZone p").addClass("d-none");
                     $("#logoDropZone").addClass("border-0");
 
+                    $("button.remove-logo").show();
+
                     localStorage.setItem(LOGO_STORAGE_KEY, JSON.stringify(smallBase64));
                 });
             };
