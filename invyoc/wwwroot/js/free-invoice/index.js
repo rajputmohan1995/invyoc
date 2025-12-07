@@ -144,7 +144,7 @@ function updateTotals() {
         $(this).find('.lbl-sgst').text(round2Decimals(sgstAmt));
         $(this).find('.lbl-cgst').text(round2Decimals(cgstAmt));
         $(this).find('.lbl-cess').text(round2Decimals(cessAmt));
-        $(this).find('.item-total').text(round2Decimals(total));
+        $(this).find('.item-total .content').text(round2Decimals(total));
 
         let sgstName = `SGST (${sgst}%)`
         if (sgst > 0) {
@@ -308,12 +308,18 @@ function addNewLineItem(lineNum, desc = "", hsn = "", qty = "1", rate = "100", c
 }
 
 $("#printInvoice").on('click', function () {
-    $("#hdnIsPreview").val("true");
-    $("form#frmInvoice").submit();
-
+    invoiceFormSubmit("true")
 });
 
 $("#downloadInvoice").on('click', function () {
-    $("#hdnIsPreview").val("false");
-    $("form#frmInvoice").submit();
+    invoiceFormSubmit("false")
 });
+
+function invoiceFormSubmit(isPreviewValue) {
+    $("#hdnIsPreview").val(isPreviewValue);
+
+    var shipToNameInput = $("#ShipToName");
+    if (shipToNameInput.val() == "") shipToNameInput.val(' ');
+
+    $("form#frmInvoice").submit();
+}

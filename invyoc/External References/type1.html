@@ -112,6 +112,7 @@
 
         table tbody tr td, table tbody tr th {
             line-height: 1.25rem;
+            vertical-align: top;
         }
 
         .border-0 {
@@ -138,8 +139,9 @@
             width: 100%;
         }
 
-        textarea {
+        div.auto-height {
             border: 1px solid #ccc;
+            min-height: 50px !important;
         }
 
         .text-muted {
@@ -249,24 +251,26 @@
     <div class="footer">
         <table class="w-100">
             <tr>
-                <td><strong>Notes</strong> </td>
-                <td><strong>Terms & Conditions</strong></td>
+                <td width="30%"><strong>Notes</strong> </td>
+                <td width="70%"><strong>Terms & Conditions</strong></td>
             </tr>
             <tr>
                 <td>
-                    <textarea id="txtPaymentNotes"
-                              class="w-100"
-                              style="margin-right: 10px; width: 98%;"
-                              rows="5">[{PaymentNotes}]</textarea>
+                    <div id="txtPaymentNotes"
+                         class="w-100 auto-height"
+                         style="margin-right: 10px; width: 98%;">
+                        [{PaymentNotes}]
+                    </div>
                 </td>
                 <td>
-                    <textarea id="txtPaymentTerms"
-                              class="w-100"
-                              rows="5">[{PaymentTerms}]</textarea>
+                    <div id="txtPaymentTerms"
+                         class="w-100 auto-height"
+                         rows="5">
+                        [{PaymentTerms}]
+                    </div>
                 </td>
             </tr>
         </table>
     </div>
-
 </body>
 </html>

@@ -26,10 +26,10 @@ input {
 
 .floating-label {
     position: relative;
-    margin-bottom: 10px;
 }
 
     .floating-label input, .floating-label textarea {
+        margin-bottom: 10px;
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
@@ -122,7 +122,7 @@ form#frmInvoice {
 }
 
 #invoiceTable tr.line-item {
-    border-bottom: 1px solid #ddd;
+    border: 1px solid #ddd;
 }
 
 #logoDropZone {
@@ -190,6 +190,12 @@ form#frmInvoice {
     vertical-align: sub;
     width: 16px;
     height: 16px;
+}
+
+
+tr.line-item td button.remove-row {
+    position: relative;
+    top: 42px;
 }
 
 /* Mobile Responsive */

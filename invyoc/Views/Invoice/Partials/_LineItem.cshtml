@@ -20,13 +20,13 @@
 
     <td class="align-top pt-3">
 
-        <div class="floating-label">
+        <div class="floating-label pb-2">
             <input type="text" class="item-desc mb-1 w-100 item-field"
                    asp-for="@Model.Description"
                    id="@itemDescId"
                    name="Items[@currentRowIndex].Description"
                    placeholder="" />
-            <label for="@itemDescId">Enter item name/description</label>
+            <label for="@itemDescId">Item Description</label>
         </div>
 
         <div class="floating-label">
@@ -104,13 +104,11 @@
         <small class="text-muted lbl-cess" id="@lblCessAmtId">0.00</small>
     </td>
 
-    <td class="item-total text-end align-top pt-3">
-        @Model.Amount
-    </td>
+    <td class="item-total align-top pt-3 text-center">
+        <div class="content">@Model.Amount</div>
 
-    <td class="text-end align-top pt-3">
-        <button class="btn btn-sm btn-outline-danger remove-row px-1 py-0" type="button" data-save>
-            <i class="fa fa-times" aria-hidden="true"></i>
+        <button class="btn btn-outline-danger remove-row float-end" type="button" data-save>
+            <i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Remove
         </button>
     </td>
 </tr>
