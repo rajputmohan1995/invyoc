@@ -34,7 +34,7 @@ input {
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
-        font-size: 16px;
+        font-size: 14px;
         transition: border-color 0.3s ease;
     }
 
@@ -75,7 +75,7 @@ input {
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
-        font-size: 16px;
+        font-size: 14px;
         transition: border-color 0.3s ease;
     }
 
@@ -107,7 +107,7 @@ input {
 
 
 form#frmInvoice {
-    max-width: 95%;
+    /*max-width: 95%;*/
     margin: auto;
 }
 
@@ -116,9 +116,9 @@ form#frmInvoice {
 }
 
 .invoice-box {
-    padding: 2rem;
+    /*    padding: 2rem;
     border: 1px solid #ccc;
-    border-radius: 2rem;
+    border-radius: 2rem;*/
 }
 
 #invoiceTable tr.line-item {
@@ -173,14 +173,8 @@ form#frmInvoice {
     max-width: 150px;
 }
 
-#divBillToAndShipTo {
-    margin-top: 3rem;
+#invoice div.row div.card {
     margin-bottom: 3rem;
-}
-
-#divInvoiceSummary {
-    border: 1px solid #ccc;
-    border-radius: 1rem;
 }
 
 #divInvoiceItems {

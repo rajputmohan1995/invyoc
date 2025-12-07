@@ -114,8 +114,10 @@ document.addEventListener("input", function (e) {
 // Load data back
 function loadDraft() {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (!saved) return;
-
+    if (!saved) {
+        $("#addRow").click()
+        return;
+    }
     const data = JSON.parse(saved);
 
     // Load single fields

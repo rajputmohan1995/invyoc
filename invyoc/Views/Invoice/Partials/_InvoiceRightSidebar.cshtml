@@ -5,46 +5,54 @@
 
 <div class="sticky-top" style="top:40px;">
 
-    <div class="row">
-
-        <div class="col-sm-12">
-            <h5 class="text-center mt-3">Summary</h5>
+    <div class="card border-0">
+        <div class="card-header text-center border border-bottom-0">
+            <h5 class="mb-0">
+                <strong>Summary</strong>
+            </h5>
         </div>
 
-        <div class="col-sm-12">
+        <div class="card-body p-0">
 
-            <div class="table-responsive" id="divInvoiceSummary">
-                <table class="table table-bordered mb-0 border-collapsed">
+            <div class="row">
 
-                    <tr>
-                        <td width="40%">
-                            <span>Sub Total</span>
-                        </td>
-                        <td>
-                            <span id="lblSubTotalValue">0.00</span>
-                        </td>
-                    </tr>
-                    <tr id="trFinalTotalDetails">
-                        <td>
-                            <strong>Total</strong>
-                            <select id="currency" asp-for="Currency" asp-items="Model.Currencies" data-save style="width:80px;"></select>
+                <div class="col-sm-12">
 
-                        </td>
-                        <td>
-                            <h5 class="fw-bold" id="lblFinalTotalValue">0.00</h5>
-                        </td>
-                    </tr>
-                </table>
+                    <div class="table-responsive" id="divInvoiceSummary">
+                        <table class="table table-bordered mb-0">
+
+                            <tr>
+                                <td width="40%">
+                                    <span>Sub Total</span>
+                                </td>
+                                <td>
+                                    <span id="lblSubTotalValue">0.00</span>
+                                </td>
+                            </tr>
+                            <tr id="trFinalTotalDetails">
+                                <td>
+                                    <strong>Total</strong>
+                                    <select id="currency" asp-for="Currency" asp-items="Model.Currencies" data-save style="width:80px;"></select>
+
+                                </td>
+                                <td>
+                                    <h5 class="fw-bold" id="lblFinalTotalValue">0.00</h5>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
             </div>
-        </div>
 
+        </div>
     </div>
 
     <br />
 
-    <div class="row">
+    <div class="row text-center">
 
-        <div class="col-sm-12 col-md-6 col-lg-6">
+        <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
             <div class="d-grid gap-2">
                 <button class="btn btn-dark btn-lg" id="printInvoice" type="button">
                     <i class="fa fa-print"></i>
