@@ -2,6 +2,11 @@
 $(function () {
     $("#spanCurrentYear").text(new Date().getFullYear());
     updateTotals();
+
+    $.validator.setDefaults({
+        onkeyup: function (element) { $(element).valid(); },
+        onfocusout: function (element) { $(element).valid(); }
+    });
 });
 
 

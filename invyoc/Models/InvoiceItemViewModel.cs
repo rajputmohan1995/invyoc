@@ -5,7 +5,7 @@ namespace invyoc.Models;
 public class InvoiceItemViewModel
 {
     public int LineNumber { get; set; }
-    public string? Description { get; set; }
+    public string Description { get; set; } = string.Empty;
     public string? HSN_SAC { get; set; }
     public int Quantity { get; set; }
     public decimal Rate { get; set; }

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace invyoc.Models;
 
-public class InvoiceViewModel : IValidatableObject
+public class InvoiceViewModel
 {
     public InvoiceViewModel()
     {
@@ -33,7 +33,7 @@ public class InvoiceViewModel : IValidatableObject
     public string? PONumber { get; set; }
 
     public CompanyInfo Company { get; set; } = new();
-    public ClientInfo BillTo { get; set; } = new();
+    public ClientInfoRequired BillTo { get; set; } = new();
     public ClientInfo ShipTo { get; set; } = new();
 
     public List<InvoiceItemViewModel> Items { get; set; } = [];
@@ -65,7 +65,7 @@ public class InvoiceViewModel : IValidatableObject
                 GSTNo = "24AAACH7409R2Z6"
             },
 
-            BillTo = new ClientInfo()
+            BillTo = new ClientInfoRequired()
             {
                 Name = "55 Technologies Private Limited",
                 ClientAddress = new()
@@ -138,17 +138,5 @@ public class InvoiceViewModel : IValidatableObject
         };
 
         return tempObj;
-    }
-
-    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-    {
-        // BillTo.Name is required
-        if (string.IsNullOrWhiteSpace(BillTo?.Name))
-        {
-            yield return new ValidationResult(
-                "Client Company Name is required",
-                [nameof(BillTo) + "." + nameof(BillTo.Name)]
-            );
-        }
     }
 }
