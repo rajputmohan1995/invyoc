@@ -317,9 +317,5 @@ $("#downloadInvoice").on('click', function () {
 
 function invoiceFormSubmit(isPreviewValue) {
     $("#hdnIsPreview").val(isPreviewValue);
-
-    var shipToNameInput = $("#ShipToName");
-    if (shipToNameInput.val() == "") shipToNameInput.val(' ');
-
     $("form#frmInvoice").submit();
 }

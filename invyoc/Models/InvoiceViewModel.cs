@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace invyoc.Models;
 
-public class InvoiceViewModel
+public class InvoiceViewModel : IValidatableObject
 {
     public InvoiceViewModel()
     {
@@ -138,5 +138,17 @@ public class InvoiceViewModel
         };
 
         return tempObj;
+    }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        // BillTo.Name is required
+        if (string.IsNullOrWhiteSpace(BillTo?.Name))
+        {
+            yield return new ValidationResult(
+                "Client Company Name is required",
+                [nameof(BillTo) + "." + nameof(BillTo.Name)]
+            );
+        }
     }
 }
