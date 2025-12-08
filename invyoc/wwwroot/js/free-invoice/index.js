@@ -322,5 +322,5 @@ $("#downloadInvoice").on('click', function () {
 
 function invoiceFormSubmit(isPreviewValue) {
     $("#hdnIsPreview").val(isPreviewValue);
-    $("form#frmInvoice").submit();
+    $("#getInvoicePdf").click();
 }
