@@ -70,24 +70,24 @@ $(document).on('change', '#chkSameAsBillTo', function () {
         $("#ShipToPincode").val(billToAddressPincode);
         $("#ShipToContact").val(billToAddressContactNum);
 
-        $("#ShipToName").attr('disabled', 'disabled');
-        $("#ShipToGSTIN").attr('disabled', 'disabled');
-        $("#ShipToAddress").attr('disabled', 'disabled');
-        $("#ShipToCity").attr('disabled', 'disabled');
-        $("#ShipToState").attr('disabled', 'disabled');
-        $("#ShipToCountry").attr('disabled', 'disabled');
-        $("#ShipToPincode").attr('disabled', 'disabled');
-        $("#ShipToContact").attr('disabled', 'disabled');
+        $("#ShipToName").attr('readonly', 'readonly');
+        $("#ShipToGSTIN").attr('readonly', 'readonly');
+        $("#ShipToAddress").attr('readonly', 'readonly');
+        $("#ShipToCity").attr('readonly', 'readonly');
+        $("#ShipToState").attr('readonly', 'readonly');
+        $("#ShipToCountry").attr('readonly', 'readonly');
+        $("#ShipToPincode").attr('readonly', 'readonly');
+        $("#ShipToContact").attr('readonly', 'readonly');
     }
     else {
-        $("#ShipToName").removeAttr('disabled', 'disabled');
-        $("#ShipToGSTIN").removeAttr('disabled', 'disabled');
-        $("#ShipToAddress").removeAttr('disabled', 'disabled');
-        $("#ShipToCity").removeAttr('disabled', 'disabled');
-        $("#ShipToState").removeAttr('disabled', 'disabled');
-        $("#ShipToCountry").removeAttr('disabled', 'disabled');
-        $("#ShipToPincode").removeAttr('disabled', 'disabled');
-        $("#ShipToContact").removeAttr('disabled', 'disabled');
+        $("#ShipToName").removeAttr('readonly', 'readonly');
+        $("#ShipToGSTIN").removeAttr('readonly', 'readonly');
+        $("#ShipToAddress").removeAttr('readonly', 'readonly');
+        $("#ShipToCity").removeAttr('readonly', 'readonly');
+        $("#ShipToState").removeAttr('readonly', 'readonly');
+        $("#ShipToCountry").removeAttr('readonly', 'readonly');
+        $("#ShipToPincode").removeAttr('readonly', 'readonly');
+        $("#ShipToContact").removeAttr('readonly', 'readonly');
     }
 
     let invoiceDraft = JSON.parse(localStorage.getItem("invoiceDraft"));
@@ -100,7 +100,7 @@ $(document).on('change', '#chkSameAsBillTo', function () {
         invoiceDraft.ShipToState = $("#ShipToState").val();
         invoiceDraft.ShipToCountry = $("#ShipToCountry").val();
         invoiceDraft.ShipToPincode = $("#ShipToPincode").val();
-        invoiceDraft.ShipToContactNum = $("#ShipToContact").val();
+        invoiceDraft.ShipToContact = $("#ShipToContact").val();
     }
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(invoiceDraft));
