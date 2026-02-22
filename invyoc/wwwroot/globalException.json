@@ -1,0 +1,10 @@
+[
+  {
+    "Id": "73a410f4-de6c-45df-a716-71330cfab461",
+    "Message": "Current JobStorage instance has not been initialized yet. You must set it before using Hangfire Client or Server API. For .NET Core applications please call the \u0060IServiceCollection.AddHangfire\u0060 extension method from Hangfire.NetCore or Hangfire.AspNetCore package depending on your application type when configuring the services and ensure service-based APIs are used instead of static ones, like \u0060IBackgroundJobClient\u0060 instead of \u0060BackgroundJob\u0060 and \u0060IRecurringJobManager\u0060 instead of \u0060RecurringJob\u0060.",
+    "StackTrace": "   at Hangfire.JobStorage.get_Current() in C:\\projects\\hangfire-525\\src\\Hangfire.Core\\JobStorage.cs:line 42\r\n   at Hangfire.BackgroundJobClient..ctor() in C:\\projects\\hangfire-525\\src\\Hangfire.Core\\BackgroundJobClient.cs:line 63\r\n   at Hangfire.BackgroundJob.\u003C\u003Ec.\u003C.cctor\u003Eb__68_0() in C:\\projects\\hangfire-525\\src\\Hangfire.Core\\BackgroundJob.cs:line 47\r\n   at Hangfire.BackgroundJob.Enqueue[T](Expression\u00601 methodCall) in C:\\projects\\hangfire-525\\src\\Hangfire.Core\\BackgroundJob.cs:line 192\r\n   at invyoc.Controllers.InvoiceController.Index(InvoiceViewModel invoiceVM) in D:\\invyoc\\invyoc\\Controllers\\InvoiceController.cs:line 41",
+    "Source": "Hangfire.Core",
+    "ExceptionType": "System.InvalidOperationException",
+    "LoggedAt": "2026-02-22T08:53:29.8885923Z"
+  }
+]

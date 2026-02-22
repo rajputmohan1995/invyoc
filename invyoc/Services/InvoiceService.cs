@@ -1,168 +1,20 @@
-﻿using invyoc.Extensions;
-using invyoc.Models;
-using invyoc.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
-using System.Data.SqlClient;
-using System.Diagnostics;
+﻿using invyoc.Models;
+using Microsoft.Data.SqlClient;
+using System.Data;
 using System.Text.Json;
 
-namespace invyoc.Controllers;
+namespace invyoc.Services;
 
-public class HomeController(
-    IWebHostEnvironment env,
-    IMemoryCache cache,
-    IInvoiceService invoiceService) : Controller
+public class InvoiceService(IConfiguration configuration) : IInvoiceService
 {
-    private readonly IWebHostEnvironment _env = env;
-    private readonly IMemoryCache _cache = cache;
-    private readonly IInvoiceService _invoiceService = invoiceService;
+    private readonly IConfiguration _configuration = configuration;
 
-    #region Static Pages
-
-    [Route("about")]
-    public IActionResult About()
-    {
-        return View();
-    }
-
-    [Route("privacy-policy")]
-    public IActionResult PrivacyPolicy()
-    {
-        return View();
-    }
-
-    [Route("terms")]
-    public IActionResult Terms()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0,
-        Location = ResponseCacheLocation.None,
-        NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
-
-    #endregion
-
-
-    [Route("SavedInfo")]
-    public async Task<IActionResult> SavedInfo(
-        string p,
-        int month,
-        int year,
-        string search = "",
-        int pageNum = 1,
-        int pageSize = 1000)
-    {
-        if (p != CommonSetting.PassKey)
-            return NotFound();
-
-        ViewBag.SavedInfoMonthYear = $"{month}-{year}";
-
-        var savedInvoices = await _invoiceService.GetAllAsync(new CommonListVM(pageNum, pageSize, search, month, year));
-        return View(savedInvoices);
-    }
-
-    [HttpGet]
-    public IActionResult Upload()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Upload(IFormFile jsonFile)
-    {
-        try
-        {
-            if (jsonFile == null || jsonFile.Length == 0)
-            {
-                ViewBag.Error = "Please upload a valid JSON file.";
-                return View();
-            }
-
-            using var reader = new StreamReader(jsonFile.OpenReadStream());
-            var json = await reader.ReadToEndAsync();
-
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-
-            var invoices = JsonSerializer.Deserialize<List<InvoiceFileEntry>>(json, options);
-
-            if (invoices == null)
-            {
-                ViewBag.Error = "Invalid JSON structure.";
-                return View();
-            }
-
-            // Store in cache for later processing
-            _cache.Set("UploadedInvoices", invoices, TimeSpan.FromMinutes(30));
-
-            return View("Results", invoices);
-        }
-
-        catch (Exception)
-        {
-            throw;
-        }
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Process(int id)
-    {
-        try
-        {
-            if (!_cache.TryGetValue("UploadedInvoices", out List<InvoiceFileEntry> invoices))
-            {
-                return Json(new
-                {
-                    status = "error",
-                    message = "Session expired. Please re-upload file."
-                });
-            }
-
-            var entry = invoices.FirstOrDefault(x => x.Id == id);
-
-            if (entry == null)
-            {
-                return Json(new
-                {
-                    status = "error",
-                    message = "Invoice not found."
-                });
-            }
-
-            // Process in background
-            await Task.Run(() => SaveInvoiceToDatabaseAsync(entry.InvoiceVM));
-
-            return Json(new
-            {
-                status = "ok",
-                message = "Invoice processed successfully."
-            });
-        }
-        catch (Exception ex)
-        {
-            return Json(new
-            {
-                status = "error",
-                message = ex.Message
-            });
-        }
-    }
-
-
-    public async Task<int> SaveInvoiceToDatabaseAsync(InvoiceViewModel invoice)
+    public async Task SaveAsync(InvoiceViewModel invoice)
     {
         if (invoice == null)
             throw new ArgumentNullException(nameof(invoice));
 
-        await using var conn = new SqlConnection("Server=MAGIC\\SQLEXPRESS01;Database=invyoc;Trusted_Connection=True;TrustServerCertificate=True;");
+        await using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         await conn.OpenAsync();
 
         await using var transaction = await conn.BeginTransactionAsync();
@@ -274,25 +126,128 @@ public class HomeController(
             var itemsJson = JsonSerializer.Serialize(invoice.Items);
             cmd.Parameters.AddWithValue("@ItemsJson", itemsJson);
 
-            var insertedId = (int)await cmd.ExecuteScalarAsync();
+            await cmd.ExecuteScalarAsync();
 
             await transaction.CommitAsync();
-
-            return insertedId;
         }
         catch
         {
             await transaction.RollbackAsync();
             throw;
         }
-
     }
-}
+
+    public async Task<List<SavedInvoiceData>> GetAllAsync(CommonListVM commonListVM)
+    {
+        var result = new List<SavedInvoiceData>();
+
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var command = new SqlCommand("dbo.GetFreeTempInvoices", connection);
+
+        command.CommandType = CommandType.StoredProcedure;
+
+        command.Parameters.AddWithValue("@Search",
+            string.IsNullOrWhiteSpace(commonListVM.Search) ? DBNull.Value : commonListVM.Search);
+
+        command.Parameters.AddWithValue("@Year", commonListVM.FilterYear);
+        command.Parameters.AddWithValue("@Month", commonListVM.FilterMonth);
 
 
-public class InvoiceFileEntry
-{
-    public int Id { get; set; }
-    public InvoiceViewModel InvoiceVM { get; set; }
-    public DateTime Timestamp { get; set; }
+        command.Parameters.AddWithValue("@PageNumber", commonListVM.PageNum);
+        command.Parameters.AddWithValue("@PageSize", commonListVM.PageSize);
+
+        await connection.OpenAsync();
+
+        await using var reader = await command.ExecuteReaderAsync();
+
+        while (await reader.ReadAsync())
+        {
+            result.Add(ConvertFromSqlReader(reader));
+        }
+
+        return result;
+    }
+
+    public async Task<SavedInvoiceData> GetByIdAsync(int id)
+    {
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var command = new SqlCommand("SELECT * FROM FreeTempInvoices WHERE Id = @Id", connection);
+
+        command.Parameters.AddWithValue("@Id", id);
+
+        await connection.OpenAsync();
+
+        await using var reader = await command.ExecuteReaderAsync();
+
+        if (!await reader.ReadAsync())
+            throw new KeyNotFoundException($"Invoice with Id {id} not found.");
+
+        return ConvertFromSqlReader(reader);
+    }
+
+    private static SavedInvoiceData ConvertFromSqlReader(SqlDataReader reader)
+    {
+        return new SavedInvoiceData
+        {
+            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+            Timestamp = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+
+            InvoiceVM = new InvoiceViewModel
+            {
+                InvoiceNumber = reader["InvoiceNumber"].ToString()!,
+                Company = new CompanyInfo
+                {
+                    Name = reader["CompanyName"]?.ToString(),
+                    Email = reader["CompanyEmail"]?.ToString(),
+                    GSTNo = reader["CompanyGSTNo"]?.ToString(),
+                    LogoBase64 = reader["CompanyLogoBase64"]?.ToString(),
+                    CompanyAddress = new AddressInfo
+                    {
+                        Address = reader["CompanyAddress"]?.ToString(),
+                        City = reader["CompanyCity"]?.ToString(),
+                        State = reader["CompanyState"]?.ToString(),
+                        Country = reader["CompanyCountry"]?.ToString(),
+                        Pincode = reader["CompanyPincode"]?.ToString(),
+                        ContactNum = reader["CompanyContactNum"]?.ToString()
+                    }
+                },
+                BillTo = new ClientInfoRequired
+                {
+                    Name = reader["BillToName"]?.ToString(),
+                    GSTNo = reader["BillToGSTNo"]?.ToString(),
+                    ClientAddress = new AddressInfo
+                    {
+                        Address = reader["BillToAddress"]?.ToString(),
+                        City = reader["BillToCity"]?.ToString(),
+                        State = reader["BillToState"]?.ToString(),
+                        Country = reader["BillToCountry"]?.ToString(),
+                        Pincode = reader["BillToPincode"]?.ToString(),
+                        ContactNum = reader["BillToContactNum"]?.ToString()
+                    }
+                },
+                ShipTo = new ClientInfo
+                {
+                    Name = reader["ShipToName"]?.ToString(),
+                    GSTNo = reader["ShipToGSTNo"]?.ToString(),
+                    ClientAddress = new AddressInfo
+                    {
+                        Address = reader["ShipToAddress"]?.ToString(),
+                        City = reader["ShipToCity"]?.ToString(),
+                        State = reader["ShipToState"]?.ToString(),
+                        Country = reader["ShipToCountry"]?.ToString(),
+                        Pincode = reader["ShipToPincode"]?.ToString(),
+                        ContactNum = reader["ShipToContactNum"]?.ToString()
+                    }
+                },
+                InvoiceDate = reader.GetDateTime(reader.GetOrdinal("InvoiceDate")),
+                DueDate = reader.GetDateTime(reader.GetOrdinal("DueDate")),
+                PONumber = reader["PONumber"]?.ToString(),
+                PaymentTerms = reader["PaymentTerms"]?.ToString(),
+                PaymentNotes = reader["PaymentNotes"]?.ToString(),
+                Currency = reader["Currency"].ToString()!,
+                IsPreview = reader.GetBoolean(reader.GetOrdinal("IsPreview")),
+                Items = JsonSerializer.Deserialize<List<InvoiceItemViewModel>>(reader["ItemsJson"]?.ToString() ?? "[]") ?? []
+            }
+        };
+    }
 }

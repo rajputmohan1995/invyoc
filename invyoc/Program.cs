@@ -1,6 +1,8 @@
 ﻿using DinkToPdf;
 using DinkToPdf.Contracts;
+using Hangfire;
 using invyoc.Extensions;
+using invyoc.Services;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -10,9 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+builder.Services.AddSingleton<IConverter>(new SynchronizedConverter(new PdfTools()));
 
 builder.Services.AddScoped<PdfService>();
+builder.Services.AddScoped<InvoicePersistenceJob>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
@@ -66,6 +70,16 @@ builder.WebHost.ConfigureKestrel((context, options) =>
         listenOptions.UseHttps();
     });
 });
+
+builder.Services.AddMemoryCache();
+
+builder.Host.UseEnvironment(
+    Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"
+);
+
+builder.Services.AddHangfire(config =>
+    config.UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireConnection")));
+builder.Services.AddHangfireServer();
 
 
 

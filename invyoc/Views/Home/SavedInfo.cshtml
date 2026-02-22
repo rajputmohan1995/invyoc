@@ -3,7 +3,6 @@
 @model List<SavedInvoiceData>
 @{
     ViewData["Title"] = "Saved Invoices";
-    Layout = "_FreeInvoiceLayout";
 }
 
 
@@ -30,44 +29,51 @@
                 @foreach (var item in Model)
                 {
                     var invoiceVM = item.InvoiceVM;
-                    var itemCount = item.InvoiceVM?.Items?.Count ?? 0;
+                    var itemCount = invoiceVM?.Items?.Count ?? 0;
+                    var subTotal = invoiceVM?.Subtotal ?? 0;
 
-                    var subTotal = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Subtotal ?? 0);
+                    var sgstTotal = invoiceVM?.Items?.Sum(x => (x.SGST * x.Amount) / 100) ?? 0;
+                    var cgstTotal = invoiceVM?.Items?.Sum(x => (x.CGST * x.Amount) / 100) ?? 0;
+                    var cessTotal = invoiceVM?.Items?.Sum(x => (x.Cess * x.Amount) / 100) ?? 0;
 
-                    @* 
-                    var discountAmount = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Discount ?? 0);
-                    var taxAmount = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Tax ?? 0);
-                    var total = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Subtotal ?? 0 + item.InvoiceVM?.Tax ?? 0 + item.InvoiceVM?.Discount ?? 0);
-                    *@
+                    var total = subTotal + sgstTotal + cgstTotal + cessTotal;
 
-                    var total = @invoiceVM?.Currency + PrimitiveTypeExtensions.ToCurrency(item.InvoiceVM?.Subtotal ?? 0);
 
-                    <tr style="cursor:pointer;" onclick="location.href='@Url.Action("InvoiceDetails", "Home", new { invoiceData = JsonSerializer.Serialize(invoiceVM) })'">
+                    <tr style="cursor:pointer;" onclick="location.href='@Url.Action("Details", "Invoice", new { id = @item.Id, p = CommonSetting.PassKey })'">
                         <td>@item.Id</td>
                         <td>
+                            <img width="100" height="100" src="@invoiceVM.Company.LogoBase64" alt="no image!" />
+                            <br />
                             @(invoiceVM?.Company?.Name ?? "[Invoice From Name]")
+                            <br />
+                            @(invoiceVM?.Company?.GSTNo ?? "[Invoice From GST]")
                             <br />
                             @(invoiceVM?.Company?.CompanyAddress?.Address ?? "[Invoice From Address]")
                         </td>
                         <td>
                             @(invoiceVM?.BillTo?.Name ?? "[Bill To Name]")
                             <br />
+                            @(invoiceVM?.BillTo?.GSTNo ?? "[Bill To GST]")
+                            <br />
                             @(invoiceVM?.BillTo?.ClientAddress?.Address ?? "[Bill To Address]")
                             <br />
 
                             <strong>[Ship To]</strong>
-                            @(invoiceVM?.BillTo?.Name ?? "[Ship To Name]")
+                            @(invoiceVM?.ShipTo?.Name ?? "[Ship To Name]")
+                            <br />
+                            @(invoiceVM?.ShipTo?.GSTNo ?? "[Ship To GST]")
                             <br />
                             @(invoiceVM?.ShipTo?.ClientAddress?.Address ?? "[Ship To Address]")
                         </td>
 
-                        @*   <td>
+                        <td>
                             Items Count : @itemCount <br />
-                            SubTotal : @subTotal<br />
-                            Discount (@invoiceVM?.DiscountPercentage%) : @discountAmount<br />
-                            Tax (@invoiceVM?.TaxPercentage%) : @taxAmount<br />
-                            Total : @total
-                        </td> *@
+                            SubTotal : @PrimitiveTypeExtensions.ToCurrency(subTotal)<br />
+                            SGST : @PrimitiveTypeExtensions.ToCurrency(sgstTotal)<br />
+                            CGST : @PrimitiveTypeExtensions.ToCurrency(cgstTotal)<br />
+                            Cess : @PrimitiveTypeExtensions.ToCurrency(cessTotal)<br />
+                            Total : <strong> @invoiceVM?.Currency@PrimitiveTypeExtensions.ToCurrency(total)</strong><br />
+                        </td>
 
                         <td>@item.Timestamp.ToLocalTime().ToString("dd-MMM-yyyy hh:mm:ss tt")</td>
                     </tr>

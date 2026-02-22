@@ -1,22 +1,38 @@
-﻿using invyoc.Extensions;
+﻿using Hangfire;
+using invyoc.Extensions;
 using invyoc.Models;
+using invyoc.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace invyoc.Controllers;
 
-public class InvoiceController : Controller
+public class InvoiceController(
+    IWebHostEnvironment env,
+    PdfService pdfService,
+    IInvoiceService invoiceService) : Controller
 {
-    private readonly IWebHostEnvironment _env;
-    private readonly PdfService _pdfService;
+    private readonly IWebHostEnvironment _env = env;
+    private readonly PdfService _pdfService = pdfService;
+    private readonly IInvoiceService _invoiceService = invoiceService;
 
-    public InvoiceController(
-        IWebHostEnvironment env,
-        PdfService pdfService)
+    [HttpGet]
+    public async Task<IActionResult> Details(int id, string p)
     {
-        _env = env;
-        _pdfService = pdfService;
-    }
+        if (p != CommonSetting.PassKey)
+            return NotFound();
 
+        try
+        {
+            var savedInvoiceData = await _invoiceService.GetByIdAsync(id);
+            return View("Index", savedInvoiceData.InvoiceVM);
+        }
+        catch (Exception ex)
+        {
+            var exceptionLogPath = Path.Combine(_env.WebRootPath, "globalException.json");
+            ExceptionLogger.LogException(ex, exceptionLogPath);
+            throw;
+        }
+    }
 
     [HttpGet]
     public IActionResult Index()
@@ -41,8 +57,6 @@ public class InvoiceController : Controller
 
             var invoiceLineNum = 0;
             invoiceVM.Items.ForEach(i => i.LineNumber = ++invoiceLineNum);
-
-            SaveBillDetailsInServerAsJson(invoiceVM);
 
             string invoiceTemplatePath = Path.Combine(_env.WebRootPath, "templates", "type1.html");
 
@@ -74,6 +88,13 @@ public class InvoiceController : Controller
             var exceptionLogPath = Path.Combine(_env.WebRootPath, "globalException.json");
             ExceptionLogger.LogException(ex, exceptionLogPath);
             throw;
+        }
+        finally
+        {
+            BackgroundJob.Enqueue<InvoicePersistenceJob>(
+                job => job.SaveInvoiceAsync(invoiceVM));
+
+            //SaveBillDetailsInServerAsJson(invoiceVM);
         }
     }
 
