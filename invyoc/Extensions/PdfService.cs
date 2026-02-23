@@ -3,11 +3,9 @@ using DinkToPdf.Contracts;
 
 namespace invyoc.Extensions;
 
-public class PdfService
+public class PdfService(IConverter converter)
 {
-    private readonly IConverter _converter;
-
-    public PdfService(IConverter converter) => _converter = converter;
+    private readonly IConverter _converter = converter;
 
     public async Task<byte[]> GeneratePdf(string htmlContent)
     {

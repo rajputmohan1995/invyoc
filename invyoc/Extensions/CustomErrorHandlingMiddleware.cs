@@ -1,15 +1,11 @@
 ﻿namespace invyoc.Extensions;
 
-public class CustomErrorHandlingMiddleware
+public class CustomErrorHandlingMiddleware(
+    RequestDelegate next, 
+    ILogger<CustomErrorHandlingMiddleware> logger)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger<CustomErrorHandlingMiddleware> _logger;
-
-    public CustomErrorHandlingMiddleware(RequestDelegate next, ILogger<CustomErrorHandlingMiddleware> logger)
-    {
-        _next = next;
-        _logger = logger;
-    }
+    private readonly RequestDelegate _next = next;
+    private readonly ILogger<CustomErrorHandlingMiddleware> _logger = logger;
 
     public async Task Invoke(HttpContext context)
     {
