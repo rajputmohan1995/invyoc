@@ -1,0 +1,131 @@
+﻿@{
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+    ViewData["Title"] = "GST Invoice Format PDF (Free Download + Online Generator)";
+    ViewData["MetaTags"] = @"<meta name='description' content='Download GST invoice format PDF for India. Professional GST bill sample with CGST, SGST & IGST breakup. Generate GST invoice PDF online free.'>
+                            <meta name='keywords' content='gst invoice format in pdf, gst bill format pdf india, gst invoice template pdf free'>
+                            <link rel='canonical' href='https://freegstbill.co.in/gst-invoice-format/pdf' />";
+}
+
+
+<p>A GST invoice in PDF format ensures professional presentation and legal compliance for businesses across India.</p>
+
+
+<h2>What is a GST Invoice?</h2>
+<p>Under GST law in India, every registered business must issue a tax invoice containing mandatory details such as GSTIN, invoice number, tax breakup and HSN/SAC codes.</p>
+
+
+<div class="row">
+
+    <div class="col">
+        <h2>Mandatory Fields in GST Invoice Excel Format</h2>
+        <ul>
+            <li>Invoice Number (Unique & Serial)</li>
+            <li>Invoice Date</li>
+            <li>Supplier Name, Address & GSTIN</li>
+            <li>Buyer Name, Address & GSTIN (if registered)</li>
+            <li>HSN (Goods) / SAC (Services)</li>
+            <li>Taxable Value</li>
+            <li>CGST + SGST (Intra-state) OR IGST (Inter-state)</li>
+            <li>Total Invoice Amount</li>
+        </ul>
+
+        <hr />
+
+        <h2>Related Pages</h2>
+        <ul>
+            <li><a href="/gst-invoice-format/excel">GST Invoice Format in Excel</a></li>
+            <li><a href="/gst-invoice-format/small-business">GST Invoice for Small Business</a></li>
+        </ul>
+
+    </div>
+
+    <div class="col">
+        <h2>Sample GST Calculation in Excel</h2>
+        <p>
+            Example: Product Value ₹10,000<br>
+            GST @@18% → CGST 9% = ₹900 + SGST 9% = ₹900<br>
+            Total = ₹11,800
+        </p>
+
+        <hr />
+
+        <h2>What Should GST Invoice PDF Include?</h2>
+        <ul>
+            <li>Supplier GSTIN</li>
+            <li>Invoice number & date</li>
+            <li>Buyer details</li>
+            <li>HSN/SAC code</li>
+            <li>Taxable value</li>
+            <li>CGST/SGST or IGST breakup</li>
+        </ul>
+
+        <p>
+            👉<a asp-controller="Invoice" asp-action="Index">Generate GST Invoice PDF Online</a>
+        </p>
+
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-6">
+
+        <h2>FAQs</h2>
+
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Is PDF GST invoice valid for tax filing?
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <i>Yes, PDF format is acceptable for GST compliance.</i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Can I email GST invoice PDF?
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <i>Yes, PDF invoices can be shared digitally.</i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Is digital signature mandatory?
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <i>Not mandatory unless required by specific cases.</i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script type="application/ld+json">
+        {
+        "@@context":"https://schema.org",
+        "@@type":"FAQPage",
+        "mainEntity":[
+        {"@@type":"Question","name":"Is PDF GST invoice valid for tax filing?","acceptedAnswer":{"@@type":"Answer","text":"Yes, PDF format invoices are legally acceptable."}},
+        {"@@type":"Question","name":"Can I email GST invoice PDF?","acceptedAnswer":{"@@type":"Answer","text":"Yes, invoices can be shared digitally via email."}},
+        {"@@type":"Question","name":"Is digital signature mandatory?","acceptedAnswer":{"@@type":"Answer","text":"Digital signature is not mandatory in most cases."}}
+        ]}
+    </script>
+}
