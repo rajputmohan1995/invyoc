@@ -113,6 +113,10 @@ document.addEventListener("input", function (e) {
 
 // Load data back
 function loadDraft() {
+
+    if (window.location.href.includes("invoice/details"))
+        return;
+
     const saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) {
         $("#addRow").click()

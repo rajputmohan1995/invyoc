@@ -32,7 +32,7 @@
                         var lineItemVM = Model.Items[i];
                         lineItemVM.LineNumber = i;
 
-                        await Html.PartialAsync("Partials/_LineItem", lineItemVM);
+                        await Html.RenderPartialAsync("Partials/_LineItem", lineItemVM);
                     }
 
                     <tr id="lastRow" class="mt-3 border-top border-dark">
