@@ -16,4 +16,28 @@ public class BlogController : Controller
     {
         return View();
     }
+
+    [Route("services")]
+    public IActionResult Services()
+    {
+        return View();
+    }
+
+    [Route("/gst-invoice-format-india")]
+    public IActionResult GSTInvoiceFormatIndia()
+    {
+        return View();
+    }
+
+    [Route("/gst-invoice-for-freelancers")]
+    public IActionResult GSTInvoiceForFreelancers()
+    {
+        return View();
+    }
+
+    [Route("/gst-invoice-for-small-business")]
+    public IActionResult GSTInvoiceForSmallBusiness()
+    {
+        return View();
+    }
 }

@@ -1,9 +1,11 @@
-﻿@{
+﻿@using invyoc.Extensions
+@{
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
     ViewData["Title"] = "GST Invoice Format PDF (Free Download + Online Generator)";
     ViewData["MetaTags"] = @"<meta name='description' content='Download GST invoice format PDF for India. Professional GST bill sample with CGST, SGST & IGST breakup. Generate GST invoice PDF online free.'>
                             <meta name='keywords' content='gst invoice format in pdf, gst bill format pdf india, gst invoice template pdf free'>
                             <link rel='canonical' href='https://freegstbill.co.in/gst-invoice-format/pdf' />";
+    var accordionContainerId = "accordionExample";
 }
 
 
@@ -34,7 +36,7 @@
         <h2>Related Pages</h2>
         <ul>
             <li><a href="/gst-invoice-format/excel">GST Invoice Format in Excel</a></li>
-            <li><a href="/gst-invoice-format/small-business">GST Invoice for Small Business</a></li>
+            <li><a href="/gst-invoice-for-small-business">GST Invoice for Small Business</a></li>
         </ul>
 
     </div>
@@ -60,62 +62,39 @@
         </ul>
 
         <p>
-            👉<a asp-controller="Invoice" asp-action="Index">Generate GST Invoice PDF Online</a>
+            👉 <a asp-controller="Invoice" asp-action="Index">Generate GST Invoice PDF Online</a>
         </p>
 
     </div>
 </div>
 
 
-<div class="row">
-    <div class="col-sm-6">
 
-        <h2>FAQs</h2>
+<h2>FAQs</h2>
 
-        <div class="accordion" id="accordionExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Is PDF GST invoice valid for tax filing?
-                    </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <i>Yes, PDF format is acceptable for GST compliance.</i>
-                    </div>
-                </div>
-            </div>
+<div class="accordion" id="@accordionContainerId">
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Can I email GST invoice PDF?
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <i>Yes, PDF invoices can be shared digitally.</i>
-                    </div>
-                </div>
-            </div>
+    @Html.Raw(PrimitiveTypeExtensions.CreateAccordinItem(
+    index: 1,
+        ques: "Is PDF GST invoice valid for tax filing?",
+        ans: "Yes, PDF format is acceptable for GST compliance.",
+        containerId: accordionContainerId))
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingThree">
-                    <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Is digital signature mandatory?
-                    </button>
-                </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <i>Not mandatory unless required by specific cases.</i>
-                    </div>
-                </div>
-            </div>
+    @Html.Raw(@PrimitiveTypeExtensions.CreateAccordinItem(
+        index: 2,
+        ques: "Can I email GST invoice PDF?",
+        ans: "Yes, PDF invoices can be shared digitally.",
+        containerId: accordionContainerId))
 
-        </div>
+    @Html.Raw(@PrimitiveTypeExtensions.CreateAccordinItem(
+        index: 3,
+        ques: "Is digital signature mandatory?",
+        ans: "Not mandatory unless required by specific cases.",
+        containerId: accordionContainerId))
 
-    </div>
 </div>
+
+
 
 @section Scripts {
     <script type="application/ld+json">

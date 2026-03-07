@@ -10,6 +10,42 @@
 
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav ms-auto align-items-lg-center">
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Blogs
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a asp-controller="Blog" asp-action="Excel" class="dropdown-item">
+                                GST Invoice Format in Excel
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="Blog" asp-action="Pdf" class="dropdown-item">
+                                GST Invoice Format in PDF
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="Blog" asp-action="Services" class="dropdown-item">
+                                GST Invoice Format for services in India
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="Blog" asp-action="GSTInvoiceForFreelancers" class="dropdown-item">
+                                GST Invoice for Freelancers in India
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="Blog" asp-action="GSTInvoiceForSmallBusiness" class="dropdown-item">
+                                GST Invoice for Small Business in India
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
                 <li class="nav-item">
                     <a class="nav-link" asp-action="About" asp-controller="Home">About</a>
                 </li>
@@ -19,6 +55,7 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-action="Terms" asp-controller="Home">Terms</a>
                 </li>
+
             </ul>
         </div>
     </div>

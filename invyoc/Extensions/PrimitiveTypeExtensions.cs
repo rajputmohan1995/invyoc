@@ -142,4 +142,21 @@ public static class PrimitiveTypeExtensions
 
         return dataList ?? [];
     }
+
+    public static string CreateAccordinItem(int index, string ques, string ans, string containerId)
+    {
+        return $@"<div class='accordion-item'>
+                    <h2 class='accordion-header' id='heading{index}'>
+                        <button class='accordion-button fw-bold collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#collapse{index}' 
+                                aria-expanded='true' aria-controls='collapse{index}'>
+                            {ques}
+                        </button>
+                    </h2>
+                    <div id='collapse{index}' class='accordion-collapse collapse' aria-labelledby='heading{index}' data-bs-parent='#{containerId}'>
+                        <div class='accordion-body'>
+                            <i>{ans}</i>
+                        </div>
+                    </div>
+                </div>";
+    }
 }

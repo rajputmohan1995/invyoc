@@ -16,4 +16,26 @@
 		<loc>https://freegstbill.co.in/terms</loc>
 		<priority>0.8</priority>
 	</url>
+
+	<url>
+		<loc>https://freegstbill.co.in/gst-invoice-format/excel</loc>
+		<priority>0.7</priority>
+	</url>
+	<url>
+		<loc>https://freegstbill.co.in/gst-invoice-format/pdf</loc>
+		<priority>0.7</priority>
+	</url>
+	<url>
+		<loc>https://freegstbill.co.in/gst-invoice-format/services</loc>
+		<priority>0.7</priority>
+	</url>
+	<url>
+		<loc>https://freegstbill.co.in/gst-invoice-for-freelancers</loc>
+		<priority>0.7</priority>
+	</url>
+	<url>
+		<loc>https://freegstbill.co.in/gst-invoice-for-small-business</loc>
+		<priority>0.7</priority>
+	</url>
+
 </urlset>
