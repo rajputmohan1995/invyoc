@@ -11,6 +11,7 @@ public static class ExportExtensions
         htmlContent = htmlContent.Replace("[{CompanyName}]", invoiceVM.Company.Name);
         htmlContent = htmlContent.Replace("[{CompanyAddress}]", invoiceVM.Company?.CompanyAddress?.Address);
         htmlContent = htmlContent.Replace("[{CompanyCity}]", invoiceVM.Company?.CompanyAddress?.City);
+        htmlContent = htmlContent.Replace("[{CompanyPincode}]", invoiceVM.Company?.CompanyAddress?.Pincode);
         htmlContent = htmlContent.Replace("[{CompanyState}]", invoiceVM.Company?.CompanyAddress?.State);
         htmlContent = htmlContent.Replace("[{CompanyCountry}]", invoiceVM.Company?.CompanyAddress?.Country);
         htmlContent = htmlContent.Replace("[{CompanyPhone}]", invoiceVM.Company?.CompanyAddress?.ContactNum);
@@ -20,7 +21,7 @@ public static class ExportExtensions
         var companyLogoContent = "";
         if (!string.IsNullOrWhiteSpace(invoiceVM.Company?.LogoBase64))
         {
-            companyLogoContent = $"<img src='{invoiceVM.Company.LogoBase64}' alt='Logo not found!' style='max-width:150px;max-height:150px;' />";
+            companyLogoContent = $"<img src='{invoiceVM.Company.LogoBase64}' alt='Logo not found!' style='max-width:130px;max-height:130px;' />";
         }
         htmlContent = htmlContent.Replace("[{CompanyLogoContent}]", companyLogoContent);
 
@@ -29,9 +30,10 @@ public static class ExportExtensions
         htmlContent = htmlContent.Replace("[{BillToGSTNo}]", invoiceVM.BillTo.GSTNo);
         htmlContent = htmlContent.Replace("[{BillToAddress}]", invoiceVM.BillTo?.ClientAddress?.Address);
         htmlContent = htmlContent.Replace("[{BillToCity}]", invoiceVM.BillTo?.ClientAddress?.City);
+        htmlContent = htmlContent.Replace("[{BillToPincode}]", invoiceVM.BillTo?.ClientAddress?.Pincode);
         htmlContent = htmlContent.Replace("[{BillToState}]", invoiceVM.BillTo?.ClientAddress?.State);
         htmlContent = htmlContent.Replace("[{BillToCountry}]", invoiceVM.BillTo?.ClientAddress?.Country);
-        htmlContent = htmlContent.Replace("[{BillToContact}]", invoiceVM.BillTo?.ClientAddress?.ContactNum);
+        htmlContent = htmlContent.Replace("[{BillToContact}]", "<i>Contact</i>: " + invoiceVM.BillTo?.ClientAddress?.ContactNum);
 
 
         var shipToContent = "";
@@ -44,7 +46,7 @@ public static class ExportExtensions
                 !string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.GSTNo))
             {
                 shipToContent = @$"<td width='35%' class='pr-20' >
-                <strong>Ship To</strong>
+                <strong style='text-decoration:underline; font-size:15px;'>Ship To</strong>
                 <div style='margin-top:2px;'>
                     <span style='word-wrap: break-word'>{invoiceVM.ShipTo.Name}</span>
                     <br />                 
@@ -54,9 +56,9 @@ public static class ExportExtensions
 
             if (!string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.ClientAddress?.Address) ||
                !string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.ClientAddress?.City) ||
+               !string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.ClientAddress?.Pincode) ||
                !string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.ClientAddress?.State) ||
                !string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.ClientAddress?.Country) ||
-               !string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.ClientAddress?.Pincode) ||
                !string.IsNullOrWhiteSpace(invoiceVM.ShipTo?.ClientAddress?.ContactNum))
             {
 
@@ -65,12 +67,12 @@ public static class ExportExtensions
                     <span style='word-wrap: break-word'>{invoiceVM.ShipTo.ClientAddress.Address}</span>
                     <br />
                     <span style=""word-wrap: break-word"">{invoiceVM.ShipTo.ClientAddress.City}</span>
+                    <span style=""word-wrap: break-word"">{invoiceVM.ShipTo.ClientAddress.Pincode}</span>
                     <br />
                     <span style=""word-wrap: break-word"">{invoiceVM.ShipTo.ClientAddress.State}</span>
-                    <br />
                     <span style=""word-wrap: break-word"">{invoiceVM.ShipTo.ClientAddress.Country}</span>
                     <br />
-                    <span style='word-wrap: break-word'>{invoiceVM.ShipTo.ClientAddress.ContactNum}</span>";
+                    <span style='word-wrap: break-word'><i>Contact</i>: {invoiceVM.ShipTo.ClientAddress.ContactNum}</span>";
 
             }
 

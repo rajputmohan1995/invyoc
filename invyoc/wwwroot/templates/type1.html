@@ -68,7 +68,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: 14px;
+            font-size: 13px;
             clear: both;
             text-align: center;
         }
@@ -147,6 +147,10 @@
         .text-muted {
             color: rgba(33, 37, 41, 0.75) !important;
         }
+
+        #txtPaymentNotes, #txtPaymentTerms {
+            padding: 0 5px;
+        }
     </style>
 
 </head>
@@ -161,12 +165,11 @@
             <td width="70%">
                 <h1>[{CompanyName}]</h1>
 
-                <div style="margin-top: 5px; font-size: 13px">
+                <div style="margin-top: 5px; font-size: 14px">
                     <strong style="text-transform: uppercase">[{GSTNo}]</strong><br />
                     [{CompanyAddress}]<br />
-                    [{CompanyCity}]<br />
-                    [{CompanyState}]<br />
-                    [{CompanyCountry}]<br />
+                    [{CompanyCity}] [{CompanyPincode}]<br />
+                    [{CompanyState}] [{CompanyCountry}] <br />
                     [{CompanyPhone}] | <span style="text-transform: lowercase">[{CompanyEmail}]</span>
                 </div>
             </td>
@@ -179,19 +182,22 @@
     <table class="w-100" style="margin-bottom: 20px; font-size: 14px">
         <tr valign="top">
             <td width="[{BillToContentWidth}]%" class="pr-20">
-                <strong>Bill To</strong>
+                <strong style="text-decoration:underline; font-size:15px;">Bill To</strong>
                 <div style="margin-top:2px;">
                     [{BillToName}]
                     <br />
                     [{BillToGSTNo}]
                     <br />
                     <span style="word-wrap: break-word">[{BillToAddress}]</span>
+
                     <br />
                     <span style="word-wrap: break-word">[{BillToCity}]</span>
-                    <br />
-                    <span style="word-wrap: break-word">[{BillToState}]</span>
+                    <span style="word-wrap: break-word">[{BillToPincode}]</span>
+
                     <br />
                     <span style="word-wrap: break-word">[{BillToCountry}]</span>
+                    <span style="word-wrap: break-word">[{BillToState}]</span>
+
                     <br />
                     <span style="word-wrap: break-word">[{BillToContact}]</span>
                 </div>
@@ -258,7 +264,7 @@
                 <td>
                     <div id="txtPaymentNotes"
                          class="w-100 auto-height"
-                         style="margin-right: 10px; width: 98%;">
+                         style="margin-right: 10px; width: 95%;">
                         [{PaymentNotes}]
                     </div>
                 </td>
